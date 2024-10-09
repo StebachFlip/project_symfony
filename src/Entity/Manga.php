@@ -2,11 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoryRepository;
-use App\Entity\Category;
 use App\Repository\MangaRepository;
-use Doctrine\DBAL\Types\Types;
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Enum\mangaStatus;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MangaRepository::class)]
@@ -14,24 +13,42 @@ class Manga
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 0)]
-    private ?string $price = null;
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
+    private ?float $price = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'text')]
     private ?string $description = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'boolean')]
     private ?bool $stock = null;
 
-    #[ORM\Column(type: 'string', length: 50)]
-    #[Assert\Choice(choices: ['Disponible', 'Indisponible', 'Précommande'], message: 'Choisissez un statut valide.')]
-    private string $status;
+    #[ORM\Column(type: 'string', enumType: MangaStatus::class)]
+    private ?MangaStatus $status = null;
+
+    // Relation ManyToMany avec Category
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'mangas')]
+    #[ORM\JoinTable(name: 'manga_category')]
+    private Collection $categories;
+
+    // Relation OneToOne avec Image
+    #[ORM\OneToOne(targetEntity: Image::class, cascade: ['persist', 'remove'])]
+    private ?Image $image = null;
+
+    // Relation ManyToMany avec Order via OrderItem
+    #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'manga')]
+    private Collection $orderItems;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+        $this->orderItems = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -43,19 +60,19 @@ class Manga
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getPrice(): ?string
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
-    public function setPrice(string $price): static
+    public function setPrice(float $price): self
     {
         $this->price = $price;
 
@@ -67,39 +84,100 @@ class Manga
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function isStock(): ?bool
+    public function getStock(): ?bool
     {
         return $this->stock;
     }
 
-    public function setStock(bool $stock): static
+    public function setStock(bool $stock): self
     {
         $this->stock = $stock;
 
         return $this;
     }
 
-    public function getStatus(): string
+    public function getStatus(): ?MangaStatus
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(MangaStatus $status): self
     {
-        // Optionnel: Valider avant de setter le statut
-        $validStatuses = ['Disponible', 'Indisponible', 'Précommande'];
-        if (!in_array($status, $validStatuses)) {
-            throw new \InvalidArgumentException("Statut invalide");
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
         }
 
-        $this->status = $status;
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(?Image $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderItem>
+     */
+    public function getOrderItems(): Collection
+    {
+        return $this->orderItems;
+    }
+
+    public function addOrderItem(OrderItem $orderItem): self
+    {
+        if (!$this->orderItems->contains($orderItem)) {
+            $this->orderItems->add($orderItem);
+            $orderItem->setManga($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderItem(OrderItem $orderItem): self
+    {
+        if ($this->orderItems->removeElement($orderItem)) {
+            // Set the owning side to null (unless already changed)
+            if ($orderItem->getManga() === $this) {
+                $orderItem->setManga(null);
+            }
+        }
+
         return $this;
     }
 }

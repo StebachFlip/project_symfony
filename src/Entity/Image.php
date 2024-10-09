@@ -10,14 +10,18 @@ class Image
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $url = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 50)]
     private ?string $format = null;
+
+    // Relation OneToOne avec Manga
+    #[ORM\OneToOne(targetEntity: Manga::class, mappedBy: 'image', cascade: ['persist', 'remove'])]
+    private ?Manga $manga = null;
 
     public function getId(): ?int
     {
@@ -29,7 +33,7 @@ class Image
         return $this->url;
     }
 
-    public function setUrl(string $url): static
+    public function setUrl(string $url): self
     {
         $this->url = $url;
 
@@ -41,9 +45,26 @@ class Image
         return $this->format;
     }
 
-    public function setFormat(string $format): static
+    public function setFormat(string $format): self
     {
         $this->format = $format;
+
+        return $this;
+    }
+
+    public function getManga(): ?Manga
+    {
+        return $this->manga;
+    }
+
+    public function setManga(?Manga $manga): self
+    {
+        $this->manga = $manga;
+
+        // Set the owning side of the relation if necessary
+        if ($manga !== null && $manga->getImage() !== $this) {
+            $manga->setImage($this);
+        }
 
         return $this;
     }
