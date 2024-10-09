@@ -6,6 +6,7 @@ use App\Repository\CategoryRepository;
 use App\Entity\Category;
 use App\Repository\MangaRepository;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MangaRepository::class)]
@@ -28,9 +29,9 @@ class Manga
     #[ORM\Column]
     private ?bool $stock = null;
 
-    #[ORM\ManyToMany(targetEntity: Category::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private $category;
+    #[ORM\Column(type: 'string', length: 50)]
+    #[Assert\Choice(choices: ['Disponible', 'Indisponible', 'Précommande'], message: 'Choisissez un statut valide.')]
+    private string $status;
 
     public function getId(): ?int
     {
@@ -85,7 +86,20 @@ class Manga
         return $this;
     }
 
-    public function setCategory(Category $category): void {
-        $this->category = $category;
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        // Optionnel: Valider avant de setter le statut
+        $validStatuses = ['Disponible', 'Indisponible', 'Précommande'];
+        if (!in_array($status, $validStatuses)) {
+            throw new \InvalidArgumentException("Statut invalide");
+        }
+
+        $this->status = $status;
+        return $this;
     }
 }
