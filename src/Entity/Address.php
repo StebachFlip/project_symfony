@@ -26,8 +26,8 @@ class Address
     private ?string $country = null;
 
     // Relation OneToOne avec User
-    #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'address')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\OneToOne(inversedBy: 'address', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)] // Cela empêche la valeur NULL
     private ?User $user = null;
 
     public function getId(): ?int

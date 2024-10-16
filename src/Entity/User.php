@@ -5,10 +5,12 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,8 +29,8 @@ class User
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $lastname = null;
 
-    #[ORM\Column(type: 'json')]
-    private array $roles = []; // Rôles peuvent être stockés dans un tableau JSON
+    #[ORM\Column(type: 'boolean')]
+    private bool $role = false; // Rôles peuvent être stockés dans un tableau JSON
 
     #[ORM\Column(type: 'string')]
     private ?string $password = null;
@@ -40,6 +42,10 @@ class User
     // Relation OneToOne avec Address
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Address $address = null;
+
+    // Relation OneToOne avec ProfilePicture
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?ProfilePicture $profilePicture = null;
 
     public function __construct()
     {
@@ -99,14 +105,14 @@ class User
         return $this;
     }
 
-    public function getRoles(): array
+    public function getRole(): bool
     {
-        return $this->roles;
+        return $this->role;
     }
 
-    public function setRoles(array $roles): self
+    public function setRole(bool $role): self
     {
-        $this->roles = $roles;
+        $this->role = $role;
 
         return $this;
     }
@@ -169,4 +175,40 @@ class User
 
         return $this;
     }
+
+    public function eraseCredentials(): void {
+        //
+    }
+
+    public function getRoles(): array {
+        return [];
+    }
+
+    // Méthode nécessaire pour PasswordAuthenticatedUserInterface
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function getProfilePicture(): ?ProfilePicture
+    {
+        return $this->profilePicture;
+    }
+
+    // public function setProfilePicture(?ProfilePicture $profilePicture): self
+    // {
+    //     // Unset the owning side of the relation if necessary
+    //     if ($profilePicture === null && $this->profilePicture !== null) {
+    //         $this->profilePicture->setUser(null);
+    //     }
+
+    //     // Set the owning side of the relation if necessary
+    //     if ($profilePicture !== null && $profilePicture->getUser() !== $this) {
+    //         $profilePicture->setUser($this);
+    //     }
+
+    //     $this->profilePicture = $profilePicture;
+
+    //     return $this;
+    // }
 }
