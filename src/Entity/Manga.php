@@ -19,6 +19,9 @@ class Manga
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name = null;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $author = null;
+
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     private ?float $price = null;
 
@@ -63,6 +66,17 @@ class Manga
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?string 
+    {
+        return $this->author;
+    }
+    public function setAuthor(string $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

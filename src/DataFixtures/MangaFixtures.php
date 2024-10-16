@@ -17,6 +17,7 @@ class MangaFixtures extends Fixture implements DependentFixtureInterface
         for ($i = 1; $i <= 10; $i++) {
             $manga = new Manga();
             $manga->setName("Manga Title $i");
+            $manga->setAuthor("jaaj");
             $manga->setPrice(mt_rand(5, 30)); // Prix aléatoire entre 5 et 30
             $manga->setDescription("Description du manga $i");
             $manga->setStock(mt_rand(0, 1) === 1); // Stock aléatoire (en stock ou non)
