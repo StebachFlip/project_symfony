@@ -40,7 +40,7 @@ class Manga
     private Collection $categories;
 
     // Relation OneToOne avec Image
-    #[ORM\OneToOne(targetEntity: Image::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'manga', targetEntity: Image::class)]
     private ?Image $image = null;
 
     // Relation ManyToMany avec Order via OrderItem

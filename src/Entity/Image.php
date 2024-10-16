@@ -20,7 +20,8 @@ class Image
     private ?string $format = null;
 
     // Relation OneToOne avec Manga
-    #[ORM\OneToOne(targetEntity: Manga::class, mappedBy: 'image', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: Manga::class, inversedBy: 'image')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Manga $manga = null;
 
     public function getId(): ?int
