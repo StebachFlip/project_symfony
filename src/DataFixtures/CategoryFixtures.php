@@ -8,17 +8,15 @@ use Doctrine\Persistence\ObjectManager;
 
 class CategoryFixtures extends Fixture
 {
-    public function load(ObjectManager $manager): void
+    public function load(ObjectManager $manager)
     {
-        $categories = ['Shonen', 'Seinen', 'Shojo'];
-
+        $jsonContent = file_get_contents(__DIR__ . '/Data/category.json');
+        $categories = json_decode($jsonContent, true);
+        
         foreach ($categories as $categoryName) {
             $category = new Category();
             $category->setName($categoryName);
             $manager->persist($category);
-
-            // On crée une référence pour que MangaFixtures puisse y accéder
-            $this->addReference("category_$categoryName", $category);
         }
 
         $manager->flush();

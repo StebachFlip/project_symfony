@@ -1,0 +1,90 @@
+[
+    {
+        "path": "one_piece.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "golgo_13.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "dragon_ball.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "naruto.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "detective_conan.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "black_jack.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "doraemon.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "slam_dunk.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "oishinbo.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "bleach.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "attack_on_titan.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "jojo_bizarre_adventure.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "astro_boy.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "hokuto_no_ken.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "sazae_san.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "berserk.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "tokyo_ghoul.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "my_hero_academia.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "d_gray_man.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "fairy_tail.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "katekyo_hitman_reborn.jpg",
+        "format": "jpg"
+    },
+    {
+        "path": "naruto_the_last.jpg",
+        "format": "jpg"
+    }
+]

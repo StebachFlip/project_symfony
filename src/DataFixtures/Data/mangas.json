@@ -1,0 +1,263 @@
+[
+    {
+        "name": "One Piece",
+        "author": "Eiichirō Oda (尾田 栄一郎, Oda Eiichirō)",
+        "price": 7.20,
+        "description": "One Piece (ワンピース, Wan Pīsu) est une série de shōnen mangas créée par Eiichirō Oda. Elle est prépubliée depuis le 22 juillet 1997 dans le magazine Weekly Shōnen Jump, puis regroupée en tankōbon aux éditions Shūeisha depuis 1997. 109 tomes sont commercialisés en 2024.",
+        "stock": 9,
+        "genres": [
+            "Aventure",
+            "Action",
+            "Fantastique"
+        ]
+    },
+    {
+        "name": "Golgo 13",
+        "author": "Takao Saito",
+        "price": 8.00,
+        "description": "Golgo 13 (ゴルゴ13) est un manga seinen écrit et illustré par Takao Saito, publié depuis 1968. Il est le plus ancien manga encore en publication avec plus de 200 tomes.",
+        "stock": 5,
+        "genres": [
+            "Seinen",
+            "Action",
+            "Thriller"
+        ]
+    },
+    {
+        "name": "Dragon Ball",
+        "author": "Akira Toriyama",
+        "price": 6.50,
+        "description": "Dragon Ball (ドラゴンボール) est une série de mangas écrite et illustrée par Akira Toriyama. Elle est prépubliée entre 1984 et 1995 et rassemble 42 volumes.",
+        "stock": 12,
+        "genres": [
+            "Aventure",
+            "Action",
+            "Fantastique"
+        ]
+    },
+    {
+        "name": "Naruto",
+        "author": "Masashi Kishimoto",
+        "price": 7.10,
+        "description": "Naruto (ナルト) est un manga de Masashi Kishimoto prépublié dans le Weekly Shōnen Jump entre 1999 et 2014. La série est composée de 72 volumes.",
+        "stock": 10,
+        "genres": [
+            "Aventure",
+            "Action",
+            "Fantastique"
+        ]
+    },
+    {
+        "name": "Detective Conan",
+        "author": "Gosho Aoyama",
+        "price": 7.50,
+        "description": "Detective Conan (名探偵コナン, Meitantei Konan) est une série de mangas écrite et dessinée par Gosho Aoyama. La série est en cours de publication depuis 1994.",
+        "stock": 8,
+        "genres": [
+            "Mystère",
+            "Action",
+            "Policier"
+        ]
+    },
+    {
+        "name": "Black Jack",
+        "author": "Osamu Tezuka",
+        "price": 9.00,
+        "description": "Black Jack (ブラック・ジャック) est une série de mangas créée par Osamu Tezuka. Elle met en scène un médecin de génie sans licence.",
+        "stock": 4,
+        "genres": [
+            "Drame",
+            "Action",
+            "Médical"
+        ]
+    },
+    {
+        "name": "Doraemon",
+        "author": "Fujiko F. Fujio",
+        "price": 6.80,
+        "description": "Doraemon (ドラえもん) est un manga écrit par Fujiko F. Fujio, publié pour la première fois en 1969. Il raconte les aventures d'un robot-chat venu du futur.",
+        "stock": 15,
+        "genres": [
+            "Comédie",
+            "Aventure",
+            "Fantastique"
+        ]
+    },
+    {
+        "name": "Slam Dunk",
+        "author": "Takehiko Inoue",
+        "price": 6.90,
+        "description": "Slam Dunk (スラムダンク) est un manga sur le basketball, écrit et illustré par Takehiko Inoue. Il est publié entre 1990 et 1996 dans le Weekly Shōnen Jump.",
+        "stock": 7,
+        "genres": [
+            "Sport",
+            "Comédie",
+            "Action"
+        ]
+    },
+    {
+        "name": "Oishinbo",
+        "author": "Tetsu Kariya, Akira Hanasaki",
+        "price": 5.50,
+        "description": "Oishinbo (美味しんぼ) est une série de mangas sur la cuisine écrite par Tetsu Kariya et illustrée par Akira Hanasaki. Elle est en cours depuis 1983.",
+        "stock": 6,
+        "genres": [
+            "Cuisine",
+            "Comédie"
+        ]
+    },
+    {
+        "name": "Bleach",
+        "author": "Tite Kubo",
+        "price": 7.00,
+        "description": "Bleach (ブリーチ) est un manga écrit et illustré par Tite Kubo. Il est publié entre 2001 et 2016 dans le Weekly Shōnen Jump et compte 74 volumes.",
+        "stock": 11,
+        "genres": [
+            "Action",
+            "Fantastique",
+            "Aventure"
+        ]
+    },
+    {
+        "name": "Attack on Titan",
+        "author": "Hajime Isayama",
+        "price": 7.30,
+        "description": "Attack on Titan (進撃の巨人, Shingeki no Kyojin) est un manga de Hajime Isayama publié de 2009 à 2021. La série est composée de 34 volumes.",
+        "stock": 9,
+        "genres": [
+            "Action",
+            "Horreur",
+            "Fantastique"
+        ]
+    },
+    {
+        "name": "JoJo's Bizarre Adventure",
+        "author": "Hirohiko Araki",
+        "price": 8.50,
+        "description": "JoJo's Bizarre Adventure (ジョジョの奇妙な冒険) est une série de mangas écrite par Hirohiko Araki, en cours de publication depuis 1987.",
+        "stock": 5,
+        "genres": [
+            "Action",
+            "Fantastique",
+            "Aventure"
+        ]
+    },
+    {
+        "name": "Astro Boy",
+        "author": "Osamu Tezuka",
+        "price": 5.00,
+        "description": "Astro Boy (鉄腕アトム) est un manga de science-fiction créé par Osamu Tezuka, publié pour la première fois en 1952. Il est l'un des mangas les plus influents.",
+        "stock": 10,
+        "genres": [
+            "Science-fiction",
+            "Action",
+            "Aventure"
+        ]
+    },
+    {
+        "name": "Hokuto no Ken",
+        "author": "Buronson, Tetsuo Hara",
+        "price": 7.40,
+        "description": "Hokuto no Ken (北斗の拳), connu sous le nom de Fist of the North Star, est un manga d'arts martiaux post-apocalyptique, publié entre 1983 et 1988.",
+        "stock": 6,
+        "genres": [
+            "Action",
+            "Arts martiaux",
+            "Aventure"
+        ]
+    },
+    {
+        "name": "Sazae-san",
+        "author": "Machiko Hasegawa",
+        "price": 5.90,
+        "description": "Sazae-san (サザエさん) est un manga humoristique écrit et illustré par Machiko Hasegawa. Il est publié entre 1946 et 1974.",
+        "stock": 4,
+        "genres": [
+            "Comédie",
+            "Tranche de vie"
+        ]
+    },
+    {
+        "name": "Berserk",
+        "author": "Kentaro Miura",
+        "price": 8.00,
+        "description": "Berserk (ベルセルク) est un manga dark fantasy écrit et illustré par Kentaro Miura, connu pour son dessin détaillé et son histoire sombre.",
+        "stock": 7,
+        "genres": [
+            "Fantasy",
+            "Action",
+            "Aventure"
+        ]
+    },
+    {
+        "name": "Tokyo Ghoul",
+        "author": "Sui Ishida",
+        "price": 7.50,
+        "description": "Tokyo Ghoul (東京喰種トーキョーグール) est un manga d'horreur écrit et illustré par Sui Ishida, publié entre 2011 et 2014.",
+        "stock": 9,
+        "genres": [
+            "Horreur",
+            "Action",
+            "Fantastique"
+        ]
+    },
+    {
+        "name": "My Hero Academia",
+        "author": "Kōhei Horikoshi",
+        "price": 7.20,
+        "description": "My Hero Academia (僕のヒーローアカデミア) est un manga shōnen écrit et illustré par Kōhei Horikoshi, en cours depuis 2014.",
+        "stock": 11,
+        "genres": [
+            "Action",
+            "Fantastique",
+            "Aventure"
+        ]
+    },
+    {
+        "name": "D.Gray-man",
+        "author": "Katsura Hoshino",
+        "price": 6.70,
+        "description": "D.Gray-man (ディーグレイマン) est un manga shōnen écrit par Katsura Hoshino, publié depuis 2004.",
+        "stock": 8,
+        "genres": [
+            "Action",
+            "Fantastique"
+        ]
+    },
+    {
+        "name": "Fairy Tail",
+        "author": "Hiro Mashima",
+        "price": 7.00,
+        "description": "Fairy Tail (フェアリーテイル) est un manga shōnen écrit et illustré par Hiro Mashima, en cours depuis 2006.",
+        "stock": 12,
+        "genres": [
+            "Aventure",
+            "Action",
+            "Fantastique"
+        ]
+    },
+    {
+        "name": "Katekyo Hitman Reborn!",
+        "author": "Akira Amano",
+        "price": 6.80,
+        "description": "Katekyo Hitman Reborn! (家庭教師ヒットマンREBORN!) est un manga shōnen écrit par Akira Amano, publié de 2004 à 2012.",
+        "stock": 7,
+        "genres": [
+            "Action",
+            "Comédie",
+            "Fantastique"
+        ]
+    },
+    {
+        "name": "Naruto: The Last",
+        "author": "Masashi Kishimoto",
+        "price": 9.50,
+        "description": "Naruto: The Last (ナルト ザ・ラスト) est un film et un manga qui fait suite à la série Naruto, centré sur les personnages principaux.",
+        "stock": 5,
+        "genres": [
+            "Action",
+            "Romance",
+            "Fantastique"
+        ]
+    }
+]

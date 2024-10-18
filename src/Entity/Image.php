@@ -19,7 +19,6 @@ class Image
     #[ORM\Column(type: 'string', length: 50)]
     private ?string $format = null;
 
-    // Relation OneToOne avec Manga
     #[ORM\OneToOne(targetEntity: Manga::class, inversedBy: 'image')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Manga $manga = null;
@@ -62,7 +61,6 @@ class Image
     {
         $this->manga = $manga;
 
-        // Set the owning side of the relation if necessary
         if ($manga !== null && $manga->getImage() !== $this) {
             $manga->setImage($this);
         }

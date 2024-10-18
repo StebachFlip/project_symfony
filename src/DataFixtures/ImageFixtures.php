@@ -3,39 +3,39 @@
 namespace App\DataFixtures;
 
 use App\Entity\Image;
-use App\Entity\Manga;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class ImageFixtures extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager): void
+    public function load(ObjectManager $manager)
     {
-        // Récupérer les mangas créés dans MangaFixtures
-        for ($i = 1; $i <= 10; $i++) {
-            $image = new Image();
-            $image->setUrl("/images/manga$i.jpg");
-            $image->setFormat('jpg');
+        $jsonContent = file_get_contents(__DIR__ . '/Data/image.json');
+        $images = json_decode($jsonContent, true);
+        
+        foreach ($images as $index => $imageData) {
+            $mangaReference = 'manga_' . $index;
+            
+            if ($this->hasReference($mangaReference)) {
+                $manga = $this->getReference($mangaReference);
+                
+                $image = new Image();
+                $image->setManga($manga);
+                $image->setUrl($imageData['path']); 
+                $image->setFormat($imageData['format']); 
 
-            // Récupérer le manga correspondant à partir de la référence de MangaFixtures
-            $manga = $this->getReference('manga_' . $i);
-            $image->setManga($manga);  // Associe l'image au manga
-
-            $manager->persist($image);
-
-            // Mettre à jour la relation dans Manga
-            $manga->setImage($image);
-            $manager->persist($manga);
+                $manager->persist($image);
+            }
         }
 
         $manager->flush();
     }
 
-    public function getDependencies(): array
+    public function getDependencies()
     {
         return [
-            MangaFixtures::class, // Charger les mangas avant les images
+            MangaFixtures::class,
         ];
     }
 }
