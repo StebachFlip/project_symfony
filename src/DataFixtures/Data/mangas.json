@@ -259,5 +259,17 @@
             "Romance",
             "Fantastique"
         ]
+    },
+    {
+        "name": "Naruto: The Last",
+        "author": "Masashi Kishimoto",
+        "price": 9.50,
+        "description": "Naruto: The Last (ナルト ザ・ラスト) est un film et un manga qui fait suite à la série Naruto, centré sur les personnages principaux.",
+        "stock": 5,
+        "genres": [
+            "Action",
+            "Romance",
+            "Fantastique"
+        ]
     }
 ]

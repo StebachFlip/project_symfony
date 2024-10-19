@@ -23,7 +23,7 @@ class UserFixtures extends Fixture
         $admin->setEmail('loic.stebach@gmail.com');
         $admin->setName('StebachFlip');
         $admin->setFirstname('Loic');
-        $admin->setLastname('Stebach');
+        $admin->setLastname(lastname: 'Stebach');
         $admin->setRole(true);
 
         // Hashage du mot de passe de l'administrateur

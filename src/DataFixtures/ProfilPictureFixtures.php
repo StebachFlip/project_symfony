@@ -11,14 +11,11 @@ class ProfilPictureFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        for ($i = 1; $i <= 5; $i++) {
-            $profilePicture = new ProfilePicture();
-            $profilePicture->setUser(user: $this->getReference('user-' . $i)); // On suppose que les utilisateurs ont été créés et référencés
-            $profilePicture->setPath('path/to/profile_picture_' . $i . '.jpg');
-
-            $manager->persist($profilePicture);
-        }
-
+        $profilePicture = new ProfilePicture();
+        $profilePicture->setUser(user: $this->getReference('admin-user'));
+        $profilePicture->setPath('Pictures/Profile/profile_picture.jpg');
+        $manager->persist($profilePicture);
+        
         $manager->flush();
     }
 

@@ -1,17 +1,36 @@
+{# templates/home/index.html.twig #}
+
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil - Mangas</title>
+    <link rel="stylesheet" href="{{ asset('styles/home.css') }}"> {# Ajouter le fichier CSS si nécessaire #}
+</head>
+<body>
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+    <header>
+        <div class="banner">
+            <h1>Bienvenue sur Manga Store</h1>
+        </div>
+    </header>
+
+    <main>
+        <div class="manga-grid">
+            {% for manga in mangas %}
+                <div class="manga-card">
+                    <img src="{{ asset('images/Manga/' ~ manga.image.url) }}" alt="{{ manga.name }}">
+                    <h2>{{ manga.name }}</h2>
+                    <p class="price">{{ manga.price }}€</p>
+                </div>
+
+                {# Insérer un saut de ligne toutes les 5 cartes #}
+                {% if loop.index is divisible by(5) %}
+                    <div class="clearfix"></div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </main>
+
+</body>
 </html>
