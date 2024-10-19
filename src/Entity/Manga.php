@@ -28,8 +28,8 @@ class Manga
     #[ORM\Column(type: 'text')]
     private ?string $description = null;
 
-    #[ORM\Column(type: 'boolean')]
-    private ?bool $stock = null;
+    #[ORM\Column(type: 'integer')]
+    private ?int $stock = null;
 
     #[ORM\Column(type: 'string', enumType: MangaStatus::class)]
     private ?MangaStatus $status = null;
@@ -108,12 +108,12 @@ class Manga
         return $this;
     }
 
-    public function getStock(): ?bool
+    public function getStock(): ?int
     {
         return $this->stock;
     }
 
-    public function setStock(bool $stock): self
+    public function setStock(int $stock): self
     {
         $this->stock = $stock;
 
