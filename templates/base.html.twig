@@ -4,30 +4,37 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Accueil - Mangas</title>
+    <title>Accueil - Manga Mania</title>
     <link rel="stylesheet" href="{{ asset('styles/home.css') }}"> {# Ajouter le fichier CSS si nécessaire #}
+    <link rel="icon" href="{{ asset('styles/img/logo.jpg') }}" type="image/jpg">
 </head>
 <body>
 
     <header>
         <div class="banner">
-            <h1>Bienvenue sur Manga Store</h1>
+            <img src="{{ asset('styles/img/logo.jpg') }}" alt="Logo Manga Mania" class="logo">
+            <h1><strong>MANGA MANIA</strong></h1>
         </div>
     </header>
 
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
     <main>
         <div class="manga-grid">
-            {% for manga in mangas %}
-                <div class="manga-card">
+           {% for manga in mangas %}
+                {% set border_classes = ['red', 'orange', 'yellow', 'green', 'blue'] %}
+                {% set border_class = border_classes[(loop.index0 % 5)] %}
+    
+                <div class="manga-card {{ border_class }}">
                     <img src="{{ asset('images/Manga/' ~ manga.image.url) }}" alt="{{ manga.name }}">
                     <h2>{{ manga.name }}</h2>
                     <p class="price">{{ manga.price }}€</p>
                 </div>
-
-                {# Insérer un saut de ligne toutes les 5 cartes #}
-                {% if loop.index is divisible by(5) %}
-                    <div class="clearfix"></div>
-                {% endif %}
             {% endfor %}
         </div>
     </main>

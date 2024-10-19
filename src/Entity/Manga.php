@@ -34,6 +34,9 @@ class Manga
     #[ORM\Column(type: 'string', enumType: MangaStatus::class)]
     private ?MangaStatus $status = null;
 
+    #[ORM\Column(type: 'float', options: ['default' => 0])]
+    private ?float $rating = null; // Ajout du champ rating
+
     // Relation ManyToMany avec Category
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'mangas')]
     #[ORM\JoinTable(name: 'manga_category')]
@@ -191,6 +194,18 @@ class Manga
                 $orderItem->setManga(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRating(): ?float
+    {
+        return $this->rating;
+    }
+
+    public function setRating(float $rating): self
+    {
+        $this->rating = $rating;
 
         return $this;
     }
