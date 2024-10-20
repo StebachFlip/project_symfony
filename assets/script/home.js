@@ -13,7 +13,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 mangaGrid.innerHTML = ''; // Vider la grille des mangas
 
                 if (mangas.length === 0) {
-                    mangaGrid.innerHTML = '<p>Aucun manga trouvé.</p>';
+                    // Afficher le message centré
+                    mangaGrid.innerHTML = '<p class="no-results">Aucun manga trouvé.</p>';
                     return;
                 }
 
@@ -54,4 +55,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-console.log(mangas); // Ajoutez ceci pour voir la structure des données
+// console.log(mangas); // Ajoutez ceci pour voir la structure des données

@@ -90,17 +90,15 @@ body {
 .manga-card img {
     max-width: 100%;
     max-height: 300px;
-    margin-bottom: 10px;
 }
 
 .manga-card h2 {
     font-size: 18px;
-    margin: 10px 0;
     color: #FFF;
 }
 
 .manga-card .price {
-    font-size: 16px;
+    font-size: 25px;
     font-weight: bold;
     color: #f00;
 }
@@ -108,8 +106,7 @@ body {
 .ratings {
     color: #FFD700;
     font-size: 18px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .ratings i {
@@ -119,6 +116,7 @@ body {
 .search-bar {
     text-align: center;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 #search {
@@ -127,4 +125,11 @@ body {
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+
+.no-results {
+    text-align: center;
+    color: #FFF;
+    font-size: 24px;
+    margin-top: 50px;
 }
