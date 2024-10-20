@@ -15,6 +15,7 @@ body {
     right: 0;
     display: flex;
     align-items: center;
+    z-index: 1000;
 }
 
 .logo {
@@ -51,6 +52,12 @@ body {
     border-width: 2px;
     border-style: solid;
     border-radius: 5px;
+    transition: transform 0.3s ease;
+}
+
+.manga-card:hover {
+    transform: scale(1.05);
+    /* Agrandir légèrement la carte */
 }
 
 /* Couleurs de contour */
@@ -96,4 +103,28 @@ body {
     font-size: 16px;
     font-weight: bold;
     color: #f00;
+}
+
+.ratings {
+    color: #FFD700;
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.ratings i {
+    margin: 0 2px;
+}
+
+.search-bar {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#search {
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }

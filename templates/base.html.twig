@@ -5,8 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Accueil - Manga Mania</title>
-    <link rel="stylesheet" href="{{ asset('styles/home.css') }}"> {# Ajouter le fichier CSS si nécessaire #}
+    <link rel="stylesheet" href="{{ asset('styles/home.css') }}">
     <link rel="icon" href="{{ asset('styles/img/logo.jpg') }}" type="image/jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
@@ -25,19 +26,36 @@
     <br>
 
     <main>
+        <div class="search-bar">
+            <input type="text" id="search" placeholder="Rechercher un manga..." autocomplete="off">
+        </div>
+
         <div class="manga-grid">
            {% for manga in mangas %}
                 {% set border_classes = ['red', 'orange', 'yellow', 'green', 'blue'] %}
                 {% set border_class = border_classes[(loop.index0 % 5)] %}
     
                 <div class="manga-card {{ border_class }}">
-                    <img src="{{ asset('images/Manga/' ~ manga.image.url) }}" alt="{{ manga.name }}">
+                    <img src="{{ asset('images/Manga/' ~ manga.image.url) }}" alt="{{ manga.name }}">                    
                     <h2>{{ manga.name }}</h2>
                     <p class="price">{{ manga.price }}€</p>
+
+                    <div class="ratings">
+                        {% set rating = (manga.rating / 2) %} {# Convertir la note sur 10 en note sur 5 #}
+                        {% for i in 1..5 %}
+                            {% if i <= rating %}
+                                <i class="fas fa-star"></i> {# Étoile pleine #}
+                            {% elseif i - rating <= 0.5 %}
+                                <i class="fas fa-star-half-alt"></i> {# Demi-étoile #}
+                            {% else %}
+                                <i class="far fa-star"></i> {# Étoile vide #}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
             {% endfor %}
         </div>
     </main>
-
+    <script src="{{ asset('script/home.js') }}"></script>
 </body>
 </html>

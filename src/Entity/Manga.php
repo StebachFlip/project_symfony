@@ -7,6 +7,8 @@ use App\Enum\mangaStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MangaRepository::class)]
 class Manga
@@ -31,22 +33,24 @@ class Manga
     #[ORM\Column(type: 'integer')]
     private ?int $stock = null;
 
-    #[ORM\Column(type: 'string', enumType: MangaStatus::class)]
-    private ?MangaStatus $status = null;
+    #[ORM\Column(type: 'string', enumType: mangaStatus::class)]
+    private ?mangaStatus $status = null;
 
     #[ORM\Column(type: 'float', options: ['default' => 0])]
-    private ?float $rating = null; // Ajout du champ rating
+    private ?float $rating = 0; // Champ de notation avec une valeur par défaut de 0
 
     // Relation ManyToMany avec Category
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'mangas')]
     #[ORM\JoinTable(name: 'manga_category')]
+    #[MaxDepth(1)] // Limiter la profondeur de sérialisation
     private Collection $categories;
 
     // Relation OneToOne avec Image
     #[ORM\OneToOne(mappedBy: 'manga', targetEntity: Image::class)]
+    #[MaxDepth(1)] // Limiter la profondeur de sérialisation
     private ?Image $image = null;
 
-    // Relation ManyToMany avec Order via OrderItem
+    // Relation OneToMany avec Order via OrderItem
     #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'manga')]
     private Collection $orderItems;
 
@@ -69,18 +73,17 @@ class Manga
     public function setName(string $name): self
     {
         $this->name = $name;
-
         return $this;
     }
 
-    public function getAuthor(): ?string 
+    public function getAuthor(): ?string
     {
         return $this->author;
     }
+
     public function setAuthor(string $author): self
     {
         $this->author = $author;
-
         return $this;
     }
 
@@ -92,7 +95,6 @@ class Manga
     public function setPrice(float $price): self
     {
         $this->price = $price;
-
         return $this;
     }
 
@@ -104,7 +106,6 @@ class Manga
     public function setDescription(string $description): self
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -116,19 +117,17 @@ class Manga
     public function setStock(int $stock): self
     {
         $this->stock = $stock;
-
         return $this;
     }
 
-    public function getStatus(): ?MangaStatus
+    public function getStatus(): ?mangaStatus
     {
         return $this->status;
     }
 
-    public function setStatus(MangaStatus $status): self
+    public function setStatus(mangaStatus $status): self
     {
         $this->status = $status;
-
         return $this;
     }
 
@@ -145,14 +144,12 @@ class Manga
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
         }
-
         return $this;
     }
 
     public function removeCategory(Category $category): self
     {
         $this->categories->removeElement($category);
-
         return $this;
     }
 
@@ -164,7 +161,6 @@ class Manga
     public function setImage(?Image $image): self
     {
         $this->image = $image;
-
         return $this;
     }
 
@@ -182,19 +178,16 @@ class Manga
             $this->orderItems->add($orderItem);
             $orderItem->setManga($this);
         }
-
         return $this;
     }
 
     public function removeOrderItem(OrderItem $orderItem): self
     {
         if ($this->orderItems->removeElement($orderItem)) {
-            // Set the owning side to null (unless already changed)
             if ($orderItem->getManga() === $this) {
                 $orderItem->setManga(null);
             }
         }
-
         return $this;
     }
 
@@ -206,6 +199,18 @@ class Manga
     public function setRating(float $rating): self
     {
         $this->rating = $rating;
+        return $this;
+    }
+
+    public function updateRating(int $numberOfReviews, float $newRating): self
+    {
+        // Calculer la nouvelle note
+        if ($numberOfReviews > 0) {
+            $currentRating = $this->rating;
+            $this->rating = (($currentRating * ($numberOfReviews - 1)) + $newRating) / $numberOfReviews;
+        } else {
+            $this->rating = $newRating; // Si c'est le premier avis
+        }
 
         return $this;
     }
