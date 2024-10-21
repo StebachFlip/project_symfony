@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ manga.name }} - Details</title>
+    <link rel="stylesheet" href="{{ asset('styles/details.css') }}">
+    <link rel="icon" href="{{ asset('styles/img/logo.jpg') }}" type="image/jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+
+    <header>
+        <div class="banner">
+            <a class ="home" href="/home">
+                <img src="{{ asset('styles/img/logo.jpg') }}" alt="Logo Manga Mania" class="logo">
+                <h1><strong>MANGA MANIA</strong></h1>
+            </a>
+        </div>
+    </header>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div class="manga-card">
+    <img src="{{ asset('images/Manga/' ~ manga.image.url) }}" alt="{{ manga.name }}" class="manga-image">                    
+    <div class="manga-details">
+        <h2>{{ manga.name }}</h2>
+        <p class="author"> De {{ manga.author }}</p>
+        <div class="ratings">
+        Note :
+            {% set rating = (manga.rating / 2) %} {# Convertir la note sur 10 en note sur 5 #}
+            {% for i in 1..5 %}
+                {% if i <= rating %}
+                    <i class="fas fa-star"></i> {# Étoile pleine #}
+                {% elseif i - rating <= 0.5 %}
+                    <i class="fas fa-star-half-alt"></i> {# Demi-étoile #}
+                {% else %}
+                    <i class="far fa-star"></i> {# Étoile vide #}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <p class="description">{{ manga.description }}</p>
+        <p class="stock">En stock : {{ manga.stock }}</p>
+        <p class="price">Prix : {{ manga.price }}€</p>
+        
+        <div class="action-container">
+            <button class="buy-button">
+                Acheter
+            </button>
+
+            <select class="quantity-select">
+                {% for i in 1..manga.stock %}
+                    <option value="{{ i }}">{{ i }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+</div>
+
+
+
+    
+
+</body>

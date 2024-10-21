@@ -1,0 +1,145 @@
+/* styles/home.css */
+
+body {
+    background-color: #1a1a1a;
+}
+
+.banner {
+    background-color: #888ffd;
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+}
+
+.logo {
+    width: 50px;
+    height: auto;
+    margin-right: 15px;
+}
+
+.home {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+}
+
+.banner h1 {
+    margin: 0;
+    font-size: 30px;
+    color: #000;
+}
+
+.manga-card {
+    display: flex;
+    align-items: center;
+    margin: 25px auto;
+    max-width: 800px;
+    background-color: #2f2f2f;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 5px;
+    border-image-source: linear-gradient(270deg, #FF0000, #00FF00, #0000FF, #FF00FF, #FFFF00);
+    border-image-slice: 1;
+}
+
+.manga-image {
+    max-width: auto;
+    height: 550px;
+    margin: 20px;
+}
+
+.manga-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.manga-details h2 {
+    color: #FFF;
+    font-size: 50px;
+    text-align: center;
+}
+
+.author {
+    color: #FFF;
+    font-size: 17px;
+}
+
+.description,
+.stock {
+    color: #FFF;
+    font-size: 17px;
+}
+
+.price {
+    color: #FFD700;
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+.ratings {
+    margin-top: 10px;
+    color: yellow;
+}
+
+.action-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.quantity-select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+.buy-button {
+    padding: 10px 20px;
+    background-color: #FFD700;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    flex-grow: 1;
+    margin-right: 10px;
+    position: relative;
+    /* Position relative pour l'effet de brillance */
+    overflow: hidden;
+    /* Assure que l'effet ne déborde pas */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    /* Ajoute une transition pour le fond et la transformation */
+}
+
+.buy-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.4s ease;
+}
+
+.buy-button:hover {
+    transform: translateY(-2px);
+}
+
+.buy-button:hover::after {
+    transform: translate(-50%, -50%) scale(1);
+}

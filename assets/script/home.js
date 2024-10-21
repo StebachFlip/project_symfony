@@ -24,10 +24,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     mangaGrid.innerHTML += `
                         <div class="manga-card ${borderClass}">
+                        <a href="/manga/${manga.link}">
                         <img src="/images/Manga/${manga.image.url}" alt="${manga.name}">                           
                         <h2>${manga.name}</h2>
                             <p class="price">${manga.price}€</p>
                             <div class="ratings">${generateRatings(manga.rating)}</div>
+                        </a>
                         </div>
                     `;
                 });

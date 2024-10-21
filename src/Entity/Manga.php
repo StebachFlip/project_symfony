@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MangaRepository::class)]
 class Manga
@@ -53,6 +52,9 @@ class Manga
     // Relation OneToMany avec Order via OrderItem
     #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'manga')]
     private Collection $orderItems;
+
+    #[ORM\Column(type: 'text')]
+    private ?string $link = null;
 
     public function __construct()
     {
@@ -213,5 +215,13 @@ class Manga
         }
 
         return $this;
+    }
+
+    public function getLink(): string {
+        return $this->link;
+    }
+
+    public function setLink(string $link) {
+        $this->link = $link;
     }
 }

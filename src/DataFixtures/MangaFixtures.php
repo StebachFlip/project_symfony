@@ -30,6 +30,7 @@ class MangaFixtures extends Fixture
             $manga->setDescription($mangaData['description']);
             $manga->setStock($mangaData['stock']);
             $manga->setRating($mangaData['ratings']);
+            $manga->setLink($mangaData['link']);
 
             if ($mangaData['stock'] > 0) {
                 $manga->setStatus(mangaStatus::AVAILABLE);

@@ -36,7 +36,7 @@ class HomeController extends AbstractController
         $name = $request->query->get('name', '');
 
         // Rechercher les mangas par nom
-        $mangas = $mangaRepository->findByName('%' . $name . '%');
+        $mangas = $mangaRepository->searchByName('%' . $name . '%');
 
         // Préparer les données pour la réponse JSON
         $mangaData = [];
@@ -50,6 +50,7 @@ class HomeController extends AbstractController
                 'stock' => $manga->getStock(),
                 'status' => $manga->getStatus(),
                 'rating' => $manga->getRating(),
+                'link' => $manga->getLink(),
                 'image' => $manga->getImage() ? [
                     'url' => $manga->getImage()->getUrl(),
                     'format' => $manga->getImage()->getFormat()

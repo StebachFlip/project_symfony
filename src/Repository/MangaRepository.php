@@ -13,7 +13,7 @@ class MangaRepository extends ServiceEntityRepository
     }
 
     // Méthode pour rechercher les mangas par nom
-    public function findByName(string $name): array
+    public function searchByName(string $name): array
     {
         $entityManager = $this->getEntityManager();
 
@@ -25,4 +25,19 @@ class MangaRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
+    public function findManga(string $link): ?Manga
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT m
+            FROM App\Entity\Manga m
+            WHERE m.link = :link'
+        )->setParameter('link', $link);
+
+        // Retourne un seul résultat ou null si aucun manga n'est trouvé
+        return $query->getOneOrNullResult();
+    }
+
 }

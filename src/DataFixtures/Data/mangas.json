@@ -1,5 +1,6 @@
 [
     {
+        "link": "one_piece",
         "name": "One Piece",
         "author": "Eiichirō Oda (尾田 栄一郎, Oda Eiichirō)",
         "price": 7.20,
@@ -13,6 +14,7 @@
         "ratings": 9.5
     },
     {
+        "link": "golgo_13",
         "name": "Golgo 13",
         "author": "Takao Saito",
         "price": 8.00,
@@ -26,6 +28,7 @@
         "ratings": 8.7
     },
     {
+        "link": "dragon_ball",
         "name": "Dragon Ball",
         "author": "Akira Toriyama",
         "price": 6.50,
@@ -39,6 +42,7 @@
         "ratings": 9.0
     },
     {
+        "link": "naruto",
         "name": "Naruto",
         "author": "Masashi Kishimoto",
         "price": 7.10,
@@ -52,6 +56,7 @@
         "ratings": 8.8
     },
     {
+        "link": "detective_conan",
         "name": "Detective Conan",
         "author": "Gosho Aoyama",
         "price": 7.50,
@@ -65,6 +70,7 @@
         "ratings": 8.5
     },
     {
+        "link": "black_jack",
         "name": "Black Jack",
         "author": "Osamu Tezuka",
         "price": 9.00,
@@ -78,6 +84,7 @@
         "ratings": 9.2
     },
     {
+        "link": "doraemon",
         "name": "Doraemon",
         "author": "Fujiko F. Fujio",
         "price": 6.80,
@@ -91,6 +98,7 @@
         "ratings": 8.0
     },
     {
+        "link": "slam_dunk",
         "name": "Slam Dunk",
         "author": "Takehiko Inoue",
         "price": 6.90,
@@ -104,6 +112,7 @@
         "ratings": 9.1
     },
     {
+        "link": "oishinbo",
         "name": "Oishinbo",
         "author": "Tetsu Kariya, Akira Hanasaki",
         "price": 5.50,
@@ -116,6 +125,7 @@
         "ratings": 7.5
     },
     {
+        "link": "bleach",
         "name": "Bleach",
         "author": "Tite Kubo",
         "price": 7.00,
@@ -129,6 +139,7 @@
         "ratings": 8.9
     },
     {
+        "link": "attack_on_titan",
         "name": "Attack on Titan",
         "author": "Hajime Isayama",
         "price": 7.30,
@@ -142,6 +153,7 @@
         "ratings": 9.3
     },
     {
+        "link": "jjba",
         "name": "JoJo's Bizarre Adventure",
         "author": "Hirohiko Araki",
         "price": 8.50,
@@ -155,6 +167,7 @@
         "ratings": 9.0
     },
     {
+        "link": "astro_boy",
         "name": "Astro Boy",
         "author": "Osamu Tezuka",
         "price": 5.00,
@@ -168,6 +181,7 @@
         "ratings": 8.8
     },
     {
+        "link": "hokuto_no_ken",
         "name": "Hokuto no Ken",
         "author": "Buronson, Tetsuo Hara",
         "price": 7.40,
@@ -181,6 +195,7 @@
         "ratings": 8.2
     },
     {
+        "link": "Sazae_san",
         "name": "Sazae-san",
         "author": "Machiko Hasegawa",
         "price": 5.90,
@@ -193,6 +208,7 @@
         "ratings": 7.9
     },
     {
+        "link": "berserk",
         "name": "Berserk",
         "author": "Kentaro Miura",
         "price": 8.00,
@@ -206,6 +222,7 @@
         "ratings": 9.7
     },
     {
+        "link": "tokyo_ghoul",
         "name": "Tokyo Ghoul",
         "author": "Sui Ishida",
         "price": 7.50,
@@ -219,6 +236,7 @@
         "ratings": 8.3
     },
     {
+        "link": "mha",
         "name": "My Hero Academia",
         "author": "Kōhei Horikoshi",
         "price": 7.20,
@@ -232,6 +250,7 @@
         "ratings": 8.6
     },
     {
+        "link": "d_gray_man",
         "name": "D.Gray-man",
         "author": "Katsura Hoshino",
         "price": 6.70,
@@ -244,6 +263,7 @@
         "ratings": 8.4
     },
     {
+        "link": "fairy_tail",
         "name": "Fairy Tail",
         "author": "Hiro Mashima",
         "price": 7.00,
@@ -257,6 +277,7 @@
         "ratings": 8.5
     },
     {
+        "link": "khr",
         "name": "Katekyo Hitman Reborn!",
         "author": "Akira Amano",
         "price": 6.80,
@@ -270,6 +291,7 @@
         "ratings": 7.8
     },
     {
+        "link": "naruto_the_last",
         "name": "Naruto: The Last",
         "author": "Masashi Kishimoto",
         "price": 9.50,
