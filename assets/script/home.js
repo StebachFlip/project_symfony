@@ -22,12 +22,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     const borderClasses = ['red', 'orange', 'yellow', 'green', 'blue'];
                     const borderClass = borderClasses[mangas.indexOf(manga) % borderClasses.length];
 
+                    var chaine = ""
+                    if (manga.stock > 0) {
+                        chaine = `<p class="price">${manga.price}€</p>`;
+                    }
+                    else {
+                        chaine = '<p class="price">Indisponible</p>';
+                    }
+
                     mangaGrid.innerHTML += `
                         <div class="manga-card ${borderClass}">
                         <a href="/manga/${manga.link}">
                         <img src="/images/Manga/${manga.image.url}" alt="${manga.name}">                           
                         <h2>${manga.name}</h2>
-                            <p class="price">${manga.price}€</p>
+                            `+ chaine + `
                             <div class="ratings">${generateRatings(manga.rating)}</div>
                         </a>
                         </div>

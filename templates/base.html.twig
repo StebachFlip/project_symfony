@@ -13,10 +13,11 @@
 
     <header>
         <div class="banner">
-            <a class ="home" href="/home">
+            <a class="home" href="/home">
                 <img src="{{ asset('styles/img/logo.jpg') }}" alt="Logo Manga Mania" class="logo">
                 <h1><strong>MANGA MANIA</strong></h1>
             </a>
+            <a class="login-link" href="/login-register">Connexion</a>
         </div>
     </header>
 
@@ -41,7 +42,11 @@
                     <a class="manga_details" href='/manga/{{manga.link}}'>
                         <img src="{{ asset('images/Manga/' ~ manga.image.url) }}" alt="{{ manga.name }}">                    
                         <h2>{{ manga.name }}</h2>
-                        <p class="price">{{ manga.price }}€</p>
+                        {% if manga.stock > 0 %}
+                            <p class="price">{{ manga.price }}€</p>
+                        {% else %}
+                            <p class="price">Indisponible</p>
+                        {% endif %}
 
                         <div class="ratings">
                             {% set rating = (manga.rating / 2) %} {# Convertir la note sur 10 en note sur 5 #}

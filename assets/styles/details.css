@@ -1,7 +1,17 @@
 /* styles/home.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
 
 body {
-    background-color: #1a1a1a;
+    background: url('img/background.jpg');
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
 }
 
 .banner {
@@ -15,6 +25,7 @@ body {
     display: flex;
     align-items: center;
     z-index: 1000;
+    font-family: 'Poppins', sans-serif;
 }
 
 .logo {
@@ -41,11 +52,11 @@ body {
     align-items: center;
     margin: 25px auto;
     max-width: 800px;
-    background-color: #2f2f2f;
+    backdrop-filter: blur(30px);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-width: 2px;
     border-style: solid;
-    border-radius: 5px;
+    border-radius: 20px;
     border-image-source: linear-gradient(270deg, #FF0000, #00FF00, #0000FF, #FF00FF, #FFFF00);
     border-image-slice: 1;
 }
@@ -66,19 +77,20 @@ body {
 
 .manga-details h2 {
     color: #FFF;
-    font-size: 50px;
+    font-size: 40px;
     text-align: center;
 }
 
 .author {
     color: #FFF;
-    font-size: 17px;
+    font-size: 15px;
 }
 
 .description,
 .stock {
     color: #FFF;
-    font-size: 17px;
+    font-size: 14px;
+
 }
 
 .price {
@@ -116,11 +128,8 @@ body {
     flex-grow: 1;
     margin-right: 10px;
     position: relative;
-    /* Position relative pour l'effet de brillance */
     overflow: hidden;
-    /* Assure que l'effet ne déborde pas */
     transition: background-color 0.3s ease, transform 0.3s ease;
-    /* Ajoute une transition pour le fond et la transformation */
 }
 
 .buy-button::after {
@@ -142,4 +151,21 @@ body {
 
 .buy-button:hover::after {
     transform: translate(-50%, -50%) scale(1);
+}
+
+.out-of-stock-button {
+    padding: 10px 20px;
+    background-color: #FF6347;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: not-allowed;
+    flex-grow: 1;
+    margin-right: 10px;
+    opacity: 0.7;
+}
+
+.out-of-stock-button:hover {
+    background-color: #FF6347;
+    opacity: 0.7;
 }

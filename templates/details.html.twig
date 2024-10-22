@@ -45,18 +45,29 @@
         </div>
         <p class="description">{{ manga.description }}</p>
         <p class="stock">En stock : {{ manga.stock }}</p>
-        <p class="price">Prix : {{ manga.price }}€</p>
-        
-        <div class="action-container">
-            <button class="buy-button">
-                Acheter
-            </button>
 
-            <select class="quantity-select">
-                {% for i in 1..manga.stock %}
-                    <option value="{{ i }}">{{ i }}</option>
-                {% endfor %}
-            </select>
+        {% if manga.stock > 0 %}    
+            <p class="price">Prix : {{ manga.price }}€</p>
+        {% else %}
+            <p class="price">En rupture</p>
+        {% endif %}
+
+        <div class="action-container">
+            {% if manga.stock > 0 %}    
+                <button class="buy-button">
+                    Acheter
+                </button>
+
+                <select class="quantity-select">
+                    {% for i in 1..manga.stock %}
+                        <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+            {% else %}
+                <button class="out-of-stock-button">
+                    Indisponible
+                </button>
+            {% endif %}
         </div>
     </div>
 </div>
