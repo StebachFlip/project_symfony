@@ -6,12 +6,48 @@
     <title>Se connecter - Manga Mania</title>
     <link rel="icon" href="{{ asset('styles/img/logo.jpg') }}" type="image/jpg">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">   
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">   
     <link rel="stylesheet" href="{{ asset('styles/login-register.css') }}">
 
 
 
 </head>
 <body>
+
+    <!-- Affichage d'un message d'erreur si les identifiants sont incorrects -->
+    <div class="notification"></div>
+    {% if error %}
+            <script>;
+                let notifications = document.querySelector('.notification');
+
+                function createToast(type, icon, title, text) {
+                    let newToast = document.createElement('div');
+                    newToast.innerHTML = `
+                        <div class="toast ${type}">
+                            <i class="${icon}"></i>
+                            <div class="content">
+                                <div class="title">${title}</div>
+                                <span>${text}</span>
+                            </div>
+                            <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+                        </div>`;
+                    notifications.appendChild(newToast);
+                    newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+                }
+
+                let type = 'error'; // Changez le type pour afficher une erreur
+                let icon = 'fa-solid fa-circle-xmark'; // Icône d'erreur
+                let title = 'Erreur'; // Titre pour l'erreur
+                let text = '{{ error }}'; // Utilisez le message d'erreur ici
+
+                if(text = "Bad credentials.") {
+                    text = "Adresse mail ou mot de passe incorrect";
+                }
+
+                createToast(type, icon, title, text);
+        </script>
+    {% endif %}
+
     <div class="form-container">
         <div class="col col-1">
             <div class="image-layer">
@@ -52,11 +88,6 @@
                             </button>
                         </div>
                     </div>
-                    {% if error %}
-                        <div class="error">
-                            <p>{{ error }}</p>
-                        </div>
-                    {% endif %}
                 </form>
                 <div class="social-login">
                     <i class="bx bxl-google"></i>
