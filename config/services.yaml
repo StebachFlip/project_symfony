@@ -6,6 +6,10 @@
 parameters:
 
 services:
+    App\Security\AppLoginAuthenticator:
+            arguments:
+                $router: '@router'
+                $userProvider: '@security.user.provider.concrete.app_user_provider'
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.

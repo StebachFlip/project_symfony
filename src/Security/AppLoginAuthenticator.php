@@ -8,22 +8,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
-use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Http\SecurityRequestAttributes;
+
 
 class AppLoginAuthenticator extends AbstractAuthenticator
 {
     private RouterInterface $router;
+    private UserProviderInterface $userProvider;
 
-    public function __construct(RouterInterface $router)
+    public function __construct(RouterInterface $router, UserProviderInterface $userProvider)
     {
         $this->router = $router;
+        $this->userProvider = $userProvider;
     }
 
     /**
@@ -42,6 +45,10 @@ class AppLoginAuthenticator extends AbstractAuthenticator
         $email = $request->request->get('email');
         $password = $request->request->get('password');
         $csrfToken = $request->request->get('_csrf_token');
+
+        if (empty($email)) {
+            throw new AuthenticationException('L\'email ne peut pas être vide.');
+        }
 
         // Créer un passeport avec les informations de l'utilisateur
         return new Passport(
@@ -67,10 +74,13 @@ class AppLoginAuthenticator extends AbstractAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        // Stocke un message d'erreur dans la session
-        $request->getSession()->set(Security::LAST_USERNAME, $request->request->get('email'));
+        // Stocke l'email saisi par l'utilisateur
+        $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME    , $request->request->get('email'));
+        
+        // Stocke le message d'erreur
+        $request->getSession()->set('error', $exception->getMessage());
 
-        return new RedirectResponse($this->router->generate('app_login'));
+        return new RedirectResponse($this->router->generate('login-register-form'));
     }
 
     /**

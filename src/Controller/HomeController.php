@@ -9,23 +9,34 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface; // Importer le service Serializer
+use Symfony\Bundle\SecurityBundle\Security;
+use App\Entity\User;
+
+
 
 class HomeController extends AbstractController
 {
     
 
     #[Route('/home', name: 'home')]
-    public function index(MangaRepository $mangaRepository, CategoryRepository $categoryRepository): Response
+    public function index(MangaRepository $mangaRepository, CategoryRepository $categoryRepository, Request $request, Security $security): Response
     {
         // Récupérer tous les mangas depuis le repository
         $mangas = $mangaRepository->findAll();
         $genres = $categoryRepository->findAll();
 
+        // Vérifiez si l'utilisateur est authentifié
+        $user = $security->getUser();
+
+        if ($user instanceof User) {
+            $username = $user->getName(); // Devrait fonctionner maintenant
+            $email = $user->getEmail(); // Devrait fonctionner maintenant
+        }
+        
         // Afficher la page home avec les mangas
         return $this->render('base.html.twig', [
             'mangas' => $mangas,
-            'genres' => $genres
+            'genres' => $genres,
         ]);
     }
 
