@@ -29,25 +29,8 @@ registerBtn.addEventListener('click', () => {
     document.querySelector(".col-1").style.borderRadius = "0 20% 30% 0";
 });
 
-let success = document.querySelector(".input-submit");
-
-success.onclick = function(){
-    let notifications = document.querySelector('.notification');
-    const emailInput = document.querySelector('input[name="email"]');
-    const mdpInput = document.querySelector('input[name="password"]');
-
-    if(emailInput.value == "" || mdpInput.value == "") {
-        let newToast = document.createElement('div');
-        newToast.innerHTML = `
-            <div class="toast error">
-                <i class="fa-solid fa-circle-xmark"></i>
-                <div class="content">
-                    <div class="title">Erreur</div>
-                    <span>Entrez une adresse mail et un mot de passe.</span>
-                </div>
-                <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
-            </div>`;
-        notifications.appendChild(newToast);
-        newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
-    }
-}
+document.getElementById('language-select').addEventListener('change', function () {
+    const selectedLang = this.value;
+    const url = "{{ path('app_change_language', { 'lang': 'LANGUAGE_PLACEHOLDER' }) }}".replace('LANGUAGE_PLACEHOLDER', selectedLang);
+    window.location.href = url;
+});

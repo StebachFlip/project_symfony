@@ -1,0 +1,66 @@
+<style>
+    .banner {
+        background-color: #888ffd;
+        padding: 20px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 1000;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .logo {
+        width: 50px;
+        height: auto;
+        margin-right: 15px;
+    }
+
+    .home {
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        align-items: center;
+    }
+
+    .banner h1 {
+        margin: 0;
+        font-size: 30px;
+        color: #000;
+    }
+
+    .login-link {
+        color: #000;
+        font-size: 18px;
+        text-decoration: none;
+        background-color: #888ffd;
+        padding: 10px 20px;
+        border-radius: 15px;
+        transition: background-color 0.3s ease;
+        margin-left: auto;
+        border: 1px solid #b0b5ff;
+    }
+
+    .login-link:hover {
+        background-color: #b0b5ff;
+    }
+</style>
+
+<header>
+    <div class="banner">
+        <a class="home" href="/home">
+            <img src="{{ asset('styles/img/logo.jpg') }}" alt="Logo Manga Mania" class="logo">
+            <h1><strong>MANGA MANIA</strong></h1>
+        </a>
+        {% if user %}
+            <a class="login-link" href="{{ path('app_logout') }}">Se déconnecter</a>
+        {% else %}
+            <a class="login-link" href="/login-register">Connexion</a>
+        {% endif %}
+        
+        
+    </div>
+</header>

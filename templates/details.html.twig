@@ -10,16 +10,8 @@
 <body>
 
 
-    <header>
-        <div class="banner">
-            <a class ="home" href="/home">
-                <img src="{{ asset('styles/img/logo.jpg') }}" alt="Logo Manga Mania" class="logo">
-                <h1><strong>MANGA MANIA</strong></h1>
-            </a>
-        </div>
-    </header>
+    {% include 'partials/header.html.twig' %}
 
-    <br>
     <br>
     <br>
     <br>
@@ -71,9 +63,5 @@
         </div>
     </div>
 </div>
-
-
-
-    
-
+{% include 'partials/footer.html.twig' %}
 </body>

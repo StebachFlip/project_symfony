@@ -14,51 +14,15 @@ body {
     background-repeat: no-repeat;
 }
 
-.banner {
-    background-color: #888ffd;
-    padding: 20px;
-    text-align: center;
-    position: fixed;
-    left: 0;
-    top: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    z-index: 1000;
-    font-family: 'Poppins', sans-serif;
-}
-
-.logo {
-    width: 50px;
-    height: auto;
-    margin-right: 15px;
-}
-
-.home {
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    align-items: center;
-}
-
-.banner h1 {
-    margin: 0;
-    font-size: 30px;
-    color: #000;
-}
-
 .manga-card {
     display: flex;
     align-items: center;
     margin: 25px auto;
     max-width: 800px;
     backdrop-filter: blur(30px);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-width: 2px;
-    border-style: solid;
+    box-shadow: 0 0 40px rgb(0, 0, 255);
     border-radius: 20px;
-    border-image-source: linear-gradient(270deg, #FF0000, #00FF00, #0000FF, #FF00FF, #FFFF00);
-    border-image-slice: 1;
+
 }
 
 .manga-image {

@@ -12,12 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\SecurityBundle\Security;
 use App\Entity\User;
 
-
-
 class HomeController extends AbstractController
 {
-    
-
     #[Route('/home', name: 'home')]
     public function index(MangaRepository $mangaRepository, CategoryRepository $categoryRepository, Request $request, Security $security): Response
     {
@@ -27,16 +23,19 @@ class HomeController extends AbstractController
 
         // Vérifiez si l'utilisateur est authentifié
         $user = $security->getUser();
+        //dd($user); 
 
         if ($user instanceof User) {
-            $username = $user->getName(); // Devrait fonctionner maintenant
-            $email = $user->getEmail(); // Devrait fonctionner maintenant
+            $username = $user->getName();
+            $email = $user->getEmail();
         }
         
         // Afficher la page home avec les mangas
         return $this->render('base.html.twig', [
             'mangas' => $mangas,
             'genres' => $genres,
+            'user' => $user,
+            'error' => null
         ]);
     }
 

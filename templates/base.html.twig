@@ -11,19 +11,39 @@
 </head>
 <body>
 
-    <header>
-        <div class="banner">
-            <a class="home" href="/home">
-                <img src="{{ asset('styles/img/logo.jpg') }}" alt="Logo Manga Mania" class="logo">
-                <h1><strong>MANGA MANIA</strong></h1>
-            </a>
-            <a class="login-link" href="/login-register">Connexion</a>
-        </div>
-    </header>
+    {% include 'partials/header.html.twig' %}
 
     <br>
     <br>
     <br>
+    {% include 'partials/notifications.html.twig' %}
+
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <script>
+            let notifications = document.querySelector('.notification');
+            function createToast(type, icon, title, text) {
+                let newToast = document.createElement('div');
+                newToast.innerHTML = `
+                    <div class="toast ${type}">
+                        <i class="${icon}"></i>
+                        <div class="content">
+                            <div class="title">${title}</div>
+                            <span>${text}</span>
+                        </div>
+                        <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+                    </div>`;
+                notifications.appendChild(newToast);
+                newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+            }
+
+            let type = 'error'; 
+            let icon = 'fa-solid fa-circle-xmark'; 
+            let title = "{{ 'error_title' | trans }}"; 
+            let text = "{{ 'error_text' | trans }}"; 
+
+            createToast(type, icon, title, text);
+        </script
+    {% endif %}
     <br>
     <br>
     <br>
@@ -47,24 +67,12 @@
                         {% else %}
                             <p class="price">Indisponible</p>
                         {% endif %}
-
-                        <div class="ratings">
-                            {% set rating = (manga.rating / 2) %} {# Convertir la note sur 10 en note sur 5 #}
-                            {% for i in 1..5 %}
-                                {% if i <= rating %}
-                                    <i class="fas fa-star"></i> {# Étoile pleine #}
-                                {% elseif i - rating <= 0.5 %}
-                                    <i class="fas fa-star-half-alt"></i> {# Demi-étoile #}
-                                {% else %}
-                                    <i class="far fa-star"></i> {# Étoile vide #}
-                                {% endif %}
-                            {% endfor %}
-                        </div>
                     </a>
                 </div>
             {% endfor %}
         </div>
     </main>
+    {% include 'partials/footer.html.twig' %}
     <script src="{{ asset('script/home.js') }}"></script>
 </body>
 </html>

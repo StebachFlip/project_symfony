@@ -29,8 +29,8 @@ security:
                 csrf_token_id: authenticate
 
             logout:
-                path: logout
-                target: homepage
+                path: /logout
+                target: /home
 
     access_control:
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }

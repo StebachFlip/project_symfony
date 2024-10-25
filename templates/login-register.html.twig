@@ -1,89 +1,59 @@
 <!DOCTYPE html>
-<html lang="fr">
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Se connecter - Manga Mania</title>
+    <title>{{ 'login' | trans }} - Manga Mania</title>
     <link rel="icon" href="{{ asset('styles/img/logo.jpg') }}" type="image/jpg">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">   
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">   
     <link rel="stylesheet" href="{{ asset('styles/login-register.css') }}">
-
-
-
 </head>
 <body>
 
     <!-- Affichage d'un message d'erreur si les identifiants sont incorrects -->
-    <div class="notification"></div>
-    {% if error %}
-            <script>;
-                let notifications = document.querySelector('.notification');
-
-                function createToast(type, icon, title, text) {
-                    let newToast = document.createElement('div');
-                    newToast.innerHTML = `
-                        <div class="toast ${type}">
-                            <i class="${icon}"></i>
-                            <div class="content">
-                                <div class="title">${title}</div>
-                                <span>${text}</span>
-                            </div>
-                            <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
-                        </div>`;
-                    notifications.appendChild(newToast);
-                    newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
-                }
-
-                let type = 'error'; // Changez le type pour afficher une erreur
-                let icon = 'fa-solid fa-circle-xmark'; // Icône d'erreur
-                let title = 'Erreur'; // Titre pour l'erreur
-                let text = '{{ error }}'; // Utilisez le message d'erreur ici
-
-                if(text = "Bad credentials.") {
-                    text = "Adresse mail ou mot de passe incorrect";
-                }
-
-                createToast(type, icon, title, text);
-        </script>
-    {% endif %}
+    {% include 'partials/notifications.html.twig' %}
 
     <div class="form-container">
         <div class="col col-1">
             <div class="image-layer">
-                <img src="{{ asset('styles/img/firefly.png') }}" alt="firefly.jpg" class="form-image-main">
+                <a href="/home">
+                    <img src="{{ asset('styles/img/firefly.png') }}" alt="firefly.jpg" class="form-image-main">
+                </a>
             </div>
-            <p class="featured-words">Trouve ton manga préféré sur <span>Manga Mania</span></p>
+            <p class="featured-words">{{ 'welcome_message' | trans }}</p>
+            <span>Manga Mania</span>
         </div>
 
         <div class="col col-2">
             <div class="btn-box">
-                <button class="btn btn-1" id="login">Se connecter</button>
-                <button class="btn btn-2" id="register">S'inscrire</button>
+                <button class="btn btn-1" id="login">{{ 'login' | trans }}</button>
+                <button class="btn btn-2" id="register">{{ 'register' | trans }}</button>
             </div>
 
             <!-- LOGIN FORM -->
             <div class="login-form">
                 <div class="form-title">
-                    <span>Se connecter</span>
+                    <span>{{ 'login' | trans }}</span>
                 </div>
                 <form action="{{ path('app_login') }}" method="post">
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"> <!-- Générer et inclure le token CSRF -->
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                     <div class="form-inputs">
                         <div class="input-box">
-                            <input type="email" name="email" class="input-field" placeholder="Adresse Mail" value="{{ last_username|default('') }}" required>
+                            <input type="email" name="email" class="input-field" placeholder="{{ 'email_placeholder' | trans }}" value="{{ last_username|default('') }}" required>
                             <i class="bx bx-user icon"></i>
                         </div>
                         <div class="input-box">
-                            <input type="password" name="password" class="input-field" placeholder="Mot de passe" required>
+                            <input type="password" name="password" class="input-field" placeholder="{{ 'password_placeholder' | trans }}" required>
                             <i class="bx bx-lock-alt icon"></i>
                         </div>
                         <div class="forgot-pass">
-                            <a href="#">Mot de passe oublié?</a>
+                            <a href="#">{{ 'forgot_password' | trans }}</a>
                         </div>
                         <div class="input-box">
                             <button class="input-submit">
-                                <span>Se connecter</span>
+                                <span>{{ 'login' | trans }}</span>
                                 <i class="bx bx-right-arrow-alt"></i>
                             </button>
                         </div>
@@ -100,25 +70,25 @@
             <!-- REGISTER FORM -->
             <div class="register-form">
                 <div class="form-title">
-                    <span>Créer un compte</span>
+                    <span>{{ 'create_account' | trans }}</span>
                 </div>
                 <div class="form-inputs">
                     <div class="input-box">
-                        <input type="text" class="input-field" placeholder="Adresse Mail" required>
+                        <input type="text" class="input-field" placeholder="{{ 'email_placeholder' | trans }}" required>
                         <i class="bx bx-envelope icon"></i>
                     </div>
 
                     <div class="input-box">
-                        <input type="text" class="input-field" placeholder="Mot de passe" required>
+                        <input type="text" class="input-field" placeholder="{{ 'password_placeholder' | trans }}" required>
                         <i class="bx bx-lock-alt icon"></i>
                     </div>
                     <div class="input-box">
-                        <input type="password" class="input-field" placeholder="Confirmer le mot de passe" required>
+                        <input type="password" class="input-field" placeholder="{{ 'confirm_password_placeholder' | trans }}" required>
                         <i class="bx bx-lock-alt icon"></i>
                     </div>
                     <div class="input-box">
                         <button class="input-submit">
-                            <span>S'inscrire</span>
+                            <span>{{ 'register' | trans }}</span>
                             <i class="bx bx-right-arrow-alt"></i>
                         </button>
                     </div>
@@ -132,10 +102,8 @@
             </div>
         </div>
     </div>
-
-
-
-
+    {% include 'partials/footer.html.twig' %}
     <script src="{{ asset('script/login-register.js') }}"></script>
+    <script src="{{ asset('script/notifications.js') }}"></script>
 </body>
 </html>
