@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Accueil - Manga Mania</title>
+    <title>{{ 'home_title' | trans }} - Manga Mania</title>
     <link rel="stylesheet" href="{{ asset('styles/home.css') }}">
     <link rel="icon" href="{{ asset('styles/img/logo.jpg') }}" type="image/jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -16,7 +16,7 @@
     <br>
     <br>
     <br>
-    {% include 'partials/notifications.html.twig' %}
+    <div class="notification"></div>
 
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <script>
@@ -36,10 +36,10 @@
                 newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
             }
 
-            let type = 'error'; 
-            let icon = 'fa-solid fa-circle-xmark'; 
-            let title = "{{ 'error_title' | trans }}"; 
-            let text = "{{ 'error_text' | trans }}"; 
+            let type = 'login_success'; 
+            let icon = 'fa-solid fa-circle-check'; 
+            let title = "{{ 'login_success_title' | trans }}"; 
+            let text = "{{ 'login_success_text' | trans }} {{ user.name }}"; 
 
             createToast(type, icon, title, text);
         </script
@@ -50,7 +50,7 @@
 
     <main>
         <div class="search-bar">
-            <input type="text" id="search" placeholder="Rechercher un manga..." autocomplete="off">
+            <input type="text" id="search" placeholder="{{ 'search_placeholder' | trans }}" autocomplete="off">
         </div>
 
         <div class="manga-grid">

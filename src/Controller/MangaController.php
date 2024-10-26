@@ -5,6 +5,7 @@ use App\Repository\MangaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class MangaController extends AbstractController
 {
@@ -16,18 +17,20 @@ class MangaController extends AbstractController
     }
 
     #[Route('/manga/{link}', name: 'manga_details', methods: ['GET'])]
-    public function details(string $link): Response
+    public function details(string $link, Security $security): Response
     {
         $manga = $this->mangaRepository->findManga($link);
+        
+        $user = $security->getUser();
 
-        // Si le manga n'est pas trouvé, renvoie une page 404
         if (!$manga) {
             throw $this->createNotFoundException('Le manga n\'existe pas.');
         }
 
-        // Renvoyer les données à la vue
         return $this->render('details.html.twig', [
             'manga' => $manga,
+            'user' => $user,
+            'error' => null
         ]);
     }
 }

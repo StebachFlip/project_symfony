@@ -21,9 +21,9 @@
     <img src="{{ asset('images/Manga/' ~ manga.image.url) }}" alt="{{ manga.name }}" class="manga-image">                    
     <div class="manga-details">
         <h2>{{ manga.name }}</h2>
-        <p class="author"> De {{ manga.author }}</p>
+        <p class="author">{{ 'author' | trans }} {{ manga.author }}</p>
         <div class="ratings">
-        Note :
+        {{ 'review' | trans }}
             {% set rating = (manga.rating / 2) %} {# Convertir la note sur 10 en note sur 5 #}
             {% for i in 1..5 %}
                 {% if i <= rating %}
@@ -36,18 +36,18 @@
             {% endfor %}
         </div>
         <p class="description">{{ manga.description }}</p>
-        <p class="stock">En stock : {{ manga.stock }}</p>
+        <p class="stock">{{ 'stock' | trans }} {{ manga.stock }}</p>
 
         {% if manga.stock > 0 %}    
-            <p class="price">Prix : {{ manga.price }}€</p>
+            <p class="price">{{ 'price' | trans }} {{ manga.price }}€</p>
         {% else %}
-            <p class="price">En rupture</p>
+            <p class="price">{{ 'out_stock' | trans }}</p>
         {% endif %}
 
         <div class="action-container">
             {% if manga.stock > 0 %}    
                 <button class="buy-button">
-                    Acheter
+                    {{ 'buy_button' | trans }}
                 </button>
 
                 <select class="quantity-select">
@@ -57,7 +57,7 @@
                 </select>
             {% else %}
                 <button class="out-of-stock-button">
-                    Indisponible
+                    {{ 'indispo' | trans }}
                 </button>
             {% endif %}
         </div>

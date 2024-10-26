@@ -13,7 +13,7 @@ class ProfilPictureFixtures extends Fixture implements DependentFixtureInterface
     {
         $profilePicture = new ProfilePicture();
         $profilePicture->setUser(user: $this->getReference('admin-user'));
-        $profilePicture->setPath('Pictures/Profile/profile_picture.jpg');
+        $profilePicture->setPath('pp/lucioleuwu.png');
         $manager->persist($profilePicture);
         
         $manager->flush();

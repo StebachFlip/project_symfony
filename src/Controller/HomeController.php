@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\SecurityBundle\Security;
-use App\Entity\User;
 
 class HomeController extends AbstractController
 {
@@ -24,11 +23,6 @@ class HomeController extends AbstractController
         // Vérifiez si l'utilisateur est authentifié
         $user = $security->getUser();
         //dd($user); 
-
-        if ($user instanceof User) {
-            $username = $user->getName();
-            $email = $user->getEmail();
-        }
         
         // Afficher la page home avec les mangas
         return $this->render('base.html.twig', [
