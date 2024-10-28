@@ -75,11 +75,13 @@
             <a class="login-link" href="{{ path('app_logout') }}">{{ 'logout_button' | trans }}</a>
 
             <!-- Si l'user possède une photo de profil, sinon affiche default.png -->
-            {% if user.profilePicture %}
-                <img class ="pp" src="{{ asset(user.profilePicture.path) }}">
-            {% else %}
-                <img class ="pp" src="{{ asset('pp/default.png') }}">
-            {% endif %}
+            <a href="/profile">
+                {% if user.profilePicture %}
+                    <img class ="pp" src="{{ asset(user.profilePicture.path) }}">
+                {% else %}
+                    <img class ="pp" src="{{ asset('pp/default.png') }}">
+                {% endif %}
+            </a>
 
         {% else %}
             <a class="login-link" href="/login-register">{{ 'login_button' | trans }}</a>

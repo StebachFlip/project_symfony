@@ -148,6 +148,14 @@ body {
     z-index: 2000;
 }
 
+.login_success {
+    --color: #10ae00;
+}
+
+.first_login {
+    --color: #e5ad00;
+}
+
 .toast {
     position: relative;
     padding: 10px;
@@ -157,9 +165,8 @@ body {
     display: grid;
     grid-template-columns: 70px 1fr 70px;
     border-radius: 5px;
-    --color: #10ae00;
     background-image:
-        linear-gradient(to right, #10ae00, #21264D 20%);
+        linear-gradient(to right, var(--color), #21264D 20%);
     animation: show 0.3s ease 1 forwards;
     font-family: 'Poppins'
 }

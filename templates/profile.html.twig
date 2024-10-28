@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="FR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user.name}} - {{ 'profile_text' | trans }}</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('styles/profile.css') }}">
+    <link rel="icon" href="{{ asset('styles/img/logo.jpg') }}" type="image/jpg">
+</head>
+
+<body>
+    <!-- Variables d'affichage selon la completion du profil -->
+    <!-- Mes informations -->
+    {% set lastname = ""%}
+    {% set firstname = ""%}
+    
+    {% if user.lastname %}
+        {% set lastname = user.lastname %}
+    {% endif %}
+
+    {% if user.firstname %}
+        {% set firstname = user.firstname %}
+    {% endif %}
+
+    <!-- Photo de profil -->
+    {% if user.profilePicture %}
+        {% set profilePicturePath = user.profilePicture.path %}
+    {% else %}
+        {% set profilePicturePath = "pp/default.png" %}
+    {% endif %}
+
+    <!-- Mes coordonnées -->
+    {% set address = ""%}
+    {% set postal_code = ""%}
+    {% set city = ""%}
+    {% set country = ""%}
+
+    {% if user.address.street %}
+        {% set address = user.address.street %}
+    {% endif %}
+
+    {% if user.address.postalCode %}
+        {% set postal_code = user.address.postalCode %}
+    {% endif %}
+
+    {% if user.address.city %}
+        {% set city = user.address.city %}
+    {% endif %}
+
+    {% if user.address.country %}
+        {% set country = user.address.country %}
+    {% endif %}
+
+    <div class="notification">
+        <!-- Affichage du message si les données ont bien étés modifiées -->
+        {% if success %}
+            <script>
+                let notifications = document.querySelector('.notification');
+                let newToast = document.createElement('div');
+                newToast.innerHTML = `
+                    <div class="toast success">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <div class="content">
+                            <div class="title">Modifications</div>
+                            <span>{{ 'profile_update_text' | trans}}</span>
+                        </div>
+                        <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+                    </div>`;
+                notifications.appendChild(newToast);
+                newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+            </script>
+        {% endif %}
+    </div>
+
+    <div class="form-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="{{ asset(profilePicturePath) }}" alt="logo">
+                <h2>{{ 'profile_text' | trans }} - {{user.name}}</h2>
+            </div>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="#informations">
+                        <i class='bx bxs-user-circle'></i>{{ 'tab1_title' | trans }}{% if not user.lastname or not user.firstname %} *{% endif %}
+                    </a>
+                </li>
+                <li>
+                    <a href="#photo">
+                        <i class='bx bxs-image-alt'></i>{{ 'tab2_title' | trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="#coordonnees">
+                        <i class='bx bx-building-house'></i>{{ 'tab3_title' | trans }}{% if not user.address.street or not user.address.postalCode or not user.address.city or not user.address.country %} *{% endif %}
+                    </a>
+                </li>
+                <li>
+                    <a href="#securite">
+                        <i class='bx bxs-lock'></i>{{ 'tab4_title' | trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class='bx bx-credit-card'></i>{{ 'tab5_title' | trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="/home">
+                        <i class='bx bxs-home'></i>{{ 'tab6_title' | trans }}
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        <div class="col col-1"></div>
+        <div class="col col-2">
+            <div class="user-info active" data-section="informations">
+                <div class="form-title">
+                    <span>{{ 'tab1_title' | trans }}</span>
+                </div>
+                <div class="form-inputs">
+                    {{ form_start(form, {'attr': {'id': 'userProfileForm'}}) }}
+                    
+                    <div class="input-box">
+                        <span class="input-label">{{ 'email_input' | trans }}</span>
+                        {{ form_widget(form.email, {'attr': {'class': 'input-field', 'readonly': 'readonly'}}) }}
+                        <i class='bx bxs-envelope icon'></i>
+                    </div>
+                    
+                    <div class="input-box">
+                        <span class="input-label">{{ 'username_input' | trans }}</span>
+                        {{ form_widget(form.name, {'attr': {'class': 'input-field', 'placeholder': 'username_placeholder' | trans}}) }}
+                        <i class='bx bxs-user-pin icon'></i>
+                    </div>
+                    
+                    <div class="input-box">
+                        <span class="input-label">{{ 'lastName_input' | trans }}</span>
+                        {{ form_widget(form.lastname, {'attr': {'class': 'input-field', 'placeholder': 'lastName_placeholder' | trans}}) }}
+                        <i class='bx bx-user icon'></i>
+                    </div>
+                    
+                    <div class="input-box">
+                        <span class="input-label">{{ 'firstName_input' | trans }}</span>
+                        {{ form_widget(form.firstname, {'attr': {'class': 'input-field', 'placeholder': 'firstName_placeholder' | trans}}) }}
+                        <i class='bx bx-user icon'></i>
+                    </div>
+                    
+                    <div class="input-box">
+                        <button type="submit" class="input-submit">
+                            <span>{{ 'tab1_button' | trans }}</span>
+                            <i class="bx bx-right-arrow-alt"></i>
+                        </button>
+                    </div>
+                    
+                    {{ form_end(form) }}
+                </div>
+                {% include 'partials/scriptNotif.html.twig' %}
+            </div>
+
+            <div class="user-info" data-section="photo">
+                <div class="profile-picture-section">
+                     <img src="{{ asset(profilePicturePath) }}" alt="Photo de profil" class="profile-picture">
+
+                    <button class="upload-button" onclick="document.getElementById('file-input').click();">{{'upload_button' | trans}}</button>
+                    <input type="file" id="file-input" style="display: none;">
+
+                    <div class="drop-zone" id="drop-zone">
+                        {{'drop_zone' | trans}}
+                    </div>
+
+                    <button class="save-button">{{'save_button' | trans}}</button>
+                </div>
+            </div>
+
+
+            <div class="user-info" data-section="coordonnees">
+                <div class="form-title">
+                    <span>{{'tab3_title' | trans}}</span>
+                </div>
+                <div class="form-inputs">
+                    <div class="input-box">
+                        <span class="input-label">{{'address_input' | trans}}</span>
+                        <input type="text" name="address" class="input-field" value="{{address}}" placeholder ="{{'address_placeholder' | trans}}">
+                        <i class='bx bx-current-location icon'></i>
+                    </div>
+                    <div class="input-box">
+                        <span class="input-label">{{'postalCode_input' | trans}}</span>
+                        <input type="text" name="postal_code" class="input-field" value="{{postal_code}}" placeholder ="{{'postalCode_placeholder' | trans}}">
+                        <i class='bx bx-map-pin icon'></i>
+                    </div>
+                    <div class="input-box">
+                        <span class="input-label">{{'city_input' | trans}}</span>
+                        <input type="text" name="city" class="input-field" value="{{city}}" placeholder ="{{'city_placeholder' | trans}}">
+                        <i class='bx bxs-city icon'></i>
+                    </div>
+                    <div class="input-box">
+                        <span class="input-label">{{'country_input' | trans}}</span>
+                        <input type="text" name="country" class="input-field" value="{{country}}" placeholder ="{{'country_placeholder' | trans}}">
+                        <i class='bx bx-landscape icon'></i>
+                    </div>
+                    <div class="input-box">
+                        <button class="input-submit">
+                            <span>{{'tab1_button' | trans}}</span>
+                            <i class="bx bx-right-arrow-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="user-info" data-section="securite">
+                <div class="form-title">
+                    <span>{{'tab4_title' | trans}}</span>
+                </div>
+                <div class="form-inputs">
+                    <div class="input-box">
+                        <span class="input-label">{{'old_pass' | trans}} :</span>
+                        <input type="password" name="address" class="input-field" placeholder="{{'old_pass' | trans}}">
+                        <i class='bx bx-lock-open-alt icon'></i>
+                    </div>
+                    <div class="input-box">
+                        <span class="input-label">{{'new_pass' | trans}} :</span>
+                        <input type="password" name="postal_code" class="input-field" placeholder="{{'new_pass' | trans}}">
+                        <i class='bx bxs-lock-alt icon'></i>
+                    </div>
+                    <div class="input-box">
+                        <span class="input-label">{{'confirm_pass' | trans}} :</span>
+                        <input type="password" name="city" class="input-field"
+                            placeholder="{{'confirm_pass' | trans}}">
+                        <i class='bx bx-lock-alt icon'></i>
+                    </div>
+                    <div class="input-box">
+                        <button class="input-submit">
+                            <span>{{'confirm_button' | trans}}</span>
+                            <i class="bx bx-right-arrow-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="user-info" data-section="securite">
+                <div class="form-title">
+                    <span>Mes Informations</span>
+                </div>
+                <div class="form-inputs">
+
+                </div>
+            </div>
+        </div>
+        
+        <script src="{{ asset('script/profile.js') }}"></script>
+        <script>
+            const translations = {
+                errorTitle: "{{ 'error_title' | trans|e('js') }}",
+                errorText: "{{ 'profile_error_text' | trans|e('js') }}"
+            };
+        </script>
+    </div>
+</body>
+{% include 'partials/footer.html.twig' %}
+
+
+</html>

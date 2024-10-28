@@ -1,0 +1,28 @@
+<div class="notification"></div>
+
+{% if hasError %}
+    <script>
+        let notifications = document.querySelector('.notification');
+        function createToast(type, icon, title, text) {
+            let newToast = document.createElement('div');
+            newToast.innerHTML = `
+                <div class="toast ${type}">
+                    <i class="${icon}"></i>
+                    <div class="content">
+                        <div class="title">${title}</div>
+                        <span>${text}</span>
+                    </div>
+                    <i id="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+                </div>`;
+            notifications.appendChild(newToast);
+            newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+        }
+
+        let type = 'error'; 
+        let icon = 'fa-solid fa-circle-xmark'; 
+        let title = "{{ 'error_title' | trans }}"; 
+        let text = "{{ 'error_text' | trans }}"; 
+
+        createToast(type, icon, title, text);
+    </script>
+{% endif %}

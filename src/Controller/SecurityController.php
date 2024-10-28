@@ -23,8 +23,8 @@ class SecurityController extends AbstractController
         }
 
         return $this->render('security/login.html.twig', [
-            'last_username' => $lastUsername,  // Transmet 'last_username' à Twig
-            'error' => $error,  // Transmet 'error' à Twig
+            'last_username' => $lastUsername,
+            'error' => $error,
         ]);
     }
 
@@ -32,7 +32,6 @@ class SecurityController extends AbstractController
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {
-        // Il n'y a pas besoin d'implémenter de logique ici, Symfony gère ça
         throw new \Exception('This should never be reached!');
     }
 }

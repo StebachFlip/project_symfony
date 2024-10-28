@@ -1,0 +1,465 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ====== BODY ======*/
+body {
+    background: url("img/login_background.jpg");
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 0 20px;
+}
+
+/* ====== FORM ======*/
+.form-container {
+    display: flex;
+    width: 1000px;
+    height: 600px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 30px;
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* ====== COLONNE 1 ======*/
+.col-1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 30%;
+    overflow: hidden;
+}
+
+.image-layer {
+    position: relative;
+}
+
+.form-image-main {
+    width: 400px;
+    height: auto;
+    transition: transform 0.3s ease
+}
+
+.form-image-main:hover {
+    transform: scale(1.05);
+}
+
+.featured-words {
+    text-align: center;
+    color: #FFF;
+    width: 300px;
+}
+
+.featured-words span {
+    font-weight: 600;
+    color: #21264D;
+}
+
+/* ====== COLONE 2 ======*/
+.col-2 {
+    position: relative;
+    width: 70%;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.btn-box {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn {
+    font-weight: 500;
+    padding: 5px 30px;
+    border: none;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #FFF;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn-1 {
+    background: #21264D;
+}
+
+.btn:hover {
+    opacity: 0.85;
+}
+
+.user-info {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 0 4vw;
+    transition: .3s;
+}
+
+.register-form {
+    position: absolute;
+    left: -50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 0 4vw;
+    transition: .3s;
+}
+
+.register-form .form-title {
+    margin-block: 40px 20px;
+}
+
+.form-title {
+    text-align: center;
+    margin: 40px 0;
+    color: #FFF;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.form-inputs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    white-space: nowrap;
+}
+
+.input-label {
+    color: #FFF;
+    font-size: 16px;
+    min-width: 150px;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.input-field {
+    flex-grow: 1;
+    width: 100%;
+    height: 55px;
+    padding: 0 15px;
+    margin: 10px 0;
+    color: #FFF;
+    font-size: 17px;
+    background: rgba(0, 0, 0, 0.2);
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+::placeholder {
+    color: #fff;
+    font-size: 15px;
+}
+
+.input-box .icon {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    color: #FFF;
+}
+
+.input-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 50%;
+    height: 55px;
+    padding: 0 15px;
+    margin: 10px 0;
+    margin-left: auto;
+    color: #FFF;
+    background: #21264D;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: .3s;
+}
+
+.input-submit:hover {
+    gap: 15px;
+}
+
+.social-login {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.social-login i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
+    color: #FFF;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    transition: .2s;
+}
+
+.social-login i:hover {
+    transform: scale(0.9);
+}
+
+@media (max-width: 892px) {
+    .form-container {
+        width: 400px;
+    }
+
+    .col-1 {
+        display: none;
+    }
+
+    .col-2 {
+        width: 100%;
+    }
+}
+
+/* ====== SIDEBAR ====== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 300px;
+    background: #000;
+    padding: 25px 20px;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-header img {
+    width: 42px;
+    border-radius: 50%;
+}
+
+.sidebar-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #FFF;
+    margin-left: 23px;
+}
+
+.sidebar-links {
+    list-style: none;
+    margin-top: 20px;
+    border-top: 2px solid white;
+}
+
+.sidebar-links li a {
+    display: flex;
+    align-items: center;
+    gap: 0 20px;
+    color: #dbd4d4e3;
+    font-weight: 500;
+    padding: 15px 20px;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.sidebar-links li a:hover {
+    background: #ffffff2d;
+    color: #fff;
+    border-radius: 4px;
+}
+
+.user-info {
+    display: none;
+}
+
+.user-info.active {
+    display: block;
+}
+
+/* ====== PHOTO DE PROFIL ====== */
+/* Section de photo de profil */
+.profile-picture-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+}
+
+/* Image de profil */
+.profile-picture {
+    margin-top: 40px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    /* Image ronde */
+    object-fit: cover;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Bouton de téléchargement */
+.upload-button,
+.save-button {
+    width: 150px;
+    height: 40px;
+    color: #FFF;
+    background: #21264D;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+    transition: background 0.3s;
+}
+
+.upload-button:hover,
+.save-button:hover {
+    background: #1a1f3a;
+}
+
+/* Zone de glisser-déposer */
+.drop-zone {
+    width: 100%;
+    max-width: 300px;
+    height: 150px;
+    border: 2px dashed #21264D;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #AAA;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s;
+    margin-bottom: 10px;
+}
+
+.drop-zone:hover {
+    background-color: rgba(33, 38, 77, 0.1);
+    color: #FFF;
+}
+
+/* ====== NOTIFICATIONS ====== */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2000;
+}
+
+.error {
+    --color: #e50000;
+}
+
+.success {
+    --color: #10ae00;
+}
+
+.toast {
+    position: relative;
+    padding: 10px;
+    color: #fff;
+    margin-bottom: 10px;
+    width: 400px;
+    display: grid;
+    grid-template-columns: 70px 1fr 70px;
+    border-radius: 5px;
+    background-image:
+        linear-gradient(to right, var(--color), #21264D 20%);
+    animation: show 0.3s ease 1 forwards;
+    font-family: 'Poppins'
+}
+
+.toast i {
+    color: var(--color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: x-large;
+}
+
+.toast .title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.toast span,
+.toast i:nth-child(3) {
+    color: #fff;
+    opacity: 0.6;
+    font-size: 14px;
+}
+
+@keyframes show {
+    0% {
+        transform: translateX(100%);
+    }
+
+    40% {
+        transform: translateX(-5%);
+    }
+
+    80% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-10%);
+    }
+}
+
+.toast::before {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: var(--color);
+    width: 100%;
+    height: 3px;
+    content: '';
+    box-shadow: 0 0 10px var(--color);
+    animation: timeOut 5s linear 1 forwards
+}
+
+@keyframes timeOut {
+    to {
+        width: 0;
+    }
+}
+
+#cross:hover {
+    cursor: pointer;
+}

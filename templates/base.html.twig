@@ -17,33 +17,61 @@
     <br>
     <br>
     <div class="notification"></div>
+    {% if user %}
+        {% if user.firstname and user.lastname and user.address.street and user.address.postalCode and user.address.city and user.address.country %}
+            <script>
+                let notifications = document.querySelector('.notification');
+                function createToast(type, icon, title, text) {
+                    let newToast = document.createElement('div');
+                    newToast.innerHTML = `
+                        <div class="toast ${type}">
+                            <i class="${icon}"></i>
+                            <div class="content">
+                                <div class="title">${title}</div>
+                                <span>${text}</span>
+                            </div>
+                            <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+                        </div>`;
+                    notifications.appendChild(newToast);
+                    newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+                }
 
-    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        <script>
-            let notifications = document.querySelector('.notification');
-            function createToast(type, icon, title, text) {
-                let newToast = document.createElement('div');
-                newToast.innerHTML = `
-                    <div class="toast ${type}">
-                        <i class="${icon}"></i>
-                        <div class="content">
-                            <div class="title">${title}</div>
-                            <span>${text}</span>
-                        </div>
-                        <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
-                    </div>`;
-                notifications.appendChild(newToast);
-                newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
-            }
+                let type = 'login_success'; 
+                let icon = 'fa-solid fa-circle-check'; 
+                let title = "{{ 'login_success_title' | trans }}"; 
+                let text = "{{ 'login_success_text' | trans }} {{ user.name }}"; 
 
-            let type = 'login_success'; 
-            let icon = 'fa-solid fa-circle-check'; 
-            let title = "{{ 'login_success_title' | trans }}"; 
-            let text = "{{ 'login_success_text' | trans }} {{ user.name }}"; 
+                createToast(type, icon, title, text);
+            </script
+        
+        {% else %}
+            <script>
+                let notifications = document.querySelector('.notification');
+                function createToast(type, icon, title, text) {
+                    let newToast = document.createElement('div');
+                    newToast.innerHTML = `
+                        <div class="toast ${type}">
+                            <i class="${icon}"></i>
+                            <div class="content">
+                                <div class="title">${title}</div>
+                                <span>${text}</span>
+                            </div>
+                            <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+                        </div>`;
+                    notifications.appendChild(newToast);
+                    newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+                }
 
-            createToast(type, icon, title, text);
-        </script
-    {% endif %}
+                let type = 'first_login'; 
+                let icon = 'fa-solid fa-circle-check'; 
+                let title = "{{ 'login_success_title' | trans }}"; 
+                let text = "{{ 'first_login_text' | trans }}"; 
+
+                createToast(type, icon, title, text);
+            </script
+        {% endif %}
+     {% endif %}
+
     <br>
     <br>
     <br>
