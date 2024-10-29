@@ -60,3 +60,8 @@ confirm_button: "Confirm the changes"
 
 profile_error_text: "Please complete the required fields"
 profile_update_text: "Changes completed successfully"
+
+confirm: "Confirm"
+cancel: "Cancel"
+profile_picture_title: "Success"
+profile_picture_text: "Profile picture changed successfully"

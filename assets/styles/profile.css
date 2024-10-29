@@ -262,6 +262,9 @@ body {
     width: 300px;
     background: #000;
     padding: 25px 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .sidebar-header {
@@ -285,6 +288,10 @@ body {
     list-style: none;
     margin-top: 20px;
     border-top: 2px solid white;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .sidebar-links li a {
@@ -296,6 +303,11 @@ body {
     padding: 15px 20px;
     white-space: nowrap;
     text-decoration: none;
+}
+
+.sidebar-links li:last-child {
+    margin-top: auto;
+    border-top: 2px solid white;
 }
 
 .sidebar-links li a:hover {
@@ -324,7 +336,7 @@ body {
 
 /* Image de profil */
 .profile-picture {
-    margin-top: 40px;
+    margin-top: 100px;
     width: 150px;
     height: 150px;
     border-radius: 50%;
@@ -462,4 +474,92 @@ body {
 
 #cross:hover {
     cursor: pointer;
+}
+
+/* ====== CROP ZONE ====== */
+/* Style pour la zone de recadrage */
+.crop-container {
+    position: fixed;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.9);
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    /* Augmenter pour être au-dessus de tous les autres éléments */
+    overflow: hidden;
+}
+
+/* Image à rogner */
+.crop-container img#image-to-crop {
+    max-width: 100%;
+    max-height: 300px;
+    /* Assurez-vous que l’image ne prenne pas trop d’espace */
+    border-radius: 5px;
+    margin-bottom: 15px;
+    border: 2px solid #fff;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.button-container button {
+    display: inline-block;
+    padding: 10px 20px;
+}
+
+/* Boutons de recadrage et d'annulation */
+#crop-button,
+#cancel-button {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 120px;
+    z-index: 10000;
+}
+
+#cancel-button {
+    background-color: #f44336;
+}
+
+#crop-button:hover {
+    background-color: #45a049;
+}
+
+#cancel-button:hover {
+    background-color: #d32f2f;
+}
+
+/* Transition d'apparition */
+.crop-container {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+    animation: fadeIn 0.3s forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
 }

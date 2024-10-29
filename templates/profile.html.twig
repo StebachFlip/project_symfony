@@ -9,6 +9,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('styles/profile.css') }}">
     <link rel="icon" href="{{ asset('styles/img/logo.jpg') }}" type="image/jpg">
+
+    <!-- ROGNAGE D'IMAGES -->
+    <link href="https://unpkg.com/cropperjs/dist/cropper.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
 </head>
 
 <body>
@@ -108,11 +112,12 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/home">
-                        <i class='bx bxs-home'></i>{{ 'tab6_title' | trans }}
-                    </a>
+                <a href="/home" class="sidebar-home-link">
+                    <i class='bx bxs-arrow-from-right'></i>{{ 'tab6_title' | trans }}
+                </a>
                 </li>
             </ul>
+            
         </aside>
         <div class="col col-1"></div>
         <div class="col col-2">
@@ -156,18 +161,22 @@
                     
                     {{ form_end(form) }}
                 </div>
-                {% include 'partials/scriptNotif.html.twig' %}
             </div>
 
             <div class="user-info" data-section="photo">
                 <div class="profile-picture-section">
-                     <img src="{{ asset(profilePicturePath) }}" alt="Photo de profil" class="profile-picture">
+                     <img src="{{ asset(profilePicturePath) }}" alt="Photo de profil" class="profile-picture" id="current-profile-picture">
+                     <input type="hidden" id="image-name" value="">
 
                     <button class="upload-button" onclick="document.getElementById('file-input').click();">{{'upload_button' | trans}}</button>
                     <input type="file" id="file-input" style="display: none;">
 
-                    <div class="drop-zone" id="drop-zone">
-                        {{'drop_zone' | trans}}
+                    <div class="crop-container" style="display: none;">
+                        <img id="image-to-crop" alt="Image à rogner">
+                        <div class="button-container">
+                            <button id="crop-button">{{'confirm' | trans}}</button>
+                            <button id="cancel-button" onclick="closeCrop()">{{'cancel' | trans}}</button>
+                        </div>
                     </div>
 
                     <button class="save-button">{{'save_button' | trans}}</button>
@@ -247,13 +256,15 @@
             </div>
         </div>
         
-        <script src="{{ asset('script/profile.js') }}"></script>
         <script>
             const translations = {
                 errorTitle: "{{ 'error_title' | trans|e('js') }}",
-                errorText: "{{ 'profile_error_text' | trans|e('js') }}"
+                errorText: "{{ 'profile_error_text' | trans|e('js') }}",
+                PPTitle: "{{ 'profile_picture_title' | trans|e('js') }}",
+                PPText: "{{ 'profile_picture_text' | trans|e('js') }}",
             };
         </script>
+        <script src="{{ asset('script/profile.js') }}"></script>
     </div>
 </body>
 {% include 'partials/footer.html.twig' %}

@@ -60,3 +60,8 @@ confirm_button: "Valider les changements"
 
 profile_error_text: "Veuillez remplir les champs requis"
 profile_update_text: "Modifications effectuées avec succès"
+
+confirm: "Valider"
+cancel: "Annuler"
+profile_picture_title: "Succès"
+profile_picture_text: "Photo de profil changée avec succès"

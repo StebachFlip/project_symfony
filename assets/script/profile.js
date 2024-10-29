@@ -23,31 +23,6 @@ document.querySelectorAll(".sidebar-links a").forEach(link => {
     });
 });
 
-const dropZone = document.getElementById('drop-zone');
-
-dropZone.addEventListener('dragover', (event) => {
-    event.preventDefault();
-    dropZone.style.backgroundColor = 'rgba(33, 38, 77, 0.2)';
-    dropZone.style.color = '#FFF';
-});
-
-dropZone.addEventListener('dragleave', () => {
-    dropZone.style.backgroundColor = '';
-    dropZone.style.color = '#AAA';
-});
-
-dropZone.addEventListener('drop', (event) => {
-    event.preventDefault();
-    dropZone.style.backgroundColor = '';
-    dropZone.style.color = '#AAA';
-
-    const files = event.dataTransfer.files;
-    // Vous pouvez ensuite manipuler les fichiers ici
-    console.log(files); // Pour vérifier les fichiers dans la console
-});
-
-
-
 // Fonction de notification existante
 function createToast(type, icon, title, text) {
     let notifications = document.querySelector('.notification');
@@ -116,3 +91,94 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+// RECADRAGE DE L'IMAGE
+let cropper;
+
+document.getElementById('file-input').addEventListener('change', function (e) {
+    const file = e.target.files[0];
+    if (file) {
+        document.getElementById('image-name').value = file.name;
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            const cropContainer = document.querySelector('.crop-container');
+            const imageToCrop = document.getElementById('image-to-crop');
+            imageToCrop.src = event.target.result;
+            cropContainer.style.display = 'flex';
+            initializeCropper();
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+function initializeCropper() {
+    const image = document.getElementById('image-to-crop');
+    cropper = new Cropper(image, {
+        aspectRatio: 1,
+        viewMode: 1,
+    });
+}
+
+document.getElementById('crop-button').addEventListener('click', function () {
+    const canvas = cropper.getCroppedCanvas({
+        width: 300,
+        height: 300,
+    });
+
+    // Prévisualisation de l'image rognée
+    const croppedImageData = canvas.toDataURL('image/png');
+    document.getElementById('current-profile-picture').src = croppedImageData;
+    const imageName = document.getElementById('image-name').value;
+    console.log(imageName);
+
+    cropper.destroy();
+    document.querySelector('.crop-container').style.display = 'none';
+    document.querySelector('.save-button').style.display = 'block';
+});
+
+// Fonction pour fermer le cropper sans enregistrer
+function closeCrop() {
+    cropper.destroy();
+    document.querySelector('.crop-container').style.display = 'none';
+}
+
+document.querySelector('.save-button').addEventListener('click', function () {
+    const croppedImage = document.getElementById('current-profile-picture').src;
+    const imageName = document.getElementById('image-name').value;
+
+    if (!croppedImage || !imageName) {
+        return;
+    }
+
+    // Creation d'un formulaire pour envoyer les données
+    const formData = new FormData();
+    formData.append('image', croppedImage);
+    formData.append('imageName', imageName);
+
+    // Envoyer les données au serveur
+    fetch('/upload-profile-picture', {
+        method: 'POST',
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                localStorage.setItem('notification', 'Photo de profil changée avec succès');
+                location.reload();
+            }
+            else {
+                console.error(data.error);
+            }
+        })
+        .catch((error) => {
+            console.error('Erreur:', error);
+        });
+});
+
+const notification = localStorage.getItem('notification');
+if (notification) {
+    const PPTitle = translations.PPTitle;
+    const PPText = translations.PPText;
+    createToast('success', 'fa-solid fa-check', PPTitle, PPText);
+    localStorage.removeItem('notification');
+}
