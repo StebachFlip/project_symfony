@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Form\UserProfileType;
+use App\Form\AddressFormType;
 use App\Entity\ProfilePicture;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,50 +20,53 @@ class ProfileController extends AbstractController
     public function index(Request $request, EntityManagerInterface $entityManager, Security $security): Response
     {
         $user = $security->getUser();
+        $hasError = false;
         $success = false;
         //dd($user); 
 
-        if(!$user) {
+        if (!$user instanceof User) {
             return $this->redirectToRoute('home');
         }
 
-        $form = $this->createForm(UserProfileType::class, $user);
-        $form->handleRequest($request);
+        $profileForm = $this->createForm(UserProfileType::class, $user);
+        $profileForm->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                // Sauvegarde des changements si tout est valide
-                $entityManager->persist($user);
-                $entityManager->flush();
-                $success = true;
+        $addressForm = $this->createForm(AddressFormType::class, $user->getAddress());
+        $addressForm->handleRequest($request);
 
-                $this->addFlash('success', 'Profile updated successfully!');
-            } else {
-                // Envoi de l'indicateur d'erreur au template
-                return $this->render('profile.html.twig', [
-                    'form' => $form->createView(),
-                    'hasError' => true, // pour afficher une notification d'erreur
-                    'user' => $user,
-                    'success' => $success
-                ]);
-            }
+        if ($profileForm->isSubmitted() && $profileForm->isValid()) {
+            $entityManager->persist($user);
+            $entityManager->flush();
+            $this->addFlash('success', 'Profile updated successfully!');
+            $success = true;
+        }
+
+        if ($addressForm->isSubmitted() && $addressForm->isValid()) {
+            $address = $addressForm->getData();
+            $address->setUser($user);
+
+            $entityManager->persist($address);
+            $entityManager->flush();
+            $this->addFlash('success', 'Adresse mise à jour avec succès !');
+            $success = true;
         }
 
         return $this->render('profile.html.twig', [
-            'form' => $form->createView(),
-            'hasError' => false,
+            'profileForm' => $profileForm->createView(),
+            'addressForm' => $addressForm->createView(),
             'user' => $user,
-            'success' => $success
+            'hasError' => $hasError,
+            'success' => $success,
         ]);
     }
 
+    // Méthode pour uploader la photo de profil
     #[Route("/upload-profile-picture", name:"upload_profile_picture", methods: ["POST"])]
     public function uploadProfilePicture(Request $request, EntityManagerInterface $entityManager, Security $security): Response {
 
-        $imageData = $request->request->get('image'); // L'image rognée
-        $imageName = $request->request->get('imageName'); // Le nom de l'image
+        $imageData = $request->request->get('image');
+        $imageName = $request->request->get('imageName');
 
-        // Vérifiez si l'image et le nom sont présents
         if (!$imageData || !$imageName) {
             return $this->redirectToRoute('profile');
         }
@@ -86,27 +90,19 @@ class ProfileController extends AbstractController
         $user = $security->getUser();
         $success = true;
 
-       // Vérifiez si l'utilisateur est une instance de User
        if ($user instanceof User) {
-            // Vérifiez si une entrée pour l'image de profil existe déjà
             $profilePicture = $entityManager->getRepository(ProfilePicture::class)->findOneBy(['user' => $user]);
 
             if (!$profilePicture) {
-                // Si aucune image de profil n'existe, en créez une nouvelle
                 $profilePicture = new ProfilePicture();
                 $profilePicture->setUser($user);
             }
 
-            // Mettre à jour le chemin de la photo de profil
             $profilePicture->setPath('pp/' . $imageName);
             $entityManager->persist($profilePicture);
             $entityManager->flush();
         }
 
-        // Retourner une réponse de succès
         return $this->json(['success' => 'Image uploaded successfully']);
-
-        
     }
-
 }

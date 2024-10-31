@@ -126,29 +126,29 @@
                     <span>{{ 'tab1_title' | trans }}</span>
                 </div>
                 <div class="form-inputs">
-                    {{ form_start(form, {'attr': {'id': 'userProfileForm'}}) }}
+                    {{ form_start(profileForm, {'attr': {'id': 'userProfileForm'}}) }}
                     
                     <div class="input-box">
                         <span class="input-label">{{ 'email_input' | trans }}</span>
-                        {{ form_widget(form.email, {'attr': {'class': 'input-field', 'readonly': 'readonly'}}) }}
+                        {{ form_widget(profileForm.email, {'attr': {'class': 'input-field', 'readonly': 'readonly'}}) }}
                         <i class='bx bxs-envelope icon'></i>
                     </div>
                     
                     <div class="input-box">
                         <span class="input-label">{{ 'username_input' | trans }}</span>
-                        {{ form_widget(form.name, {'attr': {'class': 'input-field', 'placeholder': 'username_placeholder' | trans}}) }}
+                        {{ form_widget(profileForm.name, {'attr': {'class': 'input-field', 'placeholder': 'username_placeholder' | trans}}) }}
                         <i class='bx bxs-user-pin icon'></i>
                     </div>
                     
                     <div class="input-box">
                         <span class="input-label">{{ 'lastName_input' | trans }}</span>
-                        {{ form_widget(form.lastname, {'attr': {'class': 'input-field', 'placeholder': 'lastName_placeholder' | trans}}) }}
+                        {{ form_widget(profileForm.lastname, {'attr': {'class': 'input-field', 'placeholder': 'lastName_placeholder' | trans}}) }}
                         <i class='bx bx-user icon'></i>
                     </div>
                     
                     <div class="input-box">
                         <span class="input-label">{{ 'firstName_input' | trans }}</span>
-                        {{ form_widget(form.firstname, {'attr': {'class': 'input-field', 'placeholder': 'firstName_placeholder' | trans}}) }}
+                        {{ form_widget(profileForm.firstname, {'attr': {'class': 'input-field', 'placeholder': 'firstName_placeholder' | trans}}) }}
                         <i class='bx bx-user icon'></i>
                     </div>
                     
@@ -159,7 +159,7 @@
                         </button>
                     </div>
                     
-                    {{ form_end(form) }}
+                    {{ form_end(profileForm) }}
                 </div>
             </div>
 
@@ -188,35 +188,45 @@
                 <div class="form-title">
                     <span>{{'tab3_title' | trans}}</span>
                 </div>
-                <div class="form-inputs">
+                <div class="form-inputs">                    
+                   {{ form_start(addressForm, {'attr': {'id': 'addressForm'}}) }}
+
                     <div class="input-box">
-                        <span class="input-label">{{'address_input' | trans}}</span>
-                        <input type="text" name="address" class="input-field" value="{{address}}" placeholder ="{{'address_placeholder' | trans}}">
-                        <i class='bx bx-current-location icon'></i>
+                        <span class="input-label">{{ 'address_input' | trans }}</span>
+                        {{ form_widget(addressForm.street, {'attr': {'class': 'input-field', 'placeholder': 'address_placeholder' | trans, 'name': 'street'}}) }}
+                        <i class='bx bxs-home icon'></i>
                     </div>
+
                     <div class="input-box">
-                        <span class="input-label">{{'postalCode_input' | trans}}</span>
-                        <input type="text" name="postal_code" class="input-field" value="{{postal_code}}" placeholder ="{{'postalCode_placeholder' | trans}}">
-                        <i class='bx bx-map-pin icon'></i>
+                        <span class="input-label">{{ 'postalCode_input' | trans }}</span>
+                        {{ form_widget(addressForm.postalCode, {'attr': {'class': 'input-field', 'placeholder': 'postalCode_placeholder' | trans, 'name': 'postalCode'}}) }}
+                        <i class='bx bxs-map icon'></i>
                     </div>
+
                     <div class="input-box">
-                        <span class="input-label">{{'city_input' | trans}}</span>
-                        <input type="text" name="city" class="input-field" value="{{city}}" placeholder ="{{'city_placeholder' | trans}}">
+                        <span class="input-label">{{ 'city_input' | trans }}</span>
+                        {{ form_widget(addressForm.city, {'attr': {'class': 'input-field', 'placeholder': 'city_placeholder' | trans, 'name': 'city'}}) }}
                         <i class='bx bxs-city icon'></i>
                     </div>
+
                     <div class="input-box">
-                        <span class="input-label">{{'country_input' | trans}}</span>
-                        <input type="text" name="country" class="input-field" value="{{country}}" placeholder ="{{'country_placeholder' | trans}}">
-                        <i class='bx bx-landscape icon'></i>
+                        <span class="input-label">{{ 'country_input' | trans }}</span>
+                        {{ form_widget(addressForm.country, {'attr': {'class': 'input-field', 'placeholder': 'country_placeholder' | trans, 'name': 'country'}}) }}
+                        <i class='bx bxs-flag icon'></i>
                     </div>
+
                     <div class="input-box">
-                        <button class="input-submit">
-                            <span>{{'tab1_button' | trans}}</span>
+                        <button type="submit" class="input-submit">
+                            <span>{{ 'tab1_button' | trans }}</span>
                             <i class="bx bx-right-arrow-alt"></i>
                         </button>
                     </div>
+
+                    {{ form_end(addressForm) }}
                 </div>
             </div>
+
+            
             <div class="user-info" data-section="securite">
                 <div class="form-title">
                     <span>{{'tab4_title' | trans}}</span>

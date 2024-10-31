@@ -260,7 +260,9 @@ body {
     left: 0;
     height: 100%;
     width: 300px;
-    background: #000;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(30px);
+    border-radius: 20px;
     padding: 25px 20px;
     display: flex;
     flex-direction: column;
@@ -298,7 +300,7 @@ body {
     display: flex;
     align-items: center;
     gap: 0 20px;
-    color: #dbd4d4e3;
+    color: #FFF;
     font-weight: 500;
     padding: 15px 20px;
     white-space: nowrap;
