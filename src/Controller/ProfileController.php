@@ -7,32 +7,43 @@ use App\Form\UserProfileType;
 use App\Form\AddressFormType;
 use App\Entity\ProfilePicture;
 use App\Entity\User;
+use App\Form\PasswordFormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\SecurityBundle\Security;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class ProfileController extends AbstractController
 {
     #[Route('/profile', name: 'profile')]
-    public function index(Request $request, EntityManagerInterface $entityManager, Security $security): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, Security $security, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $security->getUser();
         $hasError = false;
         $success = false;
+        $oldPasswordInvalid = false;
+        $newPasswordInvalid = false;
         //dd($user); 
 
         if (!$user instanceof User) {
             return $this->redirectToRoute('home');
         }
 
+        // Chargement du formulaire de données personnelles
         $profileForm = $this->createForm(UserProfileType::class, $user);
         $profileForm->handleRequest($request);
 
+        // Chargement du formulaire de coordonnées
         $addressForm = $this->createForm(AddressFormType::class, $user->getAddress());
         $addressForm->handleRequest($request);
+
+        // Chargement du formulaire de changement de mot de passe
+        $passwordChange = new \App\Model\PasswordChange();
+        $passwordForm = $this->createForm(PasswordFormType::class, $passwordChange);
+        $passwordForm->handleRequest($request);
+
 
         if ($profileForm->isSubmitted() && $profileForm->isValid()) {
             $entityManager->persist($user);
@@ -41,7 +52,7 @@ class ProfileController extends AbstractController
             $success = true;
         }
 
-        if ($addressForm->isSubmitted() && $addressForm->isValid()) {
+        else if ($addressForm->isSubmitted() && $addressForm->isValid()) {
             $address = $addressForm->getData();
             $address->setUser($user);
 
@@ -51,12 +62,39 @@ class ProfileController extends AbstractController
             $success = true;
         }
 
+        // logique de changement de mot de passe
+        else if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
+            // Vérification de l'ancien mot de passe
+            if (!$passwordHasher->isPasswordValid($user, $passwordChange->oldPassword)) {
+                $oldPasswordInvalid = true;
+            }
+
+            // Vérification que les nouveaux mots de passe correspondent
+            if ($passwordChange->newPassword !== $passwordChange->confirmPassword) {
+                $newPasswordInvalid = true;
+            }
+
+            // Si tout est valide, changement de mot de passe
+            if(!$oldPasswordInvalid || !$newPasswordInvalid) {
+                $newEncodedPassword = $passwordHasher->hashPassword($user, $passwordChange->newPassword);
+                $user->setPassword($newEncodedPassword);
+
+                $entityManager->persist($user);
+                $entityManager->flush();
+                $this->addFlash('success', 'Votre mot de passe a été changé avec succès.');
+                $success = true;
+            }  
+        }
+
         return $this->render('profile.html.twig', [
             'profileForm' => $profileForm->createView(),
             'addressForm' => $addressForm->createView(),
+            'passwordForm' => $passwordForm->createView(),
             'user' => $user,
             'hasError' => $hasError,
             'success' => $success,
+            'oldPassError' => $oldPasswordInvalid,
+            'newPassError' => $newPasswordInvalid
         ]);
     }
 

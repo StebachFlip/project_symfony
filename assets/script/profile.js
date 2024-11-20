@@ -223,6 +223,56 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// Script vérification mot de passe
+document.addEventListener("DOMContentLoaded", function () {
+    const passwordForm = document.querySelector("#passwordForm");
+    const requiredFields = [
+        "password_form[oldPassword]",
+        "password_form[newPassword]",
+        "password_form[confirmPassword]"
+    ];
+    let toastDisplayed = false;
 
+    passwordForm.addEventListener("submit", function (event) {
+        console.log("Form submission event triggered");
 
+        if (confirm("Voulez-vous vraiment modifier votre mot de passe ?")) {
+            let formIsValid = true;
 
+            const errorType = 'error';
+            const errorIcon = 'fa-solid fa-circle-xmark';
+            const errorTitle = 'Erreur'; // Remplacez par `translations.errorTitle` si disponible
+            const errorText = 'Veuillez remplir tous les champs requis.'; // Remplacez par `translations.errorText` si disponible
+
+            // Réinitialisation des erreurs
+            document.querySelectorAll(".input-label").forEach(label => label.style.color = "");
+            document.querySelectorAll(".error-message").forEach(error => error.remove());
+            toastDisplayed = false;
+
+            // Vérification des champs requis
+            requiredFields.forEach(function (fieldName) {
+                const input = passwordForm.querySelector(`[name="${fieldName}"]`);
+                const label = input ? input.closest('.input-box').querySelector('.input-label') : null;
+
+                if (input && !input.value.trim()) {
+                    formIsValid = false;
+
+                    if (label) {
+                        label.style.color = "red";
+                    }
+
+                    if (!toastDisplayed) {
+                        createToast(errorType, errorIcon, errorTitle, errorText);
+                        toastDisplayed = true;
+                    }
+                }
+            });
+
+            if (!formIsValid) {
+                event.preventDefault(); // Bloque la soumission si des champs sont vides
+            }
+        } else {
+            event.preventDefault(); // Bloque si l'utilisateur annule l'action
+        }
+    });
+});

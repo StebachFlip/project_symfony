@@ -18,6 +18,7 @@
 <body>
     <!-- Variables d'affichage selon la completion du profil -->
     <!-- Mes informations -->
+    {% set message = ""%}
     {% set lastname = ""%}
     {% set firstname = ""%}
     
@@ -70,6 +71,23 @@
                         <div class="content">
                             <div class="title">Modifications</div>
                             <span>{{ 'profile_update_text' | trans}}</span>
+                        </div>
+                        <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+                    </div>`;
+                notifications.appendChild(newToast);
+                newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+            </script>
+        {% endif %}
+        {% if oldPassError or newPassError %}
+            <script>
+                let notifications = document.querySelector('.notification');
+                let newToast = document.createElement('div');
+                newToast.innerHTML = `
+                    <div class="toast error">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                        <div class="content">
+                            <div class="title">Erreur</div>
+                            <span>{{ 'pass_error' | trans}}</span>
                         </div>
                         <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
                     </div>`;
@@ -232,31 +250,35 @@
                     <span>{{'tab4_title' | trans}}</span>
                 </div>
                 <div class="form-inputs">
-                    <div class="input-box">
-                        <span class="input-label">{{'old_pass' | trans}} :</span>
-                        <input type="password" name="address" class="input-field" placeholder="{{'old_pass' | trans}}">
-                        <i class='bx bx-lock-open-alt icon'></i>
-                    </div>
-                    <div class="input-box">
-                        <span class="input-label">{{'new_pass' | trans}} :</span>
-                        <input type="password" name="postal_code" class="input-field" placeholder="{{'new_pass' | trans}}">
-                        <i class='bx bxs-lock-alt icon'></i>
-                    </div>
-                    <div class="input-box">
-                        <span class="input-label">{{'confirm_pass' | trans}} :</span>
-                        <input type="password" name="city" class="input-field"
-                            placeholder="{{'confirm_pass' | trans}}">
-                        <i class='bx bx-lock-alt icon'></i>
-                    </div>
-                    <div class="input-box">
-                        <button class="input-submit">
-                            <span>{{'confirm_button' | trans}}</span>
-                            <i class="bx bx-right-arrow-alt"></i>
-                        </button>
-                    </div>
+                    {{ form_start(passwordForm, {'attr': {'id': 'passwordForm'}}) }}
+                        <div class="input-box">
+                            <span class="input-label">{{'old_pass' | trans}} :</span>
+                            {{ form_widget(passwordForm.oldPassword, {'attr': {'class': 'input-field', 'placeholder': 'old_pass' | trans, 'name': 'oldPassword'}}) }}
+                            <i class='bx bx-lock-open-alt icon'></i>
+                        </div>
+
+                        <div class="input-box">
+                            <span class="input-label">{{'new_pass' | trans}} :</span>
+                            {{ form_widget(passwordForm.newPassword, {'attr': {'class': 'input-field', 'placeholder': 'new_pass' | trans, 'name': 'newPassword'}}) }}
+                            <i class='bx bxs-lock-alt icon'></i>
+                        </div>
+
+                        <div class="input-box">
+                            <span class="input-label">{{'confirm_pass' | trans}} :</span>
+                            {{ form_widget(passwordForm.confirmPassword, {'attr': {'class': 'input-field', 'placeholder': 'confirm_pass' | trans, 'name': 'confirmPassword'}}) }}
+                            <i class='bx bx-lock-alt icon'></i>
+                        </div>
+
+                        <div class="input-box">
+                            <button class="input-submit">
+                                <span>{{'confirm_button' | trans}}</span>
+                                <i class="bx bx-right-arrow-alt"></i>
+                            </button>
+                        </div>
+                    {{ form_end(passwordForm) }}
                 </div>
             </div>
-            <div class="user-info" data-section="securite">
+            <div class="user-info" data-section="autre">
                 <div class="form-title">
                     <span>Mes Informations</span>
                 </div>

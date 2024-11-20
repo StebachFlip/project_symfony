@@ -57,6 +57,7 @@ old_pass: "Ancien mot de passe"
 new_pass: "Nouveau mot de passe"
 confirm_pass: "Confirmer mot de passe"
 confirm_button: "Valider les changements"
+pass_error: "L'ancien mot de passe n'est pas valide ou les nouveaux mots de passe ne correspondent pas"
 
 profile_error_text: "Veuillez remplir les champs requis"
 profile_update_text: "Modifications effectuées avec succès"

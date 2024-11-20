@@ -57,6 +57,7 @@ old_pass: "Old password"
 new_pass: "New password"
 confirm_pass: "Confirm new password"
 confirm_button: "Confirm the changes"
+pass_error: "Old password is invalid or the new passwords do not match"
 
 profile_error_text: "Please complete the required fields"
 profile_update_text: "Changes completed successfully"
