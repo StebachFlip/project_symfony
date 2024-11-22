@@ -21,7 +21,7 @@ review: "Reviews :"
 stock: "In stock :"
 price: "Price :"
 out_stock: "Out of stock"
-buy_button: "Buy"
+buy_button: "Add to cart"
 indispo: "Unavailable"
 
 profile_text: "Profile"

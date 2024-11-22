@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="FR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panier</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('styles/basket.css') }}">
+    <link rel="icon" href="{{ asset('styles/img/logo.jpg') }}" type="image/jpg">
+
+    <!-- ROGNAGE D'IMAGES -->
+    <link href="https://unpkg.com/cropperjs/dist/cropper.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
+</head>
+
+<body>
+
+ <div class="form-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Panier - StebachFlip</h2>
+            </div>
+            <ul class="sidebar-links">
+                <li>
+                    <a href="#articles">
+                        <i class='bx bx-shopping-bag'></i>Articles
+                    </a>
+                </li>
+                <li>
+                    <a href="#paiements">
+                        <i class='bx bx-credit-card' ></i>Moyens de paiements
+                    </a>
+                </li>
+                <li>
+                <a href="/home" class="sidebar-home-link">
+                    <i class='bx bxs-arrow-from-right'></i>{{ 'tab6_title' | trans }}
+                </a>
+                </li>
+            </ul>
+            
+        </aside>
+
+        <div class="col col-1"></div>
+        <div class="col col-2">
+            <div class="user-info active" data-section="articles">
+                <div class="form-title">
+                    <span>Articles - <span id="total-price">{{ totalPrice|number_format(2, ',', ' ') }} €</span></span>
+                </div>
+
+                <!-- Vérification de la condition d'absence d'articles dans le panier -->
+                {% if cartItems|length == 0 %}
+                    <div class="empty-basket-message">
+                        <p>Il semblerait qu'il n'y ait aucun article dans votre panier</p>
+                    </div>
+                {% else %}
+                    <div id="cart-items-container">
+                        {% for item in cartItems %}
+                            <div class="basket-item" data-item-id="{{ item.id }}">
+                                <button class="remove-btn" data-item-id="{{ item.id }}">
+                                    <i class='bx bx-x'></i>
+                                </button>
+                                <img src="{{ asset('images/Manga/' ~ item.manga.image.url) }}" alt="Article" class="item-img">
+                                <span class="item-name">{{ item.manga.name }}</span>
+
+                                <!-- Boutons pour diminuer et augmenter la quantité -->
+                                <button class="quantity-btn minus" data-item-id="{{ item.id }}" data-action="decrease" data-stock="{{ item.manga.stock }}">-</button>
+                                <span class="item-quantity" data-item-id="{{ item.id }}">{{ item.quantity }}</span>
+                                <button class="quantity-btn plus" data-item-id="{{ item.id }}" data-action="increase" data-stock="{{ item.manga.stock }}">+</button>
+
+                                <!-- Affichage du prix total pour cet article -->
+                                <span class="item-price" data-item-id="{{ item.id }}">
+                                    {{ (item.quantity * item.manga.price)|number_format(2, ',', ' ') }} €
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="user-info" data-section="paiements">
+                <div class="form-title">                            
+                    <span>Moyens de paiements</span>
+                </div>
+                <!-- Option de paiement par carte -->
+                <div class="payment-option" id="card-payment-option">
+                    <input type="checkbox" id="card-payment" class="payment-checkbox">
+                    <label for="card-payment" class="payment-label">
+                        Carte de crédit
+                    </label>
+                </div>
+
+                <!-- Formulaire de paiement par carte -->
+                <div class="payment-form-container" id="card-payment-form" style="display: none;">
+                    <div class="payment-title">
+                        <h2>Paiement par carte</h2>
+                    </div>
+                    <form>
+                        <label class ="payment-label" for="card-number">Numéro de carte</label>
+                        <input type="text" id="card-number" placeholder="Entrez le numéro de carte">
+                        <label class ="payment-label" for="expiry-date">Date d'expiration</label>
+                        <input type="text" id="expiry-date" placeholder="MM/AA">
+                        <label class ="payment-label" for="cvv">CVV</label>
+                        <div class="cvv-wrapper">
+                            <input type="text" id="cvv" placeholder="CVV">
+                            <button class="input-submit" id="submit1" type="button">
+                                <span id="total-price">Payer</span>
+                                <i class="bx bx-right-arrow-alt"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Option de paiement PayPal -->
+                <div class="payment-option" id="paypal-payment-option">
+                    <input type="checkbox" id="paypal-payment" class="payment-checkbox">
+                    <label for="paypal-payment" class="payment-label">
+                        PayPal
+                    </label>
+                </div>
+
+                <!-- Formulaire de paiement PayPal -->
+                <div class="payment-form-container" id="paypal-payment-form" style="display: none;">
+                    <div class="payment-title">
+                        <h2>Paiement sur paypal</h2>
+                    </div>
+                    <form>
+                        <button class="input-submit" id="submit1" type="button">
+                            <span>Redirection paypal</span>
+                            <i class="bx bx-right-arrow-alt"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ asset('script/basket.js') }}"></script>
+    <script src="{{ asset('script/paiements.js') }}"></script>
+</body>

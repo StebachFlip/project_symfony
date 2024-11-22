@@ -11,12 +11,13 @@
 </head>
 <body>
 
-    {% include 'partials/header.html.twig' %}
+    <div class="notification"></div>
+    {% include 'partials/header.html.twig'  %}
+
 
     <br>
     <br>
     <br>
-    <div class="notification"></div>
     {% if user %}
         {% if user.firstname and user.lastname and user.address.street and user.address.postalCode and user.address.city and user.address.country %}
             <script>
@@ -71,6 +72,7 @@
             </script
         {% endif %}
      {% endif %}
+
 
     <br>
     <br>

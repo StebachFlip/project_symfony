@@ -47,9 +47,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?ProfilePicture $profilePicture = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CartItem::class, cascade: ['persist', 'remove'])]
+    private Collection $cartItems;
+
+    
     public function __construct()
     {
         $this->orders = new ArrayCollection();
+        $this->cartItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -195,20 +200,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->profilePicture;
     }
 
-    // public function setProfilePicture(?ProfilePicture $profilePicture): self
-    // {
-    //     // Unset the owning side of the relation if necessary
-    //     if ($profilePicture === null && $this->profilePicture !== null) {
-    //         $this->profilePicture->setUser(null);
-    //     }
+    public function getCartItems(): Collection
+    {
+        return $this->cartItems;
+    }
 
-    //     // Set the owning side of the relation if necessary
-    //     if ($profilePicture !== null && $profilePicture->getUser() !== $this) {
-    //         $profilePicture->setUser($this);
-    //     }
+    public function addCartItem(CartItem $cartItem): self
+    {
+        if (!$this->cartItems->contains($cartItem)) {
+            $this->cartItems[] = $cartItem;
+            $cartItem->setUser($this);
+        }
 
-    //     $this->profilePicture = $profilePicture;
+        return $this;
+    }
 
-    //     return $this;
-    // }
+    public function removeCartItem(CartItem $cartItem): self
+    {
+        if ($this->cartItems->removeElement($cartItem)) {
+            // set the owning side to null (unless already changed)
+            if ($cartItem->getUser() === $this) {
+                $cartItem->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 }

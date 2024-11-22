@@ -1,4 +1,3 @@
-import './bootstrap.js';
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -7,4 +6,9 @@ import './bootstrap.js';
  */
 import './styles/app.css';
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+import { Application } from "stimulus";
+import { definitionsFromContext } from "stimulus/webpack-helpers";
+
+const application = Application.start();
+const context = require.context("./controllers", true, /\.js$/);
+application.load(definitionsFromContext(context));

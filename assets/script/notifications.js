@@ -2,8 +2,8 @@ let success1 = document.querySelector("#submit1");
 
 success1.onclick = function () {
     let notifications = document.querySelector('.notification');
-    const emailInput = document.querySelector('input[name="mail"]');
-    const mdpInput = document.querySelector('input[name="pass"]');
+    const emailInput = document.querySelector('input[name="email"]');
+    const mdpInput = document.querySelector('input[name="password"]');
 
     if (emailInput.value == "" || mdpInput.value == "") {
         let newToast = document.createElement('div');

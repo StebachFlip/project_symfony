@@ -21,7 +21,7 @@ review: "Note :"
 stock: "En stock :"
 price: "Prix :"
 out_stock: "En rupture"
-buy_button: "Acheter"
+buy_button: "Ajouter au panier"
 indispo: "Indisponible"
 
 profile_text: "Profil"
