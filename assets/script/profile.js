@@ -249,7 +249,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll(".error-message").forEach(error => error.remove());
             toastDisplayed = false;
 
-            // Vérification des champs requis
+            // Vérification des champs requisF
             requiredFields.forEach(function (fieldName) {
                 const input = passwordForm.querySelector(`[name="${fieldName}"]`);
                 const label = input ? input.closest('.input-box').querySelector('.input-label') : null;
@@ -276,3 +276,4 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+

@@ -14,6 +14,14 @@
             -- color: #e5ad00;
         }
 
+        .success {
+            --color: #10ae00;
+        }
+
+        .error {
+            --color: #e50000;
+        }
+
         .toast {
             position: relative;
             padding: 10px;
@@ -23,7 +31,6 @@
             display: grid;
             grid-template-columns: 70px 1fr 70px;
             border-radius: 5px;
-            --color: #bf0a0a;
             background-image:
                 linear-gradient(to right, var(--color), #21264D 20%);
             animation: show 0.3s ease 1 forwards;
@@ -114,6 +121,84 @@
             let icon = 'fa-solid fa-circle-xmark'; 
             let title = "{{ 'error_title' | trans }}"; 
             let text = "{{ 'error_text' | trans }}"; 
+
+            createToast(type, icon, title, text);
+        </script>
+    {% endif %}
+    {% if registerSuccess %}
+        <script>
+        let notifications = document.querySelector('.notification');
+        function createToast(type, icon, title, text) {
+            let newToast = document.createElement('div');
+            newToast.innerHTML = `
+                <div class="toast ${type}">
+                    <i class="${icon}"></i>
+                    <div class="content">
+                        <div class="title">${title}</div>
+                        <span>${text}</span>
+                    </div>
+                    <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+                </div>`;
+            notifications.appendChild(newToast);
+            newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+        }
+
+        let type = 'success'; 
+        let icon = 'fa-solid fa-circle-check'; 
+        let title = "{{ 'account_created_title' | trans }}"; 
+        let text = "{{ 'account_created_text' | trans }}"; 
+
+        createToast(type, icon, title, text);
+        </script>
+    {% endif %}
+    {% if mailExist %}
+        <script>
+            let notifications = document.querySelector('.notification');
+            function createToast(type, icon, title, text) {
+                let newToast = document.createElement('div');
+                newToast.innerHTML = `
+                    <div class="toast ${type}">
+                        <i class="${icon}"></i>
+                        <div class="content">
+                            <div class="title">${title}</div>
+                            <span>${text}</span>
+                        </div>
+                        <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+                    </div>`;
+                notifications.appendChild(newToast);
+                newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+            }
+
+            let type = 'error'; 
+            let icon = 'fa-solid fa-circle-xmark'; 
+            let title = "{{ 'mailExist_title' | trans }}"; 
+            let text = "{{ 'mailExist_text' | trans }}"; 
+
+            createToast(type, icon, title, text);
+        </script>
+    {% endif %}
+    {% if nameExist %}
+        <script>
+            let notifications = document.querySelector('.notification');
+            function createToast(type, icon, title, text) {
+                let newToast = document.createElement('div');
+                newToast.innerHTML = `
+                    <div class="toast ${type}">
+                        <i class="${icon}"></i>
+                        <div class="content">
+                            <div class="title">${title}</div>
+                            <span>${text}</span>
+                        </div>
+                        <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+                    </div>`;
+                notifications.appendChild(newToast);
+                newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+            }
+
+            let type = 'error'; 
+            let icon = 'fa-solid fa-circle-xmark'; 
+            let title = "{{ 'nameExist_title' | trans }}"; 
+            let text = "{{ 'nameExist_text' | trans }}"; 
 
             createToast(type, icon, title, text);
         </script>

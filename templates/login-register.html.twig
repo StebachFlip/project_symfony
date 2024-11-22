@@ -40,18 +40,18 @@
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                     <div class="form-inputs">
                         <div class="input-box">
-                            <input type="email" name="email" class="input-field" placeholder="{{ 'email_placeholder' | trans }}" value="{{ last_username|default('') }}" required>
+                            <input type="email" name="mail" class="input-field" placeholder="{{ 'email_placeholder' | trans }}" value="{{ last_username|default('') }}" required>
                             <i class="bx bx-user icon"></i>
                         </div>
                         <div class="input-box">
-                            <input type="password" name="password" class="input-field" placeholder="{{ 'password_placeholder' | trans }}" required>
+                            <input type="password" name="pass" class="input-field" placeholder="{{ 'password_placeholder' | trans }}" required>
                             <i class="bx bx-lock-alt icon"></i>
                         </div>
                         <div class="forgot-pass">
                             <a href="#">{{ 'forgot_password' | trans }}</a>
                         </div>
                         <div class="input-box">
-                            <button class="input-submit">
+                            <button class="input-submit" id="submit1">
                                 <span>{{ 'login' | trans }}</span>
                                 <i class="bx bx-right-arrow-alt"></i>
                             </button>
@@ -71,31 +71,36 @@
                 <div class="form-title">
                     <span>{{ 'create_account' | trans }}</span>
                 </div>
+                {{ form_start(registerForm, {'attr': {'id': 'registerForm'}}) }}
                 <div class="form-inputs">
                     <div class="input-box">
-                        <input type="text" class="input-field" placeholder="{{ 'email_placeholder' | trans }}" required>
+                        {{ form_widget(registerForm.email, {'attr': {'class': 'input-field', 'id': 'registerMail', 'placeholder': 'email_placeholder' | trans, 'name': 'email'}}) }}
                         <i class="bx bx-envelope icon"></i>
                     </div>
 
                     <div class="input-box">
-                            <input type="text" name="username" class="input-field" placeholder="{{ 'username_placeholder' | trans }}" required>
-                            <i class='bx bxs-user-rectangle icon'></i>
-                        </div>
+                        {{ form_widget(registerForm.name, {'attr': {'class': 'input-field', 'placeholder': 'username_placeholder'| trans, 'name': 'name'}}) }}                            
+                        <i class='bx bxs-user-rectangle icon'></i>
+                    </div>
 
                     <div class="input-box">
-                        <input type="text" class="input-field" placeholder="{{ 'password_placeholder' | trans }}" required>
+                        {{ form_widget(registerForm.password, {'attr': {'class': 'input-field', 'id': 'registerPassword', 'placeholder': 'password_placeholder' | trans, 'name': 'password'}}) }}
                         <i class="bx bx-lock-alt icon"></i>
                     </div>
+
                     <div class="input-box">
-                        <input type="password" class="input-field" placeholder="{{ 'confirm_password_placeholder' | trans }}" required>
+                        {{ form_widget(registerForm.confirm_password, {'attr': {'class': 'input-field', 'placeholder': 'confirm_password_placeholder' | trans, 'name': 'confirm_password'}}) }}
                         <i class="bx bx-lock-alt icon"></i>
                     </div>
+
                     <div class="input-box">
-                        <button class="input-submit">
+                        <button class="input-submit" id="submit2">
                             <span>{{ 'register' | trans }}</span>
                             <i class="bx bx-right-arrow-alt"></i>
                         </button>
                     </div>
+                </div>
+                {{ form_end(registerForm) }}
                 </div>
             </div>
         </div>
