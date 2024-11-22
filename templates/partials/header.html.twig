@@ -1,4 +1,34 @@
 <style>
+    .cart-container {
+        position: relative;
+        display: inline-block;
+        align-self: center;  /* Assure que l'élément est centré verticalement par rapport à son conteneur */
+    }
+
+    .cart-count {
+        position: absolute;
+        top: -5px; /* Ajuste légèrement la position verticale */
+        right: -5px; /* Ajuste la position horizontale */
+        background-color: red;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 50%;
+        padding: 2px 6px;
+        min-width: 18px;
+        height: 18px;
+        line-height: 18px; /* Centre verticalement le texte */
+        text-align: center;
+        display: flex;
+        justify-content: center; /* Centrage horizontal */
+        align-items: center; /* Centrage vertical */
+    }
+
+    .icon {
+        font-size: 28px; /* Taille de l'icône ajustée pour un meilleur alignement */
+        vertical-align: middle; /* S'assure que l'icône soit correctement centrée avec les autres éléments */
+    }
+
     .banner {
         background-color: #888ffd;
         padding: 20px;
@@ -13,15 +43,7 @@
         font-family: 'Poppins', sans-serif;
     }
 
-    .logo {
-        width: 50px;
-        height: auto;
-        margin-right: 15px;
-    }
-
-    .home {
-        text-decoration: none;
-        color: inherit;
+    .banner a {
         display: flex;
         align-items: center;
     }
@@ -60,9 +82,12 @@
         transform: scale(1.05);
     }
 
-    .icon {
-        font-size: 30px;
+    .logo {
+        width: 50px;
+        height: auto;
+        margin-right: 15px;
     }
+
 </style>
 
 <header>
@@ -76,7 +101,12 @@
             {% if user.role == true %}
                 <a class="login-link" href="#">Panneau de config.</a>
             {% endif %}
-                <a class="login-link" href="/basket"><i class="fa-solid fa-basket-shopping icon"></i></a>
+                <div class="cart-container">
+                    <a class="login-link" href="/basket">
+                        <i class="fa-solid fa-basket-shopping icon"></i>
+                        <span id="cart-count" class="cart-count">0</span>
+                    </a>
+                </div>
 
 
             <!-- Si l'user possède une photo de profil, sinon affiche default.png -->

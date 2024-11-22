@@ -16,8 +16,8 @@
 </head>
 
 <body>
-
- <div class="form-container">
+<div class="notification"></div>
+<div class="form-container">
         <aside class="sidebar">
             <div class="sidebar-header">
                 <h2>Panier - StebachFlip</h2>
@@ -50,11 +50,15 @@
                 </div>
 
                 <!-- Vérification de la condition d'absence d'articles dans le panier -->
-                {% if cartItems|length == 0 %}
+                {% if cartItems is empty %}
                     <div class="empty-basket-message">
                         <p>Il semblerait qu'il n'y ait aucun article dans votre panier</p>
                     </div>
                 {% else %}
+                    <div class="empty-basket-message">
+                        <p>Il semblerait qu'il n'y ait aucun article dans votre panier</p>
+                    </div>
+
                     <div id="cart-items-container">
                         {% for item in cartItems %}
                             <div class="basket-item" data-item-id="{{ item.id }}">
@@ -70,7 +74,7 @@
                                 <button class="quantity-btn plus" data-item-id="{{ item.id }}" data-action="increase" data-stock="{{ item.manga.stock }}">+</button>
 
                                 <!-- Affichage du prix total pour cet article -->
-                                <span class="item-price" data-item-id="{{ item.id }}">
+                                <span class="item-price" data-item-id="{{ item.id }}" data-price="{{ item.manga.price|number_format(2, '.', '') }}">
                                     {{ (item.quantity * item.manga.price)|number_format(2, ',', ' ') }} €
                                 </span>
                             </div>

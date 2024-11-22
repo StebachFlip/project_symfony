@@ -1,7 +1,7 @@
 // Sidebar
 document.querySelectorAll(".sidebar-links a").forEach(link => {
     link.addEventListener("click", function (event) {
-        if (this.getAttribute("href") === "/home") {
+        if (this.getAttribute("href") === "/home" || this.getAttribute("id") === "logout") {
             return;
         }
 

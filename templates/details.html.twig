@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-
-
+    <div class="notification"></div>
     {% include 'partials/header.html.twig' %}
 
     <br>
@@ -18,50 +17,53 @@
     <br>
 
     <div class="manga-card">
-    <img src="{{ asset('images/Manga/' ~ manga.image.url) }}" alt="{{ manga.name }}" class="manga-image">                    
-    <div class="manga-details">
-        <h2>{{ manga.name }}</h2>
-        <p class="author">{{ 'author' | trans }} {{ manga.author }}</p>
-        <div class="ratings">
-        {{ 'review' | trans }}
-            {% set rating = (manga.rating / 2) %} {# Convertir la note sur 10 en note sur 5 #}
-            {% for i in 1..5 %}
-                {% if i <= rating %}
-                    <i class="fas fa-star"></i> {# Étoile pleine #}
-                {% elseif i - rating <= 0.5 %}
-                    <i class="fas fa-star-half-alt"></i> {# Demi-étoile #}
-                {% else %}
-                    <i class="far fa-star"></i> {# Étoile vide #}
-                {% endif %}
-            {% endfor %}
-        </div>
-        <p class="description">{{ manga.description }}</p>
-        <p class="stock">{{ 'stock' | trans }} {{ manga.stock }}</p>
+        <img src="{{ asset('images/Manga/' ~ manga.image.url) }}" alt="{{ manga.name }}" class="manga-image">                    
+        <div class="manga-details">
+            <h2>{{ manga.name }}</h2>
+            <p class="author">{{ 'author' | trans }} {{ manga.author }}</p>
+            <div class="ratings">
+                {{ 'review' | trans }}
+                {% set rating = (manga.rating / 2) %} {# Convertir la note sur 10 en note sur 5 #}
+                {% for i in 1..5 %}
+                    {% if i <= rating %}
+                        <i class="fas fa-star"></i> {# Étoile pleine #}
+                    {% elseif i - rating <= 0.5 %}
+                        <i class="fas fa-star-half-alt"></i> {# Demi-étoile #}
+                    {% else %}
+                        <i class="far fa-star"></i> {# Étoile vide #}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <p class="description">{{ manga.description }}</p>
+            <p class="stock">{{ 'stock' | trans }} {{ manga.stock }}</p>
 
-        {% if manga.stock > 0 %}    
-            <p class="price">{{ 'price' | trans }} {{ manga.price }}€</p>
-        {% else %}
-            <p class="price">{{ 'out_stock' | trans }}</p>
-        {% endif %}
-
-        <div class="action-container">
             {% if manga.stock > 0 %}    
-                <button class="buy-button">
-                    {{ 'buy_button' | trans }}
-                </button>
-
-                <select class="quantity-select">
-                    {% for i in 1..manga.stock %}
-                        <option value="{{ i }}">{{ i }}</option>
-                    {% endfor %}
-                </select>
+                <p class="price">{{ 'price' | trans }} {{ manga.price }}€</p>
             {% else %}
-                <button class="out-of-stock-button">
-                    {{ 'indispo' | trans }}
-                </button>
+                <p class="price">{{ 'out_stock' | trans }}</p>
             {% endif %}
+
+            <div class="action-container">
+                {% if manga.stock > 0 %}
+                    <button class="buy-button" data-manga-id="{{ manga.id }}">
+                        {{ 'buy_button' | trans }}
+                    </button>
+
+                    <select class="quantity-select">
+                        {% for i in 1..manga.stock %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                {% else %}
+                    <button class="out-of-stock-button">
+                        {{ 'indispo' | trans }}
+                    </button>
+                {% endif %}
+            </div>
         </div>
     </div>
-</div>
-{% include 'partials/footer.html.twig' %}
+
+    {% include 'partials/footer.html.twig' %}
+    <script src="{{ asset('script/details.js') }}"></script>
 </body>
+</html>

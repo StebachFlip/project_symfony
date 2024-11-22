@@ -20,72 +20,159 @@ document.querySelectorAll(".sidebar-links a").forEach(link => {
     });
 });
 
+function createToast(type, icon, title, text) {
+    let notifications = document.querySelector('.notification');
+    let newToast = document.createElement('div');
+    newToast.innerHTML = `
+            <div class="toast ${type}">
+                <i class="${icon}"></i>
+                <div class="content">
+                    <div class="title">${title}</div>
+                    <span>${text}</span>
+                </div>
+                <i id="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+            </div>`;
+    notifications.appendChild(newToast);
+    newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const minusButtons = document.querySelectorAll('.quantity-btn.minus');
     const plusButtons = document.querySelectorAll('.quantity-btn.plus');
     const removeButtons = document.querySelectorAll('.remove-btn');
 
-    // Fonction pour mettre à jour le total du panier
-    function updateTotal() {
-        let total = 0;
-        document.querySelectorAll('.item-price').forEach(priceElement => {
-            total += parseFloat(priceElement.textContent.replace(' €', '').replace(',', '.'));
-        });
-        document.getElementById('total-price').textContent = total.toFixed(2) + ' €';
+    const emptyMessage = document.querySelector('.empty-basket-message');
+    const cartItemsContainer = document.getElementById('cart-items-container');
+
+    // Met à jour le message panier vide
+    function toggleEmptyMessage() {
+        if (cartItemsContainer.children.length === 0) {
+            emptyMessage.style.display = 'block';
+        } else {
+            emptyMessage.style.display = 'none';
+        }
     }
 
-    // Fonction pour gérer la mise à jour des quantités
-    function handleQuantityChange(event) {
+    // Met à jour le total du panier
+    function updateTotal() {
+        let total = 0;
+
+        document.querySelectorAll('.item-price').forEach(priceElement => {
+            const price = parseFloat(priceElement.textContent.replace(' €', '').replace(',', '.'));
+            console.log("Prix détecté pour l'article :", priceElement, "->", price);
+
+            if (!isNaN(price)) {
+                total += price;
+            } else {
+                console.error("Erreur : prix non valide détecté", priceElement.textContent);
+            }
+        });
+
+        document.getElementById('total-price').textContent = total.toFixed(2).replace('.', ',') + ' €';
+    }
+
+
+
+    // Gère la modification des quantités (augmentation ou diminution)
+    async function handleQuantityChange(event) {
         const button = event.target;
         const itemId = button.getAttribute('data-item-id');
         const quantityElement = document.querySelector(`.item-quantity[data-item-id="${itemId}"]`);
-        const stock = parseInt(button.getAttribute('data-stock'));  // Récupère le stock disponible
+        const priceElement = document.querySelector(`.item-price[data-item-id="${itemId}"]`);
+        const stock = parseInt(button.getAttribute('data-stock')); // Récupère le stock disponible
+        const unitPrice = parseFloat(priceElement.getAttribute('data-price')); // Récupère le prix unitaire
+        if (isNaN(unitPrice)) {
+            console.error(`Prix unitaire invalide pour l'article ${itemId}:`, priceElement.getAttribute('data-price'));
+            return;
+        }
         let currentQuantity = parseInt(quantityElement.textContent);
 
+        let url, method;
         if (button.getAttribute('data-action') === 'increase') {
-            if (currentQuantity < stock) {  // Vérifie si la quantité ne dépasse pas le stock
-                quantityElement.textContent = currentQuantity + 1;
+            if (currentQuantity < stock) {
+                url = `/basket/increase/${itemId}`;
+                method = 'POST';
             } else {
-                alert(`La quantité maximale disponible est ${stock}.`);
+                const errorType = 'error';
+                const errorIcon = 'fa-solid fa-circle-xmark';
+                const errorTitle = 'Erreur';
+                const errorText = `La quantité maximale disponible est ${stock}.`;
+                createToast(errorType, errorIcon, errorTitle, errorText);
+                return;
             }
         } else if (button.getAttribute('data-action') === 'decrease') {
-            quantityElement.textContent = Math.max(1, currentQuantity - 1);  // On ne descend pas sous 1
+            if (currentQuantity > 1) {
+                url = `/basket/decrease/${itemId}`;
+                method = 'POST';
+            } else {
+                const errorType = 'error';
+                const errorIcon = 'fa-solid fa-circle-xmark';
+                const errorTitle = 'Erreur';
+                const errorText = "La quantité ne peut pas être inférieure à 1";
+                createToast(errorType, errorIcon, errorTitle, errorText);
+
+                return;
+            }
         }
 
-        // Met à jour le prix de l'article
-        const priceElement = document.querySelector(`.item-price[data-item-id="${itemId}"]`);
-        const price = parseFloat(priceElement.textContent.replace(' €', '').replace(',', '.')) / currentQuantity;  // Récupère le prix unitaire
-        priceElement.textContent = (parseInt(quantityElement.textContent) * price).toFixed(2) + ' €';
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' }
+            });
 
-        // Met à jour le total du panier
-        updateTotal();
+            const result = await response.json();
+
+            if (result.success) {
+                // Met à jour la quantité et le prix
+                quantityElement.textContent = result.newQuantity;
+                priceElement.textContent = (result.newQuantity * unitPrice).toFixed(2).replace('.', ',') + ' €';
+
+                // Met à jour le total du panier
+                updateTotal();
+            } else {
+                console.error("Erreur lors de la mise à jour de la quantité.");
+            }
+        } catch (error) {
+            console.error("Erreur réseau :", error);
+        }
     }
 
-    // Fonction pour gérer la suppression de l'article
-    function handleRemoveItem(event) {
-        // Empêche le comportement par défaut du bouton
-        event.preventDefault();
-
-        // Récupère l'ID de l'élément à supprimer à partir de l'attribut 'data-item-id' du bouton
-        const button = event.target.closest('.remove-btn'); // S'assure de récupérer le bon bouton
-        const itemId = button.getAttribute('data-item-id'); // Récupère l'ID
-
-        console.log("Item ID to remove: ", itemId);  // Ajoute un log pour vérifier l'ID
-
-        // Cherche l'élément du panier avec cet ID
+    // Gère la suppression d'un article
+    async function handleRemoveItem(event) {
+        const button = event.target.closest('.remove-btn');
+        const itemId = button.getAttribute('data-item-id');
         const basketItem = document.querySelector(`.basket-item[data-item-id="${itemId}"]`);
 
-        console.log("Basket item found: ", basketItem);  // Vérifie si l'élément est trouvé
+        try {
+            const response = await fetch(`/basket/remove/${itemId}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' }
+            });
 
-        // Vérifie si l'élément existe avant de tenter de le supprimer
-        if (basketItem) {
-            basketItem.remove();
-            updateTotal();  // Met à jour le total après suppression
-        } else {
-            console.error("Article non trouvé !");
+            const result = await response.json();
+
+            if (result.success) {
+                // Supprime l'article du DOM
+                basketItem.remove();
+
+                // Met à jour le total et le message panier vide
+                const errorType = 'success';
+                const errorIcon = 'fa-solid fa-circle-xmark';
+                const errorTitle = 'Suppression';
+                const errorText = "Le manga à été supprimé avec succès";
+                createToast(errorType, errorIcon, errorTitle, errorText);
+                updateTotal();
+                toggleEmptyMessage();
+            } else {
+                console.error("Erreur lors de la suppression de l'article.");
+            }
+        } catch (error) {
+            console.error("Erreur réseau :", error);
         }
     }
-    // Ajouter des écouteurs d'événements aux boutons
+
+    // Ajouter des écouteurs d'événements
     minusButtons.forEach(button => {
         button.addEventListener('click', handleQuantityChange);
     });
@@ -97,13 +184,16 @@ document.addEventListener('DOMContentLoaded', function () {
     removeButtons.forEach(button => {
         button.addEventListener('click', handleRemoveItem);
     });
+
+    // Initialiser le message panier vide au chargement
+    toggleEmptyMessage();
 });
 
 document.addEventListener('DOMContentLoaded', function () {
     const cartItems = document.querySelectorAll('.basket-item');
     const emptyMessage = document.querySelector('.empty-basket-message');
 
-    // Si aucun élément de panier n'est trouvé, afficher le message
+    // Vérifiez si le panier est vide
     if (cartItems.length === 0) {
         emptyMessage.style.display = 'block';  // Affiche le message
     } else {
