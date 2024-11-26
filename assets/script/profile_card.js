@@ -155,3 +155,33 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+// Message d'erreur si le formulaire n'est pas complet
+let success = document.querySelector("#confirm");
+success.onclick = function () {
+    let notifications = document.querySelector('.notification');
+    const numberInput = document.querySelector('#card_form_number');
+    const dateInput = document.querySelector('#card_form_expirationDate');
+    const cvvInput = document.querySelector('#card_form_cvv');
+
+    if (numberInput.value == "" || dateInput.value == "" || cvvInput.value == "") {
+        let newToast = document.createElement('div');
+        newToast.innerHTML = `
+            <div class="toast error">
+                <i class="fa-solid fa-circle-xmark"></i>
+                <div class="content">
+                    <div class="title">Erreur</div>
+                    <span>Entrez une adresse mail et un mot de passe.</span>
+                </div>
+                <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+            </div>`;
+        notifications.appendChild(newToast);
+        newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+    }
+    else {
+        setTimeout(() => {
+
+        })
+    }
+}
+

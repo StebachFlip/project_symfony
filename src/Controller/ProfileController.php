@@ -9,6 +9,7 @@ use App\Entity\ProfilePicture;
 use App\Entity\User;
 use App\Entity\Card;
 use App\Form\PasswordFormType;
+use App\Form\CardFormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,15 +28,12 @@ class ProfileController extends AbstractController
         $success = false;
         $oldPasswordInvalid = false;
         $newPasswordInvalid = false;
+        $cardExist = false;
         //dd($user); 
 
         if (!$user instanceof User) {
             return $this->redirectToRoute('home');
         }
-        
-        // Récupération des infos bancaires
-        $cards = $user->getCards()->toArray();
-        //dd($cards); // Afficher les cartes
 
         // Chargement du formulaire de données personnelles
         $profileForm = $this->createForm(UserProfileType::class, $user);
@@ -50,6 +48,10 @@ class ProfileController extends AbstractController
         $passwordForm = $this->createForm(PasswordFormType::class, $passwordChange);
         $passwordForm->handleRequest($request);
 
+        // Chargement du formulaire de carte de credit
+        $card = new Card();
+        $cardForm = $this->createForm(CardFormType::class, $card);
+        $cardForm->handleRequest($request);
 
         if ($profileForm->isSubmitted() && $profileForm->isValid()) {
             $entityManager->persist($user);
@@ -92,6 +94,32 @@ class ProfileController extends AbstractController
             }  
         }
 
+        if ($cardForm->isSubmitted() && $cardForm->isValid()) {
+            $card = $cardForm->getData();
+
+            $existingCard = $entityManager->getRepository(Card::class)->findOneBy([
+                'number' => $card->getNumber(),  
+                'user' => $user                  
+            ]);
+    
+            if ($existingCard) {
+                $this->addFlash('error', 'Cette carte existe déjà pour cet utilisateur.');
+                $cardExist = true;
+            } else {
+                $card->setUser($user);
+                $entityManager->persist($card);
+                $entityManager->flush();
+    
+                $this->addFlash('success', 'Carte ajoutée avec succès.');
+                $success = true;
+            }
+        }
+
+
+        // Récupération des infos bancaires
+        $cards = $user->getCards()->toArray();
+        //dd($cards); // Afficher les cartes
+
         return $this->render('profile.html.twig', [
             'profileForm' => $profileForm->createView(),
             'addressForm' => $addressForm->createView(),
@@ -101,7 +129,9 @@ class ProfileController extends AbstractController
             'success' => $success,
             'oldPassError' => $oldPasswordInvalid,
             'newPassError' => $newPasswordInvalid,
-            'cards'=> $cards
+            'cards'=> $cards,
+            'cardForm'=> $cardForm,
+            'cardExist' => $cardExist
         ]);
     }
 

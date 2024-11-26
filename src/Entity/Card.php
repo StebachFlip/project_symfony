@@ -20,28 +20,14 @@ class Card
 
     #[ORM\Column(type: 'string', length: 16)]
     #[Assert\NotBlank]
-    #[Assert\Length(
-        min: 16,
-        max: 16,
-        exactMessage: "The card number must be exactly 16 digits."
-    )]
     private ?string $number = null;
 
     #[ORM\Column(type: 'string', length: 5)]
     #[Assert\NotBlank]
-    #[Assert\Regex(
-        pattern: '/^(0[1-9]|1[0-2])\/\d{2}$/',
-        message: "The expiration date must be in MM/YY format."
-    )]
     private ?string $expirationDate = null;
 
     #[ORM\Column(type: 'string', length: 3)]
     #[Assert\NotBlank]
-    #[Assert\Length(
-        min: 3,
-        max: 3,
-        exactMessage: "The CVV must be exactly 3 digits."
-    )]
     private ?string $cvv = null;
 
     // Getters and Setters

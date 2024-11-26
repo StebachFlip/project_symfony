@@ -96,6 +96,23 @@
                 newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
             </script>
         {% endif %}
+        {% if cardExist %}
+            <script>
+                let notifications = document.querySelector('.notification');
+                let newToast = document.createElement('div');
+                newToast.innerHTML = `
+                    <div class="toast error">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                        <div class="content">
+                            <div class="title">Erreur</div>
+                            <span>Vous ne pouvez pas rentrer deux fois la même carte.</span>
+                        </div>
+                        <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+                    </div>`;
+                notifications.appendChild(newToast);
+                newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+            </script>
+        {% endif %}
     </div>
 
     <div class="form-container">
@@ -328,22 +345,22 @@
                     <div class="payment-title">
                         <h2>Ajout d'une carte</h2>
                     </div>
-                    <form>
+                    {{ form_start(cardForm, {'attr': {'id': 'cardForm'}}) }}
                         <label class="payment-label" for="card-number-add">Numéro de carte</label>
-                        <input type="text" id="card-number-add" placeholder="Entrez le numéro de carte">
-                        
+                        {{ form_widget(cardForm.number, {'attr': {'id': 'card-number-add', 'placeholder': 'number_placeholder' | trans, 'name': 'number'}}) }}
+       
                         <label class="payment-label" for="expiry-date-add">Date d'expiration</label>
-                        <input type="text" id="expiry-date-add" placeholder="MM/AA">
-                            
+                        {{ form_widget(cardForm.expirationDate, {'attr': {'id': 'expiry-date-add', 'placeholder': 'date_placeholder' | trans, 'name': 'expiration_date'}}) }}
+
                         <label class="payment-label" for="cvv-add">CVV</label>
                         <div class="cvv-wrapper">
-                            <input type="text" id="cvv-add" placeholder="CVV">
-                            <button class="input-submit">
-                                <span id="total-price">Valider</span>
+                            {{ form_widget(cardForm.cvv, {'attr': {'id': 'cvv-add', 'placeholder': 'cvv_placeholder' | trans, 'name': 'cvv'}}) }}
+                            <button class="input-submit" type="submit">
+                                <span id="confirm">Valider</span>
                                 <i class="bx bx-right-arrow-alt"></i>
                             </button>
                         </div>
-                    </form>
+                    {{ form_end(cardForm) }}
                 </div>
             </div>
 
