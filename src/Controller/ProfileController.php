@@ -7,6 +7,7 @@ use App\Form\UserProfileType;
 use App\Form\AddressFormType;
 use App\Entity\ProfilePicture;
 use App\Entity\User;
+use App\Entity\Card;
 use App\Form\PasswordFormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 class ProfileController extends AbstractController
 {
     #[Route('/profile', name: 'profile')]
@@ -30,6 +32,10 @@ class ProfileController extends AbstractController
         if (!$user instanceof User) {
             return $this->redirectToRoute('home');
         }
+        
+        // Récupération des infos bancaires
+        $cards = $user->getCards()->toArray();
+        //dd($cards); // Afficher les cartes
 
         // Chargement du formulaire de données personnelles
         $profileForm = $this->createForm(UserProfileType::class, $user);
@@ -94,7 +100,8 @@ class ProfileController extends AbstractController
             'hasError' => $hasError,
             'success' => $success,
             'oldPassError' => $oldPasswordInvalid,
-            'newPassError' => $newPasswordInvalid
+            'newPassError' => $newPasswordInvalid,
+            'cards'=> $cards
         ]);
     }
 
@@ -143,4 +150,39 @@ class ProfileController extends AbstractController
 
         return $this->json(['success' => 'Image uploaded successfully']);
     }
+
+    // Méthode pour supprimer une carte 
+    #[Route('/delete-card/{id}', name: 'delete_card', methods: ['DELETE'])]
+    public function deleteCard($id, Request $request, EntityManagerInterface $entityManager, Security $security): JsonResponse
+    {
+        $csrfToken = $request->get('_token');
+
+        // Vérification du token CSRF
+        if (!$this->isCsrfTokenValid('delete-card', $csrfToken)) {
+            return new JsonResponse(['message' => 'Token CSRF invalide'], 400);
+        }
+
+        $user = $security->getUser();
+
+        // Récupérer la carte
+        $card = $entityManager->getRepository(Card::class)->find($id);
+
+        // Vérification : carte existe et appartient à l'utilisateur
+        if (!$card || $card->getUser() !== $user) {
+            return new JsonResponse(['message' => 'Carte introuvable ou non autorisée'], 404);
+        }
+
+        // Supprimer la carte
+        $entityManager->remove($card);
+        $entityManager->flush();
+
+        // Vérification après suppression
+        $deletedCard = $entityManager->getRepository(Card::class)->find($id);
+        if ($deletedCard) {
+            return new JsonResponse(['message' => 'Erreur lors de la suppression de la carte'], 500);
+        }
+
+        return new JsonResponse(['message' => 'Carte supprimée avec succès'], 200);
+    }
+
 }

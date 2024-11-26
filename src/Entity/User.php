@@ -50,11 +50,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: CartItem::class, cascade: ['persist', 'remove'])]
     private Collection $cartItems;
 
-    
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Card::class, cascade: ['persist', 'remove'])]
+    private Collection $cards;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
         $this->cartItems = new ArrayCollection();
+        $this->cards = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -221,6 +224,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($cartItem->getUser() === $this) {
                 $cartItem->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCards(): Collection
+    {
+        return $this->cards;
+    }
+
+    public function addCard(Card $card): self
+    {
+        if (!$this->cards->contains($card)) {
+            $this->cards[] = $card;
+            $card->setUser($this); // Mise à jour du côté "inversé"
+        }
+
+        return $this;
+    }
+
+    public function removeCard(Card $card): self
+    {
+        if ($this->cards->removeElement($card)) {
+            // Met à null le côté "inversé" si nécessaire
+            if ($card->getUser() === $this) {
+                $card->setUser(null);
             }
         }
 

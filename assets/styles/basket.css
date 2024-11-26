@@ -270,7 +270,7 @@ body {
     top: 0;
     left: 0;
     height: 100%;
-    width: 300px;
+    width: 30%;
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(30px);
     border-radius: 20px;
