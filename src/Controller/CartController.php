@@ -13,18 +13,22 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\User;
 use App\Entity\CartItem;
 use App\Entity\Manga;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use App\Entity\Card;
+use App\Form\CardFormType;
 
-class BasketController extends AbstractController
+class CartController extends AbstractController
 {
-    #[Route('/basket', name: 'basket')]
-    public function index(CartItemRepository $cartItemRepository, Security $security): Response
+    #[Route('/cart', name: 'cart')]
+    public function index(CartItemRepository $cartItemRepository, Security $security, Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $security->getUser();
 
         if (!$user instanceof User) {
             return $this->redirectToRoute('home');
         }
+        
+        $cardExist = false;
+        $isProfilePage = false;
 
         $cartItems = $cartItemRepository->findByUser($user);
 
@@ -37,14 +41,61 @@ class BasketController extends AbstractController
             0
         );
 
-        return $this->render('basket.html.twig', [
+        // Chargement du formulaire de carte de credit
+        $cards = $user->getCards()->toArray();
+
+        // Génération du formulaire d'ajout de carte
+        $card = new Card();
+        $addCardForm = $this->createForm(CardFormType::class, $card);
+        $addCardForm->handleRequest($request);
+        
+        // Génération de formulaires en fonction du nombre de cartes
+        $cardForms = [];
+        foreach ($cards as $index => $card) {
+            $form = $this->createForm(CardFormType::class, $card, [
+                'action' => $this->generateUrl('update_card', ['id' => $card->getId()]),
+                'method' => 'POST',
+            ]);
+            $cardsWithForms[] = [
+                'card' => $card,
+                'form' => $form->createView(),
+            ];
+        }
+
+        /*if ($cardForms->isSubmitted() && $cardForm->isValid()) {
+            $card = $cardForms->getData();
+
+            $existingCard = $entityManager->getRepository(Card::class)->findOneBy([
+                'number' => $card->getNumber(),  
+                'user' => $user                  
+            ]);
+    
+            if ($existingCard) {
+                $this->addFlash('error', 'Cette carte existe déjà pour cet utilisateur.');
+                $cardExist = true;
+            } else {
+                $card->setUser($user);
+                $entityManager->persist($card);
+                $entityManager->flush();
+    
+                $this->addFlash('success', 'Carte ajoutée avec succès.');
+                $success = true;
+            }
+        }*/
+
+        return $this->render('cart.html.twig', [
             'cartItems' => $cartItems,
             'totalPrice' => $totalPrice,
+            'isProfilePage' =>$isProfilePage,
+            'cards'=> $cards,
+            'cardsWithForms'=> $cardsWithForms,
+            'addCardForm' => $addCardForm,
+            'cardExist' => $cardExist,
         ]);
     }
 
 
-    #[Route('/basket/increase/{id}', name: 'basket_increase', methods: ['POST'])]
+    #[Route('/cart/increase/{id}', name: 'cart_increase', methods: ['POST'])]
     public function increaseQuantity(CartItem $cartItem, EntityManagerInterface $entityManager): JsonResponse
     {
         if ($cartItem->getUser() !== $this->getUser()) {
@@ -68,7 +119,7 @@ class BasketController extends AbstractController
         ]);
     }
 
-    #[Route('/basket/decrease/{id}', name: 'basket_decrease', methods: ['POST'])]
+    #[Route('/cart/decrease/{id}', name: 'cart_decrease', methods: ['POST'])]
     public function decreaseQuantity(CartItem $cartItem, EntityManagerInterface $entityManager): JsonResponse
     {
         if ($cartItem->getUser() !== $this->getUser()) {
@@ -85,7 +136,7 @@ class BasketController extends AbstractController
         ]);
     }
 
-    #[Route('/basket/remove/{id}', name: 'basket_remove', methods: ['DELETE'])]
+    #[Route('/cart/remove/{id}', name: 'cart_remove', methods: ['DELETE'])]
     public function removeItem(CartItem $cartItem, EntityManagerInterface $entityManager): JsonResponse
     {
         if ($cartItem->getUser() !== $this->getUser()) {
@@ -98,7 +149,7 @@ class BasketController extends AbstractController
         return new JsonResponse(['success' => true]);
     }
 
-    #[Route('/basket/add/{id}', name: 'basket_add', methods: ['POST'])]
+    #[Route('/cart/add/{id}', name: 'cart_add', methods: ['POST'])]
     public function addToCart(Manga $manga, Request $request, Security $security, EntityManagerInterface $entityManager)
     {
         // Vérifier que l'utilisateur est authentifié
@@ -182,5 +233,26 @@ class BasketController extends AbstractController
             'status' => 'success',
             'cart_count' => $totalItems
         ]);
+    }
+    
+    #[Route('/update_card', name: 'update_card', methods: ['POST'])]
+    public function updateCard(Request $request, Card $card): Response
+    {
+        $form = $this->createForm(CardFormType::class, $card);
+        $form->handleRequest($request);
+
+        /*if ($form->isSubmitted() && $form->isValid()) {
+            // Enregistrer les modifications
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success', 'Carte mise à jour.');
+
+            return $this->redirectToRoute('payment_options');
+        }
+
+        return $this->render('payment/edit.html.twig', [
+            'form' => $form->createView(),
+            'card' => $card,
+        ]);*/
+        return $this->redirectToRoute('home');
     }
 }

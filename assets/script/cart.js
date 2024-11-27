@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let url, method;
         if (button.getAttribute('data-action') === 'increase') {
             if (currentQuantity < stock) {
-                url = `/basket/increase/${itemId}`;
+                url = `/cart/increase/${itemId}`;
                 method = 'POST';
             } else {
                 const errorType = 'error';
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         } else if (button.getAttribute('data-action') === 'decrease') {
             if (currentQuantity > 1) {
-                url = `/basket/decrease/${itemId}`;
+                url = `/cart/decrease/${itemId}`;
                 method = 'POST';
             } else {
                 const errorType = 'error';
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const basketItem = document.querySelector(`.basket-item[data-item-id="${itemId}"]`);
 
         try {
-            const response = await fetch(`/basket/remove/${itemId}`, {
+            const response = await fetch(`/cart/remove/${itemId}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' }
             });

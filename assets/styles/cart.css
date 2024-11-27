@@ -203,6 +203,7 @@ body {
     color: #FFF;
 }
 
+.delete-card-btn,
 .input-submit {
     display: flex;
     align-items: center;
@@ -222,6 +223,7 @@ body {
     margin: auto;
 }
 
+.delete-card-btn:hover,
 .input-submit:hover {
     gap: 15px;
 }

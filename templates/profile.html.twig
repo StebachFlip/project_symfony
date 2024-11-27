@@ -297,72 +297,7 @@
                     {{ form_end(passwordForm) }}
                 </div>
             </div>
-            <div class="user-info" data-section="carte">
-                <div class="form-title">                            
-                    <span>Moyens de paiements</span>
-                </div>
-                {% for card in cards %}
-                    <!-- Option de paiement par carte {{ loop.index }} -->
-                    <div class="payment-option" id="card-payment-option-{{ loop.index }}">
-                        <input type="checkbox" id="card-payment-{{ loop.index }}" class="payment-checkbox">
-                        <label for="card-payment-{{ loop.index }}" class="payment-label">
-                            Carte de crédit finissant par {{ card.lastDigits }}
-                        </label>
-                    </div>
-
-                    <!-- Formulaire de paiement par carte {{ loop.index }} -->
-                    <div class="payment-form-container" id="card-payment-form-{{ loop.index }}" style="display: none;">
-                        <div class="payment-title">
-                            <h2>Paiement par carte finissant par {{ card.lastDigits }}</h2>
-                        </div>
-                        <form>
-                            <label class="payment-label" for="card-number-{{ loop.index }}">Numéro de carte</label>
-                            <input type="text" id="card-number-{{ loop.index }}" placeholder="Entrez le numéro de carte" value="XXXX-XXXX-XXXX-{{ card.lastDigits }}" readonly>
-                            
-                            <label class="payment-label" for="expiry-date-{{ loop.index }}">Date d'expiration</label>
-                            <input type="text" id="expiry-date-{{ loop.index }}" placeholder="MM/AA" value="{{ card.expirationDate }}" readonly>
-                            
-                            <label class="payment-label" for="cvv-{{ loop.index }}">CVV</label>
-                            <div class="cvv-wrapper">
-                                <input type="text" id="cvv-{{ loop.index }}" placeholder="CVV" readonly>
-                                <button class="delete-card-btn" data-card-id="{{ card.id }}" type="button" data-csrf-token="{{ csrf_token('delete-card') }}">
-                                    <span id="total-price">Supprimer la carte</span>
-                                    <i class="bx bx-right-arrow-alt"></i>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                {% endfor %}
-                <div class="payment-option" id="card-payment-option-add">
-                    <input type="checkbox" id="card-payment-add" class="payment-checkbox">
-                    <label for="card-payment-add" class="payment-label">
-                        Ajouter une nouvelle carte
-                    </label>
-                </div>
-
-                <!-- Formulaire d'ajout paiement par carte -->
-                <div class="payment-form-container" id="card-payment-form-add" style="display: none;">
-                    <div class="payment-title">
-                        <h2>Ajout d'une carte</h2>
-                    </div>
-                    {{ form_start(cardForm, {'attr': {'id': 'cardForm'}}) }}
-                        <label class="payment-label" for="card-number-add">Numéro de carte</label>
-                        {{ form_widget(cardForm.number, {'attr': {'id': 'card-number-add', 'placeholder': 'number_placeholder' | trans, 'name': 'number'}}) }}
-       
-                        <label class="payment-label" for="expiry-date-add">Date d'expiration</label>
-                        {{ form_widget(cardForm.expirationDate, {'attr': {'id': 'expiry-date-add', 'placeholder': 'date_placeholder' | trans, 'name': 'expiration_date'}}) }}
-
-                        <label class="payment-label" for="cvv-add">CVV</label>
-                        <div class="cvv-wrapper">
-                            {{ form_widget(cardForm.cvv, {'attr': {'id': 'cvv-add', 'placeholder': 'cvv_placeholder' | trans, 'name': 'cvv'}}) }}
-                            <button class="input-submit" type="submit">
-                                <span id="confirm">Valider</span>
-                                <i class="bx bx-right-arrow-alt"></i>
-                            </button>
-                        </div>
-                    {{ form_end(cardForm) }}
-                </div>
-            </div>
+            {% include 'partials/cardForm.html.twig' %}</div>
 
         </div>
         

@@ -29,6 +29,7 @@ class ProfileController extends AbstractController
         $oldPasswordInvalid = false;
         $newPasswordInvalid = false;
         $cardExist = false;
+        $isProfilePage = true;
         //dd($user); 
 
         if (!$user instanceof User) {
@@ -131,7 +132,8 @@ class ProfileController extends AbstractController
             'newPassError' => $newPasswordInvalid,
             'cards'=> $cards,
             'cardForm'=> $cardForm,
-            'cardExist' => $cardExist
+            'cardExist' => $cardExist,
+            'isProfilePage' => $isProfilePage
         ]);
     }
 

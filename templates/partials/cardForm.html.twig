@@ -1,0 +1,78 @@
+{% if isProfilePage %}
+    {% set confirm_button = "confirm"%}
+    {% set delete_button = "card-delete-button"%}
+    {% set total_price = "" %}
+
+{% else %}
+    {% set confirm_button = "Payer"%}
+    {% set delete_button = "Payer"%}
+    {% set total_price = totalPrice|number_format(2, ',', ' ') %}
+{% endif %}
+
+<div class="user-info" data-section="carte">
+    <div class="form-title">                            
+        <span>{{'payment-title' | trans}}</span>
+    </div>
+    {% for item in cardsWithForms %}
+        {% set card = item.card %}
+        {% set form = item.form %}
+        <!-- Option de paiement par carte {{ loop.index }} -->
+        <div class="payment-option" id="card-payment-option-{{ loop.index }}">
+            <input type="checkbox" id="card-payment-{{ loop.index }}" class="payment-checkbox">
+            <label for="card-payment-{{ loop.index }}" class="payment-label">
+                {{'payment-label' | trans }} {{ card.lastDigits }}
+            </label>
+        </div>
+
+        <!-- Formulaire de paiement par carte {{ loop.index }} -->
+        <div class="payment-form-container" id="card-payment-form-{{ loop.index }}" style="display: none;">
+            <div class="payment-title">
+                <h2> {{'payment-label' | trans }}{{ card.lastDigits }}</h2>
+            </div>
+            {{ form_start(form, {'attr': {'id': 'cardForm-' ~ loop.index}}) }}
+                <label class="payment-label" for="card-number-{{ loop.index }}">{{'card-number' | trans}}</label>
+                {{ form_widget(form.number, {'attr': {'id': 'card-number-' ~ loop.index, 'readonly': true, 'value': 'XXXX-XXXX-XXXX-' ~ card.lastDigits}}) }}
+                            
+                <label class="payment-label" for="expiry-date-{{ loop.index }}">{{'card-date' | trans}}</label>
+                {{ form_widget(form.expirationDate, {'attr': {'id': 'expiry-date-' ~ loop.index, 'readonly': true, 'value': card.expirationDate}}) }}
+                            
+                <label class="payment-label" for="cvv-{{ loop.index }}">CVV</label>
+                <div class="cvv-wrapper">
+                    {{ form_widget(form.cvv, {'attr': {'id': 'cvv-' ~ loop.index, 'placeholder': '', 'value': ''}}) }}
+                    <button class="delete-card-btn" data-card-id="{{ card.id }}" type="button" data-csrf-token="{{ csrf_token('delete-card') }}">
+                        <span id="total-price">{{delete_button | trans}} - {{total_price}} €</span>
+                        <i class="bx bx-right-arrow-alt"></i>
+                    </button>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    {% endfor %}
+    <div class="payment-option" id="card-payment-option-add">
+        <input type="checkbox" id="card-payment-add" class="payment-checkbox">
+        <label for="card-payment-add" class="payment-label">
+            {{'payment-add-title' | trans}}
+        </label>
+    </div>
+
+    <!-- Formulaire d'ajout paiement par carte -->
+    <div class="payment-form-container" id="card-payment-form-add" style="display: none;">
+        <div class="payment-title">
+            <h2>{{'payment-add-title' | trans}}</h2>
+        </div>
+        {{ form_start(addCardForm, {'attr': {'id': 'addCardForm'}}) }}
+            <label class="payment-label" for="card-number-add">{{'card-number' | trans}}</label>
+            {{ form_widget(addCardForm.number, {'attr': {'id': 'card-number-add', 'placeholder': 'card-number-placeholder' | trans, 'name': 'number'}}) }}
+       
+            <label class="payment-label" for="expiry-date-add">{{'card-date' | trans}}</label>
+            {{ form_widget(addCardForm.expirationDate, {'attr': {'id': 'expiry-date-add', 'placeholder': 'card-date-placeholder' | trans, 'name': 'expiration_date'}}) }}
+
+            <label class="payment-label" for="cvv-add">CVV</label>
+            <div class="cvv-wrapper">
+                {{ form_widget(addCardForm.cvv, {'attr': {'id': 'cvv-add', 'placeholder': 'cvv', 'name': 'cvv'}}) }}
+                <button class="input-submit" type="submit">
+                    <span id="confirm">{{confirm_button | trans}} - {{total_price}} €</span>
+                    <i class="bx bx-right-arrow-alt"></i>
+                </button>
+            </div>
+        {{ form_end(addCardForm) }}
+    </div>
