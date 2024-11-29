@@ -17,6 +17,24 @@
 
 <body>
 <div class="notification"></div>
+{% if incorrect_cvv %}
+    <script>
+        let notifications = document.querySelector('.notification');
+        let newToast = document.createElement('div');
+        newToast.innerHTML = `
+            <div class="toast error">
+                <i class="fa-solid fa-circle-xmark"></i>
+                <div class="content">
+                    <div class="title">Erreur</div>
+                    <span>Le code CVV ne correspond pas.</span>
+                </div>
+                <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+            </div>`;
+        notifications.appendChild(newToast);
+        newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+    </script>
+{% endif %}
+
 <div class="form-container">
         <aside class="sidebar">
             <div class="sidebar-header">

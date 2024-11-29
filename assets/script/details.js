@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             // Utilisation de fetch pour envoyer la requête à Symfony
-            fetch(`/basket/add/${mangaId}`, {
+            fetch(`/cart/add/${mangaId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',

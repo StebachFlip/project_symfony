@@ -15,11 +15,12 @@ use App\Entity\CartItem;
 use App\Entity\Manga;
 use App\Entity\Card;
 use App\Form\CardFormType;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class CartController extends AbstractController
 {
     #[Route('/cart', name: 'cart')]
-    public function index(CartItemRepository $cartItemRepository, Security $security, Request $request, EntityManagerInterface $entityManager): Response
+    public function index(CartItemRepository $cartItemRepository, Security $security, Request $request, EntityManagerInterface $entityManager, SessionInterface $session): Response
     {
         $user = $security->getUser();
 
@@ -29,6 +30,12 @@ class CartController extends AbstractController
         
         $cardExist = false;
         $isProfilePage = false;
+        $incorrect_cvv = $session->get('incorrect_cvv');
+        $session->remove('incorrect_cvv');
+
+        if($incorrect_cvv != true) {
+            $incorrect_cvv = false;
+        }
 
         $cartItems = $cartItemRepository->findByUser($user);
 
@@ -49,11 +56,9 @@ class CartController extends AbstractController
         $addCardForm = $this->createForm(CardFormType::class, $card);
         $addCardForm->handleRequest($request);
         
-        // Génération de formulaires en fonction du nombre de cartes
-        $cardForms = [];
         foreach ($cards as $index => $card) {
             $form = $this->createForm(CardFormType::class, $card, [
-                'action' => $this->generateUrl('update_card', ['id' => $card->getId()]),
+                'action' => $this->generateUrl('create_order', ),
                 'method' => 'POST',
             ]);
             $cardsWithForms[] = [
@@ -91,6 +96,8 @@ class CartController extends AbstractController
             'cardsWithForms'=> $cardsWithForms,
             'addCardForm' => $addCardForm,
             'cardExist' => $cardExist,
+            'incorrect_cvv' => $incorrect_cvv
+
         ]);
     }
 

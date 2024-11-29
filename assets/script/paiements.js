@@ -160,40 +160,6 @@ document.addEventListener("DOMContentLoaded", function () {
     resetForms();
 });
 
-// LOGIQUE DE SUPPRESION D'UNE CARTE
-document.addEventListener("DOMContentLoaded", function () {
-    const deleteButtons = document.querySelectorAll(".delete-card-btn");
-
-    deleteButtons.forEach(button => {
-        button.addEventListener("click", function () {
-            const cardId = button.getAttribute("data-card-id");
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); // Récupérer le token CSRF
-
-            if (confirm("Voulez-vous vraiment supprimer cette carte ?")) {
-                fetch(`/delete-card/${cardId}?_token=${csrfToken}`, {
-                    method: "DELETE",
-                    headers: {
-                        "X-Requested-With": "XMLHttpRequest",
-                        "Content-Type": "application/json"
-                    }
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            alert("Carte supprimée avec succès.");
-                            window.location.replace("/profile");
-                        } else {
-                            alert("Une erreur est survenue lors de la suppression de la carte.");
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Erreur :", error);
-                        alert("Une erreur est survenue lors de la suppression de la carte.");
-                    });
-            }
-        });
-    });
-});
-
 // Message d'erreur si le formulaire n'est pas complet
 let success = document.querySelector("#confirm");
 success.onclick = function () {

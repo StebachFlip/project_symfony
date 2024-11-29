@@ -160,9 +160,9 @@ document.addEventListener("DOMContentLoaded", function () {
 let success = document.querySelector("#confirm");
 success.onclick = function () {
     let notifications = document.querySelector('.notification');
-    const numberInput = document.querySelector('#card_form_number');
-    const dateInput = document.querySelector('#card_form_expirationDate');
-    const cvvInput = document.querySelector('#card_form_cvv');
+    const numberInput = document.querySelector('#card-number-add');
+    const dateInput = document.querySelector('#expiry-date-add');
+    const cvvInput = document.querySelector('#cvv-add');
 
     if (numberInput.value == "" || dateInput.value == "" || cvvInput.value == "") {
         let newToast = document.createElement('div');
@@ -171,7 +171,7 @@ success.onclick = function () {
                 <i class="fa-solid fa-circle-xmark"></i>
                 <div class="content">
                     <div class="title">Erreur</div>
-                    <span>Entrez une adresse mail et un mot de passe.</span>
+                    <span>Veuillez remplir tout les champs.</span>
                 </div>
                 <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
             </div>`;

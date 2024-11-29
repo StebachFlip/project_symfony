@@ -32,6 +32,9 @@
             {{ form_start(form, {'attr': {'id': 'cardForm-' ~ loop.index}}) }}
                 <label class="payment-label" for="card-number-{{ loop.index }}">{{'card-number' | trans}}</label>
                 {{ form_widget(form.number, {'attr': {'id': 'card-number-' ~ loop.index, 'readonly': true, 'value': 'XXXX-XXXX-XXXX-' ~ card.lastDigits}}) }}
+                
+                <!-- Champ caché pour transmettre l'ID de la carte -->
+                <input type="hidden" name="card_id" value="{{ card.id }}">
                             
                 <label class="payment-label" for="expiry-date-{{ loop.index }}">{{'card-date' | trans}}</label>
                 {{ form_widget(form.expirationDate, {'attr': {'id': 'expiry-date-' ~ loop.index, 'readonly': true, 'value': card.expirationDate}}) }}
@@ -39,7 +42,7 @@
                 <label class="payment-label" for="cvv-{{ loop.index }}">CVV</label>
                 <div class="cvv-wrapper">
                     {{ form_widget(form.cvv, {'attr': {'id': 'cvv-' ~ loop.index, 'placeholder': '', 'value': ''}}) }}
-                    <button class="delete-card-btn" data-card-id="{{ card.id }}" type="button" data-csrf-token="{{ csrf_token('delete-card') }}">
+                    <button class="delete-card-btn" data-card-id="{{ card.id }}" type="submit" data-csrf-token="{{ csrf_token('delete-card') }}">
                         <span id="total-price">{{delete_button | trans}} - {{total_price}} €</span>
                         <i class="bx bx-right-arrow-alt"></i>
                     </button>

@@ -28,5 +28,14 @@ class CartItemRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findCartItemsByUser(User $user): array
+    {
+        return $this->createQueryBuilder('ci')
+            ->andWhere('ci.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
 
 }

@@ -113,6 +113,23 @@
                 newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
             </script>
         {% endif %}
+        {% if orderSuccess %}
+            <script>
+                let notifications = document.querySelector('.notification');
+                let newToast = document.createElement('div');
+                newToast.innerHTML = `
+                    <div class="toast success">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                        <div class="content">
+                            <div class="title">Succès</div>
+                            <span>Votre commande à été enregistrée avec succès.</span>
+                        </div>
+                        <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+                    </div>`;
+                notifications.appendChild(newToast);
+                newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+            </script>
+        {% endif %}
     </div>
 
     <div class="form-container">

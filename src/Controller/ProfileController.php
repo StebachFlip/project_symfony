@@ -18,10 +18,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 class ProfileController extends AbstractController
 {
     #[Route('/profile', name: 'profile')]
-    public function index(Request $request, EntityManagerInterface $entityManager, Security $security, UserPasswordHasherInterface $passwordHasher): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, Security $security, UserPasswordHasherInterface $passwordHasher, SessionInterface $session): Response
     {
         $user = $security->getUser();
         $hasError = false;
@@ -30,7 +32,15 @@ class ProfileController extends AbstractController
         $newPasswordInvalid = false;
         $cardExist = false;
         $isProfilePage = true;
-        //dd($user); 
+
+        // Récupération de l'argument si la commande à été enregistrée avec succès pour affichage du toast
+        $orderSuccess = $session->get('order_success');
+        $session->remove('order_sucess');
+
+        if($orderSuccess != true) {
+            $orderSuccess = false;
+        }
+         
 
         if (!$user instanceof User) {
             return $this->redirectToRoute('home');
@@ -50,9 +60,24 @@ class ProfileController extends AbstractController
         $passwordForm->handleRequest($request);
 
         // Chargement du formulaire de carte de credit
+        // Chargement du formulaire de carte de credit
+        $cards = $user->getCards()->toArray();
+
+        // Génération du formulaire d'ajout de carte
         $card = new Card();
-        $cardForm = $this->createForm(CardFormType::class, $card);
-        $cardForm->handleRequest($request);
+        $addCardForm = $this->createForm(CardFormType::class, $card);
+        $addCardForm->handleRequest($request);
+        
+        foreach ($cards as $index => $card) {
+            $form = $this->createForm(CardFormType::class, $card, [
+                'action' => $this->generateUrl('update_card', ['id' => $card->getId()]),
+                'method' => 'POST',
+            ]);
+            $cardsWithForms[] = [
+                'card' => $card,
+                'form' => $form->createView(),
+            ];
+        }
 
         if ($profileForm->isSubmitted() && $profileForm->isValid()) {
             $entityManager->persist($user);
@@ -95,8 +120,8 @@ class ProfileController extends AbstractController
             }  
         }
 
-        if ($cardForm->isSubmitted() && $cardForm->isValid()) {
-            $card = $cardForm->getData();
+        if ($addCardForm->isSubmitted() && $addCardForm->isValid()) {
+            $card = $addCardForm->getData();
 
             $existingCard = $entityManager->getRepository(Card::class)->findOneBy([
                 'number' => $card->getNumber(),  
@@ -113,12 +138,25 @@ class ProfileController extends AbstractController
     
                 $this->addFlash('success', 'Carte ajoutée avec succès.');
                 $success = true;
+                // Rafraîchir l'utilisateur pour recharger ses cartes
+                $entityManager->refresh($user);
+                $cards = $entityManager->getRepository(Card::class)->findBy(['user' => $user]);
+                $cardsWithForms = [];
+                foreach ($cards as $index => $card) {
+                    $form = $this->createForm(CardFormType::class, $card, [
+                        'action' => $this->generateUrl('update_card', ['id' => $card->getId()]),
+                        'method' => 'POST',
+                    ]);
+                    $cardsWithForms[] = [
+                        'card' => $card,
+                        'form' => $form->createView(),
+                    ];
+                }
             }
         }
-
+        $cards2 = $entityManager->getRepository(Card::class)->findBy(['user' => $user]);
 
         // Récupération des infos bancaires
-        $cards = $user->getCards()->toArray();
         //dd($cards); // Afficher les cartes
 
         return $this->render('profile.html.twig', [
@@ -130,10 +168,12 @@ class ProfileController extends AbstractController
             'success' => $success,
             'oldPassError' => $oldPasswordInvalid,
             'newPassError' => $newPasswordInvalid,
-            'cards'=> $cards,
-            'cardForm'=> $cardForm,
+            'cards'=> $cards2,
+            'addCardForm'=> $addCardForm,
             'cardExist' => $cardExist,
-            'isProfilePage' => $isProfilePage
+            'isProfilePage' => $isProfilePage,
+            'cardsWithForms' => $cardsWithForms,
+            'orderSuccess' => $orderSuccess
         ]);
     }
 
