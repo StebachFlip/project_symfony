@@ -67,6 +67,8 @@ class ProfileController extends AbstractController
         $card = new Card();
         $addCardForm = $this->createForm(CardFormType::class, $card);
         $addCardForm->handleRequest($request);
+
+        $cardsWithForms = [];
         
         foreach ($cards as $index => $card) {
             $form = $this->createForm(CardFormType::class, $card, [

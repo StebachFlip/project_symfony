@@ -55,6 +55,8 @@ class CartController extends AbstractController
         $card = new Card();
         $addCardForm = $this->createForm(CardFormType::class, $card);
         $addCardForm->handleRequest($request);
+
+        $cardsWithForms = [];
         
         foreach ($cards as $index => $card) {
             $form = $this->createForm(CardFormType::class, $card, [
@@ -97,7 +99,6 @@ class CartController extends AbstractController
             'addCardForm' => $addCardForm,
             'cardExist' => $cardExist,
             'incorrect_cvv' => $incorrect_cvv
-
         ]);
     }
 

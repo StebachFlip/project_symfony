@@ -13,43 +13,45 @@
     <div class="form-title">                            
         <span>{{'payment-title' | trans}}</span>
     </div>
-    {% for item in cardsWithForms %}
-        {% set card = item.card %}
-        {% set form = item.form %}
-        <!-- Option de paiement par carte {{ loop.index }} -->
-        <div class="payment-option" id="card-payment-option-{{ loop.index }}">
-            <input type="checkbox" id="card-payment-{{ loop.index }}" class="payment-checkbox">
-            <label for="card-payment-{{ loop.index }}" class="payment-label">
-                {{'payment-label' | trans }} {{ card.lastDigits }}
-            </label>
-        </div>
-
-        <!-- Formulaire de paiement par carte {{ loop.index }} -->
-        <div class="payment-form-container" id="card-payment-form-{{ loop.index }}" style="display: none;">
-            <div class="payment-title">
-                <h2> {{'payment-label' | trans }}{{ card.lastDigits }}</h2>
+    {% if cardsWithForms is not empty and cardsWithForms is defined %}
+        {% for item in cardsWithForms %}
+            {% set card = item.card %}
+            {% set form = item.form %}
+            <!-- Option de paiement par carte {{ loop.index }} -->
+            <div class="payment-option" id="card-payment-option-{{ loop.index }}">
+                <input type="checkbox" id="card-payment-{{ loop.index }}" class="payment-checkbox">
+                <label for="card-payment-{{ loop.index }}" class="payment-label">
+                    {{'payment-label' | trans }} {{ card.lastDigits }}
+                </label>
             </div>
-            {{ form_start(form, {'attr': {'id': 'cardForm-' ~ loop.index}}) }}
-                <label class="payment-label" for="card-number-{{ loop.index }}">{{'card-number' | trans}}</label>
-                {{ form_widget(form.number, {'attr': {'id': 'card-number-' ~ loop.index, 'readonly': true, 'value': 'XXXX-XXXX-XXXX-' ~ card.lastDigits}}) }}
-                
-                <!-- Champ caché pour transmettre l'ID de la carte -->
-                <input type="hidden" name="card_id" value="{{ card.id }}">
-                            
-                <label class="payment-label" for="expiry-date-{{ loop.index }}">{{'card-date' | trans}}</label>
-                {{ form_widget(form.expirationDate, {'attr': {'id': 'expiry-date-' ~ loop.index, 'readonly': true, 'value': card.expirationDate}}) }}
-                            
-                <label class="payment-label" for="cvv-{{ loop.index }}">CVV</label>
-                <div class="cvv-wrapper">
-                    {{ form_widget(form.cvv, {'attr': {'id': 'cvv-' ~ loop.index, 'placeholder': '', 'value': ''}}) }}
-                    <button class="delete-card-btn" data-card-id="{{ card.id }}" type="submit" data-csrf-token="{{ csrf_token('delete-card') }}">
-                        <span id="total-price">{{delete_button | trans}} - {{total_price}} €</span>
-                        <i class="bx bx-right-arrow-alt"></i>
-                    </button>
+
+            <!-- Formulaire de paiement par carte {{ loop.index }} -->
+            <div class="payment-form-container" id="card-payment-form-{{ loop.index }}" style="display: none;">
+                <div class="payment-title">
+                    <h2> {{'payment-label' | trans }}{{ card.lastDigits }}</h2>
                 </div>
-            {{ form_end(form) }}
-        </div>
-    {% endfor %}
+                {{ form_start(form, {'attr': {'id': 'cardForm-' ~ loop.index}}) }}
+                    <label class="payment-label" for="card-number-{{ loop.index }}">{{'card-number' | trans}}</label>
+                    {{ form_widget(form.number, {'attr': {'id': 'card-number-' ~ loop.index, 'readonly': true, 'value': 'XXXX-XXXX-XXXX-' ~ card.lastDigits}}) }}
+                    
+                    <!-- Champ caché pour transmettre l'ID de la carte -->
+                    <input type="hidden" name="card_id" value="{{ card.id }}">
+                                
+                    <label class="payment-label" for="expiry-date-{{ loop.index }}">{{'card-date' | trans}}</label>
+                    {{ form_widget(form.expirationDate, {'attr': {'id': 'expiry-date-' ~ loop.index, 'readonly': true, 'value': card.expirationDate}}) }}
+                                
+                    <label class="payment-label" for="cvv-{{ loop.index }}">CVV</label>
+                    <div class="cvv-wrapper">
+                        {{ form_widget(form.cvv, {'attr': {'id': 'cvv-' ~ loop.index, 'placeholder': '', 'value': ''}}) }}
+                        <button class="delete-card-btn" data-card-id="{{ card.id }}" type="submit" data-csrf-token="{{ csrf_token('delete-card') }}">
+                            <span id="total-price">{{delete_button | trans}} - {{total_price}} €</span>
+                            <i class="bx bx-right-arrow-alt"></i>
+                        </button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        {% endfor %}
+    {% endif %}
     <div class="payment-option" id="card-payment-option-add">
         <input type="checkbox" id="card-payment-add" class="payment-checkbox">
         <label for="card-payment-add" class="payment-label">
