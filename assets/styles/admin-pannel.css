@@ -351,6 +351,8 @@ body {
     /* Réduit la largeur de la barre de défilement (Firefox) */
     scrollbar-color: #ccc transparent;
     margin-bottom: 20px;
+    flex-wrap: wrap;
+    /* Permet de gérer plusieurs lignes si nécessaire */
 }
 
 /* Barre de défilement pour Chrome, Edge et Safari */
@@ -508,4 +510,57 @@ body {
 .empty-basket-message p {
     margin: 0;
     font-size: 1.2rem;
+}
+
+/* Conteneur des articles de commande */
+.order-items {
+    margin-top: 10px;
+    padding: 10px;
+    border-left: 2px solid #ddd;
+    /* Visuellement lié à la commande principale */
+    /* Pour distinguer légèrement les articles */
+    display: flex;
+    flex-direction: column;
+    /* Assure un alignement vertical */
+    gap: 10px;
+    width: 100%;
+    /* Même largeur que la commande principale */
+    box-sizing: border-box;
+    /* Inclut padding dans la largeur totale */
+}
+
+/* Articles individuels */
+.order-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    /* Optionnel : pour mieux distinguer chaque article */
+    border-radius: 5px;
+}
+
+.item-name-details,
+.item-quantity-details,
+.item-price-details {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    /* Centrage vertical */
+    width: 100px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #eaeaea;
+}
+
+.order-items p {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    /* Centrage vertical */
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #eaeaea;
 }

@@ -8,7 +8,7 @@
     .cart-count {
         position: absolute;
         top: -5px; /* Ajuste légèrement la position verticale */
-        right: -5px; /* Ajuste la position horizontale */
+        right: 10px; /* Ajuste la position horizontale */
         background-color: red;
         color: white;
         font-size: 14px;
@@ -64,6 +64,7 @@
         transition: background-color 0.3s ease;
         margin-left: auto;
         border: 1px solid #b0b5ff;
+        margin-right: 20px;
     }
 
     .login-link:hover {
@@ -88,6 +89,10 @@
         margin-right: 15px;
     }
 
+    .a:hover {
+        background-color: #888ffd;
+    }
+
 </style>
 
 <header>
@@ -99,7 +104,9 @@
         {% if user %}
             <!-- Si admin, affiche le panneau de configuration -->
             {% if user.role == true %}
-                <a class="login-link" href="#">Panneau de config.</a>
+                <a class="login-link" href="/admin-pannel">Panneau de config.</a>
+            {% else %}
+                <a class="login-link a" style="border: none;"></a>
             {% endif %}
                 <div class="cart-container">
                     <a class="login-link" href="/cart">

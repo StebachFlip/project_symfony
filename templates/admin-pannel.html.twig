@@ -40,6 +40,11 @@
                 </a>
             </li>
             <li>
+                <a href="#chiffres">
+                    <i class='bx bxs-dollar-circle'></i>Chiffres d'affaires
+                </a>
+            </li>
+            <li>
                 <a href="#manga-add">
                     <i class='bx bxs-plus-circle'></i>Ajouter un manga
                 </a>
@@ -102,15 +107,63 @@
                 <span>Liste des dernières commandes</span>
             </div>
             {% for order in orders %}
+                <!-- Conteneur de la commande -->
                 <div class="basket-item" data-item-id="{{ order.id }}">
                     <span class="item-name">{{ order.reference }}</span>
                     <span class="item-name">{{ order.user.name }}</span>
-                    <span class="item-name">{{ order.createdAt|date('Y-m-d H:i:s') }}</span>
+                    <span class="item-name">{{ order.createdAt|date('Y-m-d') }}</span>
                     <span class="item-name">{{ order.status.value }}</span>
-                    <button class="quantity-btn plus"><i class='bx bxs-down-arrow'></i></button>
+                    {# Calcul du prix total de la commande en additionnant product_price de chaque orderItem #}
+                    {% set totalPrice = 0 %}
+                    {% for item in order.orderItems %}
+                        {% set totalPrice = totalPrice + item.productPrice %}
+                    {% endfor %}
+                    
+                    <span class="item-name">{{ totalPrice }} €</span> <!-- Affichage du prix total -->
+                    <button class="quantity-btn plus" data-order-id="{{ order.id }}"><i class='bx bxs-down-arrow'></i></button>
+                </div>
+
+                <!-- Conteneur des articles de la commande -->
+                <div class="order-items" id="items-{{ order.id }}" style="display: none;">
+                    {% for item in order.orderItems %}
+                        <div class="basket-item order-item">
+                            <img src="{{ asset('images/Manga/' ~ item.manga.image.url) }}" alt="{{ item.manga.name }}" class="item-img">
+                            <span class="item-name-details">{{ item.manga.name }}</span>
+                            <span class="item-quantity-details">Quantité : {{ item.quantity }}</span>
+                            <span class="item-price-details">Prix : {{ item.productPrice }} €</span>
+                        </div>
+                    {% endfor %}
                 </div>
             {% endfor %}
         </div>
+
+        <div class="user-info" data-section="chiffres">
+            <div class="form-title">
+                <span>Chiffres d'affaires</span>
+            </div>
+            {% for monthData in salesData %}
+                <div class="basket-item">
+                    <span class="item-name">Mois : {{ monthData.month }}</span>
+                    <span class="item-name">Montant total : {{ monthData.total|number_format(2, ',', ' ') }} €</span>
+                    <span class="item-name">Mangas distincts vendus : {{ monthData.distinctMangasSold }}</span>
+                    <button class="quantity-btn plus-bis" data-month="{{ monthData.month }}"><i class='bx bxs-down-arrow'></i></button>
+                </div>
+
+                <!-- Conteneur des détails des mangas vendus -->
+                <div class="order-items" id="items-{{ monthData.month }}" style="display: none;">
+                    <p>Détails des ventes pour le mois {{ monthData.month }} :</p>
+                    {% for item in monthData.items %}
+                        <div class="basket-item order-item">
+                            <img src="{{ asset('images/Manga/' ~ item.image) }}" alt="{{ item.name }}" class="item-img">
+                            <span class="item-name-details">{{ item.name }}</span>
+                            <span class="item-quantity-details">Quantité : {{ item.quantity }}</span>
+                            <span class="item-price-details">Prix total : {{ item.productPrice|number_format(2, ',', ' ') }} €</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+
 
 
     </div>
