@@ -13,6 +13,7 @@
     <!-- ROGNAGE D'IMAGES -->
     <link href="https://unpkg.com/cropperjs/dist/cropper.min.css" rel="stylesheet">
     <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 
 <body>
@@ -45,7 +46,12 @@
                 </a>
             </li>
             <li>
-                <a href="#manga-add">
+                <a href="#graph">
+                    <i class='bx bx-line-chart'></i>Graphique d'évolution
+                </a>
+            </li>
+            <li>
+                <a href="/manga-form">
                     <i class='bx bxs-plus-circle'></i>Ajouter un manga
                 </a>
             </li>
@@ -69,8 +75,13 @@
                     <div class="basket-item" data-item-id="{{ manga.id }}">
                         <img src="{{ asset('images/Manga/' ~ manga.image.url) }}" alt="Article" class="item-img">
                         <span class="item-name">{{ manga.name }}</span>
-                        <button class="action-btn modify">Modifier</button>
-                        <button class="action-btn remove">Supprimer</button>
+                        <a href="{{ path('manga_form', {'id': manga.id}) }}" class="action-btn modify">Modifier</a>
+
+                        <form action="{{ path('delete_manga', {'id': manga.id}) }}" method="post" style="display:inline;">
+                            <!-- Pour simuler une requête DELETE via un formulaire POST -->
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="action-btn remove" onclick="return confirmDelete()">Supprimer</button>                        
+                        </form>
 
                         <!-- Boutons pour diminuer et augmenter la quantité -->
                         <span class="item-quantity" data-item-id="{{ manga.id }}">Stock : {{ manga.stock }}</span>
@@ -106,7 +117,7 @@
             <div class="form-title">
                 <span>Liste des dernières commandes</span>
             </div>
-            {% for order in orders %}
+            {% for order in orders_list %}
                 <!-- Conteneur de la commande -->
                 <div class="basket-item" data-item-id="{{ order.id }}">
                     <span class="item-name">{{ order.reference }}</span>
@@ -163,13 +174,113 @@
                 </div>
             {% endfor %}
         </div>
+        <div class="user-info" data-section="graph">
+            <div class="form-title">
+                <span>Graphique du chiffre d'affaire sur les 12 mois précedents</span>
+            </div>
+            <div class="chart">
+                <svg></svg> <!-- Le graphique sera dessiné ici -->
+            </div>
 
+            <script>
+                // Récupérer les labels et les données transmises depuis Twig
+                const chartLabels = {{ chartLabels|json_encode()|raw }};
+                const chartData = {{ chartData|json_encode()|raw }};
 
+                // Dimensions du graphique
+                const margin = { top: 20, right: 30, bottom: 40, left: 40 };
+                const width = 800 - margin.left - margin.right;
+                const height = 400 - margin.top - margin.bottom;
 
+                // Créer un élément SVG pour dessiner le graphique
+                const svg = d3.select("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+                // Créer des échelles (scales) pour les axes
+                const x = d3.scaleBand()
+                    .domain(chartLabels)
+                    .range([0, width])
+                    .padding(0.1);
+
+                const y = d3.scaleLinear()
+                    .domain([0, d3.max(chartData)])
+                    .nice()
+                    .range([height, 0]);
+
+                // Ajouter un fond au graphique (rectangle sous les axes et courbe)
+                svg.append("rect")
+                    .attr("width", width)
+                    .attr("height", height)
+                    .attr("fill", "rgba(255, 255, 255, 0.1)"); // Fond gris clair pour le graphique
+
+                // Ajouter l'axe X
+                svg.append("g")
+                    .selectAll(".tick")
+                    .data(chartLabels)
+                    .enter()
+                    .append("text")
+                    .attr("x", (d, i) => x(d) + x.bandwidth() / 2)
+                    .attr("y", height)
+                    .attr("dy", "1.2em")
+                    .attr("text-anchor", "middle")
+                    .text(d => d)
+                    .style("font-size", "8px")   // Réduire la taille de la police des dates
+                    .style("fill", "white");
+
+                // Ajouter l'axe Y avec des labels blancs
+                const yAxis = svg.append("g")
+                    .call(d3.axisLeft(y));
+                
+                // Style de l'axe Y : changer la couleur des ticks et des labels en blanc
+                yAxis.selectAll("text")
+                    .style("fill", "white");
+                
+                yAxis.selectAll("line")
+                    .style("stroke", "white"); // Couleur des lignes de l'axe Y
+
+                // Ajouter la ligne de données (graphique linéaire)
+                const line = d3.line()
+                    .x((d, i) => x(chartLabels[i]) + x.bandwidth() / 2)
+                    .y(d => y(d));
+
+                svg.append("path")
+                    .data([chartData])
+                    .attr("class", "line")
+                    .attr("d", line)
+                    .attr("fill", "none")
+                    .attr("stroke", "white") // Tracé de la courbe en blanc
+                    .attr("stroke-width", 2);
+
+                // Ajouter des labels avec les valeurs à chaque point de la courbe
+                svg.selectAll(".dot")
+                    .data(chartData)
+                    .enter()
+                    .append("text")
+                    .attr("x", (d, i) => x(chartLabels[i]) + x.bandwidth() / 2)
+                    .attr("y", (d) => y(d) - 10) // Positionner le texte au-dessus de chaque point
+                    .attr("text-anchor", "middle")
+                    .style("fill", "white")
+                    .style("font-size", "10px")
+                    .text(d => d); // Afficher la valeur du point
+            </script>   
+        </div>
     </div>
 </div>
 <script src="{{ asset('script/admin-pannel.js') }}"></script>
-    
+{% if suppr %}
+    <script>
+        alert('le manga à été supprimé avec succès');
+    </script>
+{% endif %}
+{% if error is not empty %}
+    <script>
+        alert("{{ error|escape('js') }}");
+    </script>
+{% endif %}
+
 </body>
 {% include 'partials/footer.html.twig' %}
 

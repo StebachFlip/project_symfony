@@ -104,8 +104,8 @@
                     <div class="toast error">
                         <i class="fa-solid fa-circle-xmark"></i>
                         <div class="content">
-                            <div class="title">Erreur</div>
-                            <span>Vous ne pouvez pas rentrer deux fois la même carte.</span>
+                            <div class="title">{{'error_title' | trans}}</div>
+                            <span>{{'card_error' | trans}}</span>
                         </div>
                         <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
                     </div>`;
@@ -121,8 +121,8 @@
                     <div class="toast success">
                         <i class="fa-solid fa-circle-xmark"></i>
                         <div class="content">
-                            <div class="title">Succès</div>
-                            <span>Votre commande à été enregistrée avec succès.</span>
+                            <div class="title">{{'profile_picture_title' | trans}}</div>
+                            <span>{{'success_order' | trans}}</span>
                         </div>
                         <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
                     </div>`;
@@ -162,6 +162,11 @@
                 <li>
                     <a href="#carte">
                         <i class='bx bx-credit-card'></i>{{ 'tab5_title' | trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="#history">
+                        <i class='bx bx-history'></i>{{'tab7_title' | trans}}
                     </a>
                 </li>
                 <li>
@@ -315,6 +320,40 @@
                 </div>
             </div>
             {% include 'partials/cardForm.html.twig' %}</div>
+            <div class="user-info" data-section="history">
+                <div class="form-title">
+                    <span>{{'tab7_title' | trans}}</span>
+                </div>
+                    {% for order in orders_list %}
+                    <!-- Conteneur de la commande -->
+                    <div class="basket-item" data-item-id="{{ order.id }}">
+                        <span class="item-name">{{ order.reference }}</span>
+                        <span class="item-name">{{ order.user.name }}</span>
+                        <span class="item-name">{{ order.createdAt|date('Y-m-d') }}</span>
+                        <span class="item-name">{{ order.status.value }}</span>
+                        {# Calcul du prix total de la commande en additionnant product_price de chaque orderItem #}
+                        {% set totalPrice = 0 %}
+                        {% for item in order.orderItems %}
+                            {% set totalPrice = totalPrice + item.productPrice %}
+                        {% endfor %}
+                        
+                        <span class="item-name">{{ totalPrice }} €</span> <!-- Affichage du prix total -->
+                        <button class="quantity-btn plus" data-order-id="{{ order.id }}"><i class='bx bxs-down-arrow'></i></button>
+                    </div>
+
+                    <!-- Conteneur des articles de la commande -->
+                    <div class="order-items" id="items-{{ order.id }}" style="display: none;">
+                        {% for item in order.orderItems %}
+                            <div class="basket-item order-item">
+                                <img src="{{ asset('images/Manga/' ~ item.manga.image.url) }}" alt="{{ item.manga.name }}" class="item-img">
+                                <span class="item-name-details">{{ item.manga.name }}</span>
+                                <span class="item-quantity-details">{{'quantity' | trans}} : {{ item.quantity }}</span>
+                                <span class="item-price-details">{{'price' | trans}} {{ item.productPrice }} €</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
 
         </div>
         

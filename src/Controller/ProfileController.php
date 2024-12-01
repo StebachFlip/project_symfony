@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Entity\Card;
 use App\Form\PasswordFormType;
 use App\Form\CardFormType;
+use App\Repository\OrderRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,7 +24,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class ProfileController extends AbstractController
 {
     #[Route('/profile', name: 'profile')]
-    public function index(Request $request, EntityManagerInterface $entityManager, Security $security, UserPasswordHasherInterface $passwordHasher, SessionInterface $session): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, Security $security, UserPasswordHasherInterface $passwordHasher, SessionInterface $session, OrderRepository $orderRepository): Response
     {
         $user = $security->getUser();
         $hasError = false;
@@ -69,6 +70,9 @@ class ProfileController extends AbstractController
         $addCardForm->handleRequest($request);
 
         $cardsWithForms = [];
+
+        // Récupération des commandes du client
+        $orders_list = $orderRepository->findBy(['user' => $user->getId()], ['createdAt' => 'DESC']);
         
         foreach ($cards as $index => $card) {
             $form = $this->createForm(CardFormType::class, $card, [
@@ -175,7 +179,8 @@ class ProfileController extends AbstractController
             'cardExist' => $cardExist,
             'isProfilePage' => $isProfilePage,
             'cardsWithForms' => $cardsWithForms,
-            'orderSuccess' => $orderSuccess
+            'orderSuccess' => $orderSuccess,
+            'orders_list' => $orders_list
         ]);
     }
 

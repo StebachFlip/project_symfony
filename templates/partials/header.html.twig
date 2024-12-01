@@ -104,7 +104,7 @@
         {% if user %}
             <!-- Si admin, affiche le panneau de configuration -->
             {% if user.role == true %}
-                <a class="login-link" href="/admin-pannel">Panneau de config.</a>
+                <a class="login-link" href="/admin-pannel">{{'config-pannel'| trans}}</a>
             {% else %}
                 <a class="login-link a" style="border: none;"></a>
             {% endif %}

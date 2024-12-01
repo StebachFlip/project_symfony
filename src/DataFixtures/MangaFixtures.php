@@ -10,7 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class MangaFixtures extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager):void
     {
         $jsonContent = file_get_contents(__DIR__ . '/Data/mangas.json');
         $mangas = json_decode($jsonContent, true);

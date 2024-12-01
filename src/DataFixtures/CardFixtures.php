@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Card;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -12,7 +13,7 @@ class CardFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $card = new Card();
-        $card->setUser(user: $this->getReference('admin-user'));
+        $card->setUser(user: $this->getReference('admin-user', User::class));
         $card->setNumber(1111222233334444);
         $card->setExpirationDate("10/24");
         $card->setCvv(026);

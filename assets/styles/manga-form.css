@@ -338,242 +338,180 @@ body {
     display: block;
 }
 
-.basket-items {
+.text-area {
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    padding: 15px 15px;
+    margin: 10px 0;
+    color: #FFF;
+    font-size: 17px;
+    background: rgba(0, 0, 0, 0.2);
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.profile-picture-section {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 15px;
-    max-height: calc(100% - 40px);
-    /* Ajuste la hauteur en fonction de l'écran */
-    overflow-y: auto;
-    /* Active le défilement vertical */
-    padding-right: 10px;
-    scrollbar-width: thin;
-    /* Réduit la largeur de la barre de défilement (Firefox) */
-    scrollbar-color: #ccc transparent;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    /* Permet de gérer plusieurs lignes si nécessaire */
+    padding: 20px;
 }
 
-/* Barre de défilement pour Chrome, Edge et Safari */
-.basket-items::-webkit-scrollbar {
-    width: 8px;
+/* Image de profil */
+.profile-picture {
+    margin-top: 100px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    /* Image ronde */
+    object-fit: cover;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-.basket-items::-webkit-scrollbar-thumb {
-    background-color: #ddd;
+/* Bouton de téléchargement */
+.upload-button,
+.save-button {
+    width: 150px;
+    height: 40px;
+    color: #FFF;
+    background: #21264D;
+    border: none;
     border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+    transition: background 0.3s;
 }
 
-.basket-items::-webkit-scrollbar-thumb:hover {
-    background-color: #bbb;
+.upload-button:hover,
+.save-button:hover {
+    background: #1a1f3a;
 }
 
-/* Articles individuels */
-.basket-item {
+/* Zone de glisser-déposer */
+.drop-zone {
+    width: 100%;
+    max-width: 300px;
+    height: 150px;
+    border: 2px dashed #21264D;
+    border-radius: 10px;
     display: flex;
     align-items: center;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 10px;
-    border-radius: 10px;
-    gap: 15px;
-    position: relative;
+    justify-content: center;
+    color: #AAA;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s;
     margin-bottom: 10px;
 }
 
-.basket-item img {
-    width: 80px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-}
-
-.item-name {
-    flex: 1;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #eaeaea;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.item-quantity {
-    width: 100px;
-    text-align: center;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #eaeaea;
-
-}
-
-.item-price {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #c1c1c1;
-    margin-left: auto;
-    width: 80px;
-    text-align: right;
-}
-
-.quantity-btn {
-    width: 35px;
-    height: 35px;
-    background: rgba(0, 0, 0, 0.4);
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    color: #eaeaea;
-    font-size: 1.2rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-    transition: background-color 0.2s ease-in-out;
-}
-
-.quantity-btn:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-    color: #000;
-}
-
-.remove-btn {
-    background: none;
-    border: none;
-    color: #eaeaea;
-    font-size: 1.2rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    transition: transform 0.3s ease
-}
-
-.remove-btn:hover {
-    transform: scale(1.30);
-}
-
-.action-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 20%;
-    height: 40px;
-    padding: 0 15px;
-    margin: 10px 0 20px;
+.drop-zone:hover {
+    background-color: rgba(33, 38, 77, 0.1);
     color: #FFF;
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-    margin: auto;
-    text-decoration: none;
 }
 
-.action-btn:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-    color: #000;
-}
-
-.remove {
-    background-color: #af0101;
-    width: 100%;
-}
-
-.modify {
-    background: #21264D;
-}
-
-.empty-basket-message {
-    display: none;
-    text-align: center;
-    font-size: 1.5rem;
-    color: #eaeaea;
-    font-weight: 600;
-    padding: 50px;
-    border-radius: 10px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    background-color: rgba(255, 255, 255, 0.1);
-    margin-top: 50px;
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-.empty-basket-message.visible {
-    display: block;
-    /* Affiche le message lorsque la classe 'visible' est ajoutée */
-}
-
-.empty-basket-message p {
-    margin: 0;
-    font-size: 1.2rem;
-}
-
-/* Conteneur des articles de commande */
-.order-items {
-    margin-top: 10px;
-    padding: 10px;
-    border-left: 2px solid #ddd;
-    /* Visuellement lié à la commande principale */
-    /* Pour distinguer légèrement les articles */
+/* ====== CROP ZONE ====== */
+/* Style pour la zone de recadrage */
+.crop-container {
+    position: fixed;
+    top: 150%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
-    /* Assure un alignement vertical */
-    gap: 10px;
-    width: 100%;
-    /* Même largeur que la commande principale */
-    box-sizing: border-box;
-    /* Inclut padding dans la largeur totale */
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.9);
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    /* Augmenter pour être au-dessus de tous les autres éléments */
+    overflow: hidden;
 }
 
-/* Articles individuels */
-.order-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    /* Optionnel : pour mieux distinguer chaque article */
+/* Image à rogner */
+.crop-container img#image-to-crop {
+    max-width: 100%;
+    max-height: 300px;
+    /* Assurez-vous que l’image ne prenne pas trop d’espace */
     border-radius: 5px;
+    margin-bottom: 15px;
+    border: 2px solid #fff;
 }
 
-.item-name-details,
-.item-quantity-details,
-.item-price-details {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    /* Centrage vertical */
-    width: 100px;
-    text-align: center;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #eaeaea;
-}
-
-.order-items p {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    /* Centrage vertical */
-    text-align: center;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #eaeaea;
-}
-
-.chart {
+.button-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    gap: 10px;
+    width: 100%;
+    margin-top: 10px;
+    text-align: center;
 }
 
-svg {
-    display: block;
+.button-container button {
+    display: inline-block;
+    padding: 10px 20px;
+}
+
+/* Boutons de recadrage et d'annulation */
+#crop-button,
+#cancel-button {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 120px;
+    z-index: 10000;
+}
+
+#cancel-button {
+    background-color: #f44336;
+}
+
+#crop-button:hover {
+    background-color: #45a049;
+}
+
+#cancel-button:hover {
+    background-color: #d32f2f;
+}
+
+/* Transition d'apparition */
+.crop-container {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+    animation: fadeIn 0.3s forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+#cropped-image-container {
+    display: none;
+    /* Masqué au départ */
+    margin-top: 20px;
+    text-align: center;
+}
+
+#cropped-image {
+    max-width: 200px;
+    height: auto;
+    /* Assure que l'image est responsive */
+    border-radius: 5px;
+    /* Optionnel pour donner un style */
 }

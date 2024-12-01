@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\ProfilePicture;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -12,7 +13,7 @@ class ProfilPictureFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $profilePicture = new ProfilePicture();
-        $profilePicture->setUser(user: $this->getReference('admin-user'));
+        $profilePicture->setUser(user: $this->getReference('admin-user', User::class));
         $profilePicture->setPath('pp/lucioleuwu.png');
         $manager->persist($profilePicture);
         

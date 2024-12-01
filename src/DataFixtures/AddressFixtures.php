@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Address;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -12,7 +13,7 @@ class AddressFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         // Créer l'adresse pour l'administrateur
-        $admin = $this->getReference(name: 'admin-user');
+        $admin = $this->getReference('admin-user', User::class);
         $adminAddress = new Address();
         $adminAddress->setStreet('1 Admin Street');
         $adminAddress->setPostalCode(12345);
@@ -25,7 +26,7 @@ class AddressFixtures extends Fixture implements DependentFixtureInterface
 
         // Créer des adresses pour les 10 utilisateurs
         for ($i = 1; $i <= 10; $i++) {
-            $user = $this->getReference("user-$i");
+            $user = $this->getReference("user-$i", User::class);
             $address = new Address();
             $address->setStreet("$i User Street");
             $address->setPostalCode(12345 + $i);
@@ -41,7 +42,7 @@ class AddressFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies():array
     {
         // Retourner la dépendance à UserFixtures
         return [

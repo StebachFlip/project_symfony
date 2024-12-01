@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="FR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire Manga</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('styles/manga-form.css') }}">
+    <link rel="icon" href="{{ asset('styles/img/logo.jpg') }}" type="image/jpg">
+
+    <!-- ROGNAGE D'IMAGES -->
+    <link href="https://unpkg.com/cropperjs/dist/cropper.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+<div class="notification"></div>
+
+<div class="form-container">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Formulaire - {{ manga.id ? 'Modifier manga' : 'Ajouter manga' }}</h2>
+        </div>
+        <ul class="sidebar-links">
+            <li>
+                <a href="#general">
+                    <i class='bx bxs-info-square'></i>Généralitées
+                </a>
+            </li>
+            <li>
+                <a href="#description">
+                    <i class='bx bxs-area'></i>Description
+                </a>
+            </li>
+            <li>
+                <a href="#image">
+                    <i class='bx bxs-image-add'></i>Image de couverture
+                </a>
+            </li>
+            <li>
+                <a href="#" class="sidebar-home-link" id="validate-button">
+                    <i class='bx bx-check-square'></i>Valider
+                </a>
+                <a href="/admin-pannel" class="sidebar-home-link" id="return">
+                    <i class='bx bxs-arrow-from-right'></i>Retour
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <div class="col col-1"></div>
+    <div class="col col-2">
+        <form id="form" method="post" enctype="multipart/form-data">
+            <div class="user-info active" data-section="general">
+                <div class="form-title">
+                    <span>Généralitées</span>
+                </div>
+                <div class="form-inputs">
+                    <div class="input-box">
+                        <span class="input-label">Nom du manga : </span>
+                        <input type="text" class="input-field" name="name" id="manga_form_name" value="{{ manga.name ?? '' }}">                        <i class='bx bx-rename icon'></i>
+                    </div>
+
+                    <div class="input-box">
+                        <span class="input-label">Nom de l'auteur : </span>
+                        <input type="text" class="input-field" name="author" id="manga_form_author" value="{{ manga.author ?? '' }}">                        <i class='bx bx-user icon'></i>
+                    </div>
+
+                    <div class="input-box">
+                        <span class="input-label">Prix du manga (€) : </span>
+                        <input type="number" id="price" name="price" class="input-field" min="0" step="0.1" 
+                               value="{{ manga.price ?? '' }}" placeholder="Entrez le prix du manga">
+                    </div>
+
+                    <div class="input-box">
+                        <span class="input-label">Quantité en stock : </span>
+                        <input type="number" id="stock" name="quantity" class="input-field" min="0" step="1"
+                               value="{{ manga.stock ?? '' }}" placeholder="Entrez la quantité de stock de manga">
+                    </div>
+                </div>
+            </div>
+
+            <div class="user-info" data-section="description">
+                <div class="form-title">
+                    <span>Description</span>
+                </div>
+                <div class="input-box">
+                    <textarea class="text-area" name="description" id="manga_form_description">{{ manga.description ?? ''}}</textarea>                
+                </div>
+            </div>
+
+            <div class="user-info" data-section="image">
+                <div class="form-title">
+                    <span>Image de couverture du manga</span>
+                </div>
+
+                <div class="profile-picture-section">
+                    <button class="upload-button" onclick="handleUploadButtonClick(event)">{{ 'upload_button' | trans }}</button>
+                    <input type="file" id="file-input" style="display: none;" accept="image/*">
+
+                    <div class="crop-container" style="display: none;">
+                        <img id="image-to-crop" alt="Image à rogner">
+                        <div class="button-container">
+                            <button id="crop-button">{{ 'confirm' | trans }}</button>
+                            <button id="cancel-button" onclick="closeCrop()">{{ 'cancel' | trans }}</button>
+                        </div>
+                    </div>
+
+                    <!-- Si un manga existe, afficher l'image actuelle -->
+                    {% if manga.image %}
+                        <div id="cropped-image-container" style="display: block; margin-top: 20px;">
+                            <img id="cropped-image" src="{{ asset('images/Manga/' ~ manga.image.url) }}" alt="Image de couverture"
+                                 style="margin-top: 10px; max-width: 200px;">
+                        </div>
+                    {% else %}
+                        <div id="cropped-image-container" style="display: none; margin-top: 20px;">
+                            <img id="cropped-image" alt="Image rognée" style="margin-top: 10px;">
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <input type="hidden" id="manga_form_id" name="id" value="{{ manga.id ?? '' }}">
+        </form>
+
+    </div>
+</div>
+
+<script src="{{ asset('script/manga-form.js') }}"></script>
+
+</body>
+{% include 'partials/footer.html.twig' %}

@@ -19,6 +19,7 @@ use App\Entity\CartItem;
 use App\Entity\Manga;
 use App\Entity\Card;
 use App\Form\CardFormType;
+use IntlDateFormatter;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AdminPannelController extends AbstractController
@@ -70,11 +71,21 @@ class AdminPannelController extends AbstractController
         if (!$user->getRole()) {
             return $this->redirectToRoute('home');
         }
+
+        $suppr = $session->get('suppr');
+        $session->remove('suppr');
+
+        $error = $session->get('error');
+        $session->remove('error');
+
+        if($suppr != true) {
+            $suppr = false;
+        }
     
         // Récupérations des informations du pannel
         $mangas = $mangaRepository->findAll();
         $users = $userRepository->findAll();
-        $orders = $orderRepository->findBy([], ['createdAt' => 'DESC']);
+        $orders_list = $orderRepository->findBy([], ['createdAt' => 'DESC']);
     
         // Récupération des chiffres d'affaires
         $now = new \DateTime();
@@ -136,12 +147,26 @@ class AdminPannelController extends AbstractController
                 'items' => $data['items'], // Inclure ici les items
             ];
         }
+
+        // Extraire les mois et les montants pour le graphique
+        $chartLabels = [];
+        $chartData = [];
+        foreach ($salesData as $monthData) {
+            $date = \DateTime::createFromFormat('Y-m', $monthData['month']); // Créer un objet DateTime
+            $formattedDate = $date->format('F Y'); // Exemple : January 2024
+            $chartLabels[] = $formattedDate; // Ajouter la date formatée
+            $chartData[] = $monthData['total']; // Montant total des ventes
+        }
     
         return $this->render('admin-pannel.html.twig', [
             'mangas' => $mangas,
             'users' => $users,
-            'orders' => $orders,
+            'orders_list' => $orders_list,
             'salesData' => $salesData,
+            'chartLabels' => $chartLabels,
+            'chartData' => $chartData,
+            'suppr' => $suppr,
+            'error' => $error
         ]);
     }
 }

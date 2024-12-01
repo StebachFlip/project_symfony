@@ -8,7 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class CategoryFixtures extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager):void
     {
         $jsonContent = file_get_contents(__DIR__ . '/Data/category.json');
         $categories = json_decode($jsonContent, true);

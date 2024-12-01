@@ -698,3 +698,232 @@ body {
 .cvv-wrapper button span {
     margin-right: 5px;
 }
+
+.basket-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: calc(100% - 40px);
+    /* Ajuste la hauteur en fonction de l'écran */
+    overflow-y: auto;
+    /* Active le défilement vertical */
+    padding-right: 10px;
+    scrollbar-width: thin;
+    /* Réduit la largeur de la barre de défilement (Firefox) */
+    scrollbar-color: #ccc transparent;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    /* Permet de gérer plusieurs lignes si nécessaire */
+}
+
+/* Barre de défilement pour Chrome, Edge et Safari */
+.basket-items::-webkit-scrollbar {
+    width: 8px;
+}
+
+.basket-items::-webkit-scrollbar-thumb {
+    background-color: #ddd;
+    border-radius: 5px;
+}
+
+.basket-items::-webkit-scrollbar-thumb:hover {
+    background-color: #bbb;
+}
+
+/* Articles individuels */
+.basket-item {
+    display: flex;
+    align-items: center;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 10px;
+    gap: 15px;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.basket-item img {
+    width: 80px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.item-name {
+    flex: 1;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #eaeaea;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.item-quantity {
+    width: 100px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #eaeaea;
+
+}
+
+.item-price {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #c1c1c1;
+    margin-left: auto;
+    width: 80px;
+    text-align: right;
+}
+
+.quantity-btn {
+    width: 35px;
+    height: 35px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    color: #eaeaea;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.quantity-btn:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: #000;
+}
+
+.remove-btn {
+    background: none;
+    border: none;
+    color: #eaeaea;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease
+}
+
+.remove-btn:hover {
+    transform: scale(1.30);
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 20%;
+    height: 40px;
+    padding: 0 15px;
+    margin: 10px 0 20px;
+    color: #FFF;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    margin: auto;
+    text-decoration: none;
+}
+
+.action-btn:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: #000;
+}
+
+.remove {
+    background-color: #af0101;
+    width: 100%;
+}
+
+.modify {
+    background: #21264D;
+}
+
+.empty-basket-message {
+    display: none;
+    text-align: center;
+    font-size: 1.5rem;
+    color: #eaeaea;
+    font-weight: 600;
+    padding: 50px;
+    border-radius: 10px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.1);
+    margin-top: 50px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.empty-basket-message.visible {
+    display: block;
+    /* Affiche le message lorsque la classe 'visible' est ajoutée */
+}
+
+.empty-basket-message p {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+/* Conteneur des articles de commande */
+.order-items {
+    margin-top: 10px;
+    padding: 10px;
+    border-left: 2px solid #ddd;
+    /* Visuellement lié à la commande principale */
+    /* Pour distinguer légèrement les articles */
+    display: flex;
+    flex-direction: column;
+    /* Assure un alignement vertical */
+    gap: 10px;
+    width: 100%;
+    /* Même largeur que la commande principale */
+    box-sizing: border-box;
+    /* Inclut padding dans la largeur totale */
+}
+
+/* Articles individuels */
+.order-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    /* Optionnel : pour mieux distinguer chaque article */
+    border-radius: 5px;
+}
+
+.item-name-details,
+.item-quantity-details,
+.item-price-details {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    /* Centrage vertical */
+    width: 100px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #eaeaea;
+}
+
+.order-items p {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    /* Centrage vertical */
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #eaeaea;
+}
