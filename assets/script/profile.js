@@ -241,8 +241,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const errorType = 'error';
             const errorIcon = 'fa-solid fa-circle-xmark';
-            const errorTitle = 'Erreur'; // Remplacez par `translations.errorTitle` si disponible
-            const errorText = 'Veuillez remplir tous les champs requis.'; // Remplacez par `translations.errorText` si disponible
+            const errorTitle = 'Erreur';
+            const errorText = 'Veuillez remplir tous les champs requis.';
 
             // Réinitialisation des erreurs
             document.querySelectorAll(".input-label").forEach(label => label.style.color = "");
@@ -269,10 +269,10 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             if (!formIsValid) {
-                event.preventDefault(); // Bloque la soumission si des champs sont vides
+                event.preventDefault();
             }
         } else {
-            event.preventDefault(); // Bloque si l'utilisateur annule l'action
+            event.preventDefault();
         }
     });
 });

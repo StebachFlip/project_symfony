@@ -18,6 +18,7 @@ class CardFixtures extends Fixture implements DependentFixtureInterface
         $card->setExpirationDate("10/24");
         $card->setCvv(026);
         $manager->persist($card);
+
         $manager->flush();
 
     }

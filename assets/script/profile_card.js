@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Vérification si l'élément existe
         if (!checkbox || !form) {
             console.warn(`Formulaire ou checkbox manquant pour l'index ${index + 1}`);
-            return null; // Retourner null si l'élément est manquant
+            return null;
         }
 
         return { checkbox, form, option: optionDiv };
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Formulaire d'ajout de carte
     const addCardCheckbox = document.getElementById('card-payment-add');
     const addCardFormContainer = document.getElementById('card-payment-form-add');
-    const addCardOption = document.getElementById('card-payment-option-add'); // Option "Ajouter une nouvelle carte"
+    const addCardOption = document.getElementById('card-payment-option-add');
 
     // Vérifier si le formulaire d'ajout de carte existe
     if (!addCardCheckbox || !addCardFormContainer || !addCardOption) {
@@ -27,11 +27,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // Fonction pour réinitialiser tous les formulaires et réafficher toutes les options
     function resetForms() {
         paymentOptions.forEach(({ form, option }) => {
-            if (form) form.style.display = 'none'; // Cacher tous les formulaires existants
-            if (option) option.style.display = 'block'; // Réafficher les checkboxes des cartes existantes
+            if (form) form.style.display = 'none';
+            if (option) option.style.display = 'block';
         });
-        if (addCardFormContainer) addCardFormContainer.style.display = 'none'; // Cacher le formulaire d'ajout de carte
-        if (addCardOption) addCardOption.style.display = 'block'; // Réafficher la checkbox "Ajouter une nouvelle carte"
+        if (addCardFormContainer) addCardFormContainer.style.display = 'none';
+        if (addCardOption) addCardOption.style.display = 'block';
     }
 
     // Fonction pour afficher un formulaire spécifique et cacher sa checkbox
@@ -39,9 +39,9 @@ document.addEventListener("DOMContentLoaded", function () {
         resetForms();
         paymentOptions.forEach(({ form, option }, index) => {
             if (index === selectedIndex) {
-                if (form) form.style.display = 'block'; // Afficher le formulaire
+                if (form) form.style.display = 'block';
                 if (option) {
-                    option.style.display = 'none'; // Cacher la checkbox
+                    option.style.display = 'none';
                     addCardCheckbox.checked = false;
                 }
             }
@@ -55,13 +55,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Désélectionner toutes les autres checkboxes
                 paymentOptions.forEach(({ checkbox }) => {
                     if (checkbox) {
-                        checkbox.checked = false; // Désélectionner toutes les autres
+                        checkbox.checked = false;
                     }
                 });
 
                 // Masquer tous les formulaires des cartes existantes
                 paymentOptions.forEach(({ form }) => {
-                    if (form) form.style.display = 'none'; // Cacher les formulaires des cartes existantes
+                    if (form) form.style.display = 'none';
                 });
 
                 // Afficher le formulaire d'ajout de carte
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // Cacher la checkbox "Ajouter une nouvelle carte"
                 if (addCardOption) {
-                    addCardOption.style.display = 'none'; // Cacher la checkbox "Ajouter une nouvelle carte"
+                    addCardOption.style.display = 'none';
                     paymentOptions.forEach(({ option }) => {
                         option.style.display = "block";
                     })
@@ -79,12 +79,12 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 // Si la checkbox "Ajouter une nouvelle carte" est décochée
                 if (addCardFormContainer) {
-                    addCardFormContainer.style.display = 'none'; // Cacher le formulaire d'ajout de carte
+                    addCardFormContainer.style.display = 'none';
                 }
 
                 // Afficher la checkbox "Ajouter une nouvelle carte"
                 if (addCardOption) {
-                    addCardOption.style.display = 'block'; // Afficher la checkbox
+                    addCardOption.style.display = 'block';
                 }
             }
         });
@@ -96,12 +96,12 @@ document.addEventListener("DOMContentLoaded", function () {
             checkbox.addEventListener('change', function () {
                 if (checkbox.checked) {
                     // Masquer la checkbox de la carte sélectionnée
-                    if (option) option.style.display = 'none'; // Cacher la checkbox sélectionnée
+                    if (option) option.style.display = 'none';
 
                     // Désélectionner toutes les autres checkboxes
                     paymentOptions.forEach(({ checkbox: otherCheckbox }, otherIndex) => {
                         if (otherIndex !== index && otherCheckbox) {
-                            otherCheckbox.checked = false; // Désélectionner les autres
+                            otherCheckbox.checked = false;
                         }
                     });
 
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     showForm(index);
                 } else {
                     // Si la checkbox est décochée, afficher à nouveau la checkbox
-                    if (option) option.style.display = 'block'; // Réafficher la checkbox si elle est décochée
+                    if (option) option.style.display = 'block';
 
                     // Cacher le formulaire correspondant
                     resetForms();
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
     deleteButtons.forEach(button => {
         button.addEventListener("click", function () {
             const cardId = button.getAttribute("data-card-id");
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); // Récupérer le token CSRF
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
             if (confirm("Voulez-vous vraiment supprimer cette carte ?")) {
                 fetch(`/delete-card/${cardId}?_token=${csrfToken}`, {

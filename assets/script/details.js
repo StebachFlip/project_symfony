@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     const buyButton = document.querySelector('.buy-button');
     const quantitySelect = document.querySelector('.quantity-select');
-    const cartCountElement = document.getElementById('cart-count'); // Récupérer l'élément du compteur
+    const cartCountElement = document.getElementById('cart-count');
 
     // Fonction pour mettre à jour le compteur du panier
     function updateCartCount() {
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    cartCountElement.textContent = data.cart_count; // Mettre à jour le compteur avec la somme des quantités
+                    cartCountElement.textContent = data.cart_count;
                 } else {
                     console.error('Erreur lors de la récupération du nombre d\'éléments dans le panier');
                 }
@@ -45,8 +45,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (buyButton) {
         buyButton.addEventListener('click', function () {
-            const mangaId = buyButton.getAttribute('data-manga-id'); // Récupérer l'ID du manga
-            const quantity = quantitySelect.value; // La quantité choisie par l'utilisateur
+            const mangaId = buyButton.getAttribute('data-manga-id');
+            const quantity = quantitySelect.value;
 
             // Vérifier que l'ID du manga et la quantité sont valides
             if (!mangaId || !quantity) {
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     'quantity': quantity
                 })
             })
-                .then(response => response.json()) // Parseg JSON comme avant
+                .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
                         const errorType = 'success';
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         const errorType = 'error';
                         const errorIcon = 'fa-solid fa-circle-exclamation';
                         const errorTitle = 'Erreur lors de l\'ajout';
-                        const errorText = data.message; // Message d'erreur retourné par le serveur
+                        const errorText = data.message;
                         createToast(errorType, errorIcon, errorTitle, errorText);
                     }
                 })
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const errorType = 'error';
                     const errorIcon = 'fa-solid fa-circle-exclamation';
                     const errorTitle = 'Erreur lors de l\'ajout';
-                    const errorText = "Impossible de dépasser le stock maximum de ce manga"; // Message d'erreur générique
+                    const errorText = "Impossible de dépasser le stock maximum de ce manga";
                     createToast(errorType, errorIcon, errorTitle, errorText);
                 });
         });

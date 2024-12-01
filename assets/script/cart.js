@@ -79,8 +79,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const itemId = button.getAttribute('data-item-id');
         const quantityElement = document.querySelector(`.item-quantity[data-item-id="${itemId}"]`);
         const priceElement = document.querySelector(`.item-price[data-item-id="${itemId}"]`);
-        const stock = parseInt(button.getAttribute('data-stock')); // Récupère le stock disponible
-        const unitPrice = parseFloat(priceElement.getAttribute('data-price')); // Récupère le prix unitaire
+        const stock = parseInt(button.getAttribute('data-stock'));
+        const unitPrice = parseFloat(priceElement.getAttribute('data-price'));
         if (isNaN(unitPrice)) {
             console.error(`Prix unitaire invalide pour l'article ${itemId}:`, priceElement.getAttribute('data-price'));
             return;
@@ -195,8 +195,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Vérifiez si le panier est vide
     if (cartItems.length === 0) {
-        emptyMessage.style.display = 'block';  // Affiche le message
+        emptyMessage.style.display = 'block';
     } else {
-        emptyMessage.style.display = 'none';   // Masque le message si des articles sont présents
+        emptyMessage.style.display = 'none';
     }
 });

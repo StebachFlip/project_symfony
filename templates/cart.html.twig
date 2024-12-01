@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panier</title>
+    <title>{{'cart-title' | trans}} - {{user.name}}</title>
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('styles/cart.css') }}">
@@ -25,8 +25,8 @@
             <div class="toast error">
                 <i class="fa-solid fa-circle-xmark"></i>
                 <div class="content">
-                    <div class="title">Erreur</div>
-                    <span>Le code CVV ne correspond pas.</span>
+                    <div class="title">{{'error_title' | trans}}</div>
+                    <span>{{'incorrect-cvv' | trans}}</span>
                 </div>
                 <i id ="cross" class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
             </div>`;
@@ -38,17 +38,17 @@
 <div class="form-container">
         <aside class="sidebar">
             <div class="sidebar-header">
-                <h2>Panier - StebachFlip</h2>
+                <h2>{{'cart-title' | trans}} - {{user.name}}</h2>
             </div>
             <ul class="sidebar-links">
                 <li>
                     <a href="#articles">
-                        <i class='bx bx-shopping-bag'></i>Articles
+                        <i class='bx bx-shopping-bag'></i>{{'items' | trans}}
                     </a>
                 </li>
                 <li>
                     <a href="#carte">
-                        <i class='bx bx-credit-card' ></i>Moyens de paiements
+                        <i class='bx bx-credit-card' ></i>{{'payment-title' | trans}}
                     </a>
                 </li>
                 <li>
@@ -64,17 +64,17 @@
         <div class="col col-2">
             <div class="user-info active" data-section="articles">
                 <div class="form-title">
-                    <span>Articles - <span id="total-price">{{ totalPrice|number_format(2, ',', ' ') }} €</span></span>
+                    <span>{{'items' | trans}} - <span id="total-price">{{ totalPrice|number_format(2, ',', ' ') }} €</span></span>
                 </div>
 
                 <!-- Vérification de la condition d'absence d'articles dans le panier -->
                 {% if cartItems is empty %}
                     <div class="empty-basket-message">
-                        <p>Il semblerait qu'il n'y ait aucun article dans votre panier</p>
+                        <p>{{'empty-cart' | trans}}</p>
                     </div>
                 {% else %}
                     <div class="empty-basket-message">
-                        <p>Il semblerait qu'il n'y ait aucun article dans votre panier</p>
+                        <p>{{'empty-cart' | trans}}</p>
                     </div>
 
                     <div id="cart-items-container">

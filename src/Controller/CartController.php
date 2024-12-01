@@ -15,12 +15,13 @@ use App\Entity\CartItem;
 use App\Entity\Manga;
 use App\Entity\Card;
 use App\Form\CardFormType;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class CartController extends AbstractController
 {
     #[Route('/cart', name: 'cart')]
-    public function index(CartItemRepository $cartItemRepository, Security $security, Request $request, EntityManagerInterface $entityManager, SessionInterface $session): Response
+    public function index(CartItemRepository $cartItemRepository, Security $security, Request $request, SessionInterface $session, EntityManagerInterface $entityManager): Response
     {
         $user = $security->getUser();
 
@@ -69,8 +70,8 @@ class CartController extends AbstractController
             ];
         }
 
-        /*if ($cardForms->isSubmitted() && $cardForm->isValid()) {
-            $card = $cardForms->getData();
+        if ($addCardForm->isSubmitted() && $addCardForm->isValid()) {
+            $card = $addCardForm->getData();
 
             $existingCard = $entityManager->getRepository(Card::class)->findOneBy([
                 'number' => $card->getNumber(),  
@@ -88,7 +89,7 @@ class CartController extends AbstractController
                 $this->addFlash('success', 'Carte ajoutée avec succès.');
                 $success = true;
             }
-        }*/
+        }
 
         return $this->render('cart.html.twig', [
             'cartItems' => $cartItems,
@@ -98,7 +99,8 @@ class CartController extends AbstractController
             'cardsWithForms'=> $cardsWithForms,
             'addCardForm' => $addCardForm,
             'cardExist' => $cardExist,
-            'incorrect_cvv' => $incorrect_cvv
+            'incorrect_cvv' => $incorrect_cvv,
+            'user' => $user
         ]);
     }
 
@@ -168,7 +170,7 @@ class CartController extends AbstractController
         }
 
         // Récupérer la quantité demandée (valeur de l'input "number")
-        $quantity = (int)$request->request->get('quantity', 1); // Valeur par défaut 1 si la quantité est absente
+        $quantity = (int)$request->request->get('quantity', 1);
 
         if ($quantity < 1) {
             return new JsonResponse(['status' => 'error', 'message' => 'Quantité invalide.'], 400);
@@ -212,7 +214,7 @@ class CartController extends AbstractController
         return new JsonResponse([
             'status' => 'success',
             'message' => 'Produit ajouté au panier!',
-            'cart_count' => count($entityManager->getRepository(CartItem::class)->findBy(['user' => $user])) // Nombre d'éléments dans le panier de l'utilisateur
+            'cart_count' => count($entityManager->getRepository(CartItem::class)->findBy(['user' => $user]))
         ]);
     }
 
@@ -234,7 +236,7 @@ class CartController extends AbstractController
 
         // Calculer le nombre total d'articles (quantité)
         $totalItems = array_reduce($cartItems, function ($carry, $cartItem) {
-            return $carry + $cartItem->getQuantity(); // Ajoute la quantité de chaque item
+            return $carry + $cartItem->getQuantity();
         }, 0);
 
         return new JsonResponse([

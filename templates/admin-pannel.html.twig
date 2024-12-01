@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panneau de configuration</title>
+    <title>{{'config-pannel' | trans}}</title>
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('styles/admin-pannel.css') }}">
@@ -22,37 +22,37 @@
 <div class="form-container">
     <aside class="sidebar">
         <div class="sidebar-header">
-            <h2>Panneau de configuration</h2>
+            <h2>{{'config-pannel' | trans}}</h2>
         </div>
         <ul class="sidebar-links">
             <li>
                 <a href="#mangas">
-                    <i class='bx bx-list-ul' ></i>Liste des mangas
+                    <i class='bx bx-list-ul' ></i>{{'manga-list' | trans}}
                 </a>
             </li>
             <li>
                 <a href="#users">
-                    <i class='bx bxs-user-detail' ></i>Liste des utilisateurs
+                    <i class='bx bxs-user-detail' ></i>{{'user-list' | trans}}
                 </a>
             </li>
             <li>
                 <a href="#orders">
-                    <i class='bx bx-cart-alt'></i>Liste des commandes
+                    <i class='bx bx-cart-alt'></i>{{'order-list' | trans}}
                 </a>
             </li>
             <li>
                 <a href="#chiffres">
-                    <i class='bx bxs-dollar-circle'></i>Chiffres d'affaires
+                    <i class='bx bxs-dollar-circle'></i>{{'turnover' | trans}}
                 </a>
             </li>
             <li>
                 <a href="#graph">
-                    <i class='bx bx-line-chart'></i>Graphique d'évolution
+                    <i class='bx bx-line-chart'></i>{{'evolution' | trans}}
                 </a>
             </li>
             <li>
                 <a href="/manga-form">
-                    <i class='bx bxs-plus-circle'></i>Ajouter un manga
+                    <i class='bx bxs-plus-circle'></i>{{'manga-form' | trans}}
                 </a>
             </li>
             <li>
@@ -69,18 +69,18 @@
         <div class="user-info active" data-section="mangas">
             <div id="cart-items-container">
                 <div class="form-title">
-                    <span>Liste des mangas</span>
+                    <span>{{'manga-list' | trans}}</span>
                 </div>
                 {% for manga in mangas %}
                     <div class="basket-item" data-item-id="{{ manga.id }}">
                         <img src="{{ asset('images/Manga/' ~ manga.image.url) }}" alt="Article" class="item-img">
                         <span class="item-name">{{ manga.name }}</span>
-                        <a href="{{ path('manga_form', {'id': manga.id}) }}" class="action-btn modify">Modifier</a>
+                        <a href="{{ path('manga_form', {'id': manga.id}) }}" class="action-btn modify">{{'modify-button' | trans}}</a>
 
                         <form action="{{ path('delete_manga', {'id': manga.id}) }}" method="post" style="display:inline;">
                             <!-- Pour simuler une requête DELETE via un formulaire POST -->
                             <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="action-btn remove" onclick="return confirmDelete()">Supprimer</button>                        
+                            <button type="submit" class="action-btn remove" onclick="return confirmDelete()">{{'delete-button' | trans}}</button>                        
                         </form>
 
                         <!-- Boutons pour diminuer et augmenter la quantité -->
@@ -95,7 +95,7 @@
         </div>
         <div class="user-info" data-section="users">
             <div class="form-title">
-                <span>Liste des utilisateurs</span>
+                <span>{{'user-list' | trans}}</span>
             </div>
             {% for user in users %}
                 {% if user.profilePicture %}
@@ -108,14 +108,14 @@
                     <span class="item-name">{{ user.name }}</span>
                         
                     {% if not user.role %}
-                        <button class="action-btn remove">Suspendre</button>
+                        <!--<button class="action-btn remove">Suspendre</button>-->
                     {% endif %}     
                 </div>
             {% endfor %}
         </div>
         <div class="user-info" data-section="orders">
             <div class="form-title">
-                <span>Liste des dernières commandes</span>
+                <span>{{'order-list' | trans}}</span>
             </div>
             {% for order in orders_list %}
                 <!-- Conteneur de la commande -->
@@ -140,8 +140,8 @@
                         <div class="basket-item order-item">
                             <img src="{{ asset('images/Manga/' ~ item.manga.image.url) }}" alt="{{ item.manga.name }}" class="item-img">
                             <span class="item-name-details">{{ item.manga.name }}</span>
-                            <span class="item-quantity-details">Quantité : {{ item.quantity }}</span>
-                            <span class="item-price-details">Prix : {{ item.productPrice }} €</span>
+                            <span class="item-quantity-details">{{'quantity' | trans}} : {{ item.quantity }}</span>
+                            <span class="item-price-details">{{'price' | trans}} {{ item.productPrice }} €</span>
                         </div>
                     {% endfor %}
                 </div>
@@ -150,25 +150,25 @@
 
         <div class="user-info" data-section="chiffres">
             <div class="form-title">
-                <span>Chiffres d'affaires</span>
+                <span>{{'turnover' | trans}}</span>
             </div>
             {% for monthData in salesData %}
                 <div class="basket-item">
-                    <span class="item-name">Mois : {{ monthData.month }}</span>
-                    <span class="item-name">Montant total : {{ monthData.total|number_format(2, ',', ' ') }} €</span>
-                    <span class="item-name">Mangas distincts vendus : {{ monthData.distinctMangasSold }}</span>
+                    <span class="item-name">{{'month' | trans}} : {{ monthData.month }}</span>
+                    <span class="item-name">{{'total-amount' | trans}} : {{ monthData.total|number_format(2, ',', ' ') }} €</span>
+                    <span class="item-name">{{'separate-sold' | trans}} : {{ monthData.distinctMangasSold }}</span>
                     <button class="quantity-btn plus-bis" data-month="{{ monthData.month }}"><i class='bx bxs-down-arrow'></i></button>
                 </div>
 
                 <!-- Conteneur des détails des mangas vendus -->
                 <div class="order-items" id="items-{{ monthData.month }}" style="display: none;">
-                    <p>Détails des ventes pour le mois {{ monthData.month }} :</p>
+                    <p>{{'order-details'}} {{ monthData.month }} :</p>
                     {% for item in monthData.items %}
                         <div class="basket-item order-item">
                             <img src="{{ asset('images/Manga/' ~ item.image) }}" alt="{{ item.name }}" class="item-img">
                             <span class="item-name-details">{{ item.name }}</span>
-                            <span class="item-quantity-details">Quantité : {{ item.quantity }}</span>
-                            <span class="item-price-details">Prix total : {{ item.productPrice|number_format(2, ',', ' ') }} €</span>
+                            <span class="item-quantity-details">{{'quantity' | trans}} : {{ item.quantity }}</span>
+                            <span class="item-price-details">{{'price' | trans}} {{ item.productPrice|number_format(2, ',', ' ') }} €</span>
                         </div>
                     {% endfor %}
                 </div>
@@ -176,7 +176,7 @@
         </div>
         <div class="user-info" data-section="graph">
             <div class="form-title">
-                <span>Graphique du chiffre d'affaire sur les 12 mois précedents</span>
+                <span>{{'evolution' | trans}}</span>
             </div>
             <div class="chart">
                 <svg></svg> <!-- Le graphique sera dessiné ici -->
@@ -269,7 +269,6 @@
         </div>
     </div>
 </div>
-<script src="{{ asset('script/admin-pannel.js') }}"></script>
 {% if suppr %}
     <script>
         alert('le manga à été supprimé avec succès');
@@ -280,6 +279,7 @@
         alert("{{ error|escape('js') }}");
     </script>
 {% endif %}
+<script src="{{ asset('script/admin-pannel.js') }}"></script>
 
 </body>
 {% include 'partials/footer.html.twig' %}

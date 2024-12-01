@@ -41,10 +41,10 @@ class OrderController extends AbstractController {
             $formData = $form->getData(); // formData est un tableau associatif
     
             // Extraire les champs spécifiques du formulaire
-            $cvv = $formData->getCvv(); // Le CVV
+            $cvv = $formData->getCvv();
     
             // Récupérer l'ID de la carte sélectionnée
-            $selectedCardId = $request->request->get('card_id'); // ou récupérer directement depuis $formData si disponible
+            $selectedCardId = $request->request->get('card_id');
     
             // Trouver la carte dans la base de données
             $card = $entityManager->getRepository(Card::class)->find($selectedCardId);
@@ -62,9 +62,9 @@ class OrderController extends AbstractController {
             // Création de la commande
             $order = new Order();
             $order->setUser($user);
-            $order->setReference(uniqid()); // Génération d'une référence unique
+            $order->setReference(uniqid());
             $order->setCreatedAt(new \DateTimeImmutable());
-            $order->setStatus(OrderStatus::PENDING); // Statut initial
+            $order->setStatus(OrderStatus::PENDING);
 
             $totalPrice = 0;
 
@@ -105,7 +105,7 @@ class OrderController extends AbstractController {
 
         }
         
-        $session->set('order_success', true); // Exemple de données à stocker
+        $session->set('order_success', true);
         return $this->redirectToRoute('profile');
     }
 }

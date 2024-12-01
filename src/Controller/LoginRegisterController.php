@@ -10,15 +10,13 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class LoginRegisterController extends AbstractController
 {
     
 
     #[Route('/login-register', name: 'login-register-form')]
-    public function index(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, Security $security): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $error = $request->getSession()->get('error');
         $request->getSession()->remove('error');

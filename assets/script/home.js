@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
         fetch(`/home/search?name=${encodeURIComponent(searchTerm)}`)
             .then(response => response.json())
             .then(mangas => {
-                mangaGrid.innerHTML = ''; // Vider la grille des mangas
+                mangaGrid.innerHTML = '';
 
                 if (mangas.length === 0) {
                     // Afficher le message centré
@@ -47,4 +47,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// console.log(mangas); // Ajoutez ceci pour voir la structure des données

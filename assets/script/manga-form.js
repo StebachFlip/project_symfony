@@ -25,10 +25,8 @@ const link = document.getElementById('return');
 
 // Ajouter un événement de clic sur le lien
 link.addEventListener('click', function (event) {
-    // Empêcher le comportement par défaut du lien (changement de page)
     event.preventDefault();
 
-    // Afficher une boîte de confirmation
     const userConfirmed = confirm("Voulez-vous vraiment retourner à la page précédente ?");
 
     // Si l'utilisateur confirme, rediriger vers l'URL du lien
@@ -39,8 +37,8 @@ link.addEventListener('click', function (event) {
 
 // Empêche le rafraîchissement de la page lorsque l'utilisateur clique sur le bouton "Parcourir"
 function handleUploadButtonClick(event) {
-    event.preventDefault(); // Empêche l'action par défaut (rafraîchissement de la page)
-    document.getElementById('file-input').click(); // Ouvre la boîte de dialogue du fichier
+    event.preventDefault();
+    document.getElementById('file-input').click();
 }
 
 // ROGNAGE DE L'IMAGE
@@ -55,23 +53,20 @@ fileInput.addEventListener('change', function (event) {
     event.preventDefault();
     let file = event.target.files[0];
     if (file) {
-        // Réinitialiser le conteneur d'image rognée à chaque nouveau fichier sélectionné
-        croppedImageContainer.style.display = 'none'; // Cacher l'image rognée précédente
-        croppedImage.src = ''; // Réinitialiser l'image rognée
+        croppedImageContainer.style.display = 'none';
+        croppedImage.src = '';
         // Créer un URL pour l'image sélectionnée
         let reader = new FileReader();
         reader.onload = function (e) {
-            // Afficher l'image à rogner dans le crop-container
             imageToCrop.src = e.target.result;
-            // Afficher le crop-container pour le rognage
             document.querySelector('.crop-container').style.display = 'block';
 
             // Initialiser le Cropper.js
             if (cropper) {
-                cropper.destroy(); // Détruire l'instance précédente si nécessaire
+                cropper.destroy();
             }
             cropper = new Cropper(imageToCrop, {
-                aspectRatio: 14.8 / 21, // Ratio largeur:hauteur de l'image rognée
+                aspectRatio: 14.8 / 21,
                 viewMode: 1,
                 autoCropArea: 0.65,
                 responsive: true
@@ -83,7 +78,7 @@ fileInput.addEventListener('change', function (event) {
 
 // Lorsque l'utilisateur confirme le rognage
 document.getElementById('crop-button').addEventListener('click', function (event) {
-    event.preventDefault(); // Empêche le rafraîchissement ou toute autre action par défaut
+    event.preventDefault();
 
     // Récupérer l'image rognée
     let croppedCanvas = cropper.getCroppedCanvas();
@@ -101,7 +96,7 @@ document.getElementById('crop-button').addEventListener('click', function (event
 
 // Lorsque l'utilisateur annule le rognage
 document.getElementById('cancel-button').addEventListener('click', function (event) {
-    event.preventDefault(); // Empêche l'action par défaut
+    event.preventDefault();
     // Cacher le crop-container sans rien faire
     document.querySelector('.crop-container').style.display = 'none';
 });
@@ -125,36 +120,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
         console.log("name:" + name, "author:" + author, "price:" + price, "stock:" + stock, "desc:" + description);
 
-        if (!name) errors.push('Le nom du manga est requis.');
-        if (!author) errors.push('Le nom de l\'auteur est requis.');
-        if (!price || isNaN(price) || parseFloat(price) <= 0) errors.push('Le prix du manga doit être un nombre positif.');
-        if (!stock || isNaN(stock) || parseInt(stock) <= 0) errors.push('La quantité en stock doit être un nombre positif.');
-        if (!description) errors.push('La description est requise.');
+        const errorName = translations.nameError;
+        const errorAuthor = translations.authorError;
+        const errorPrice = translations.priceError;
+        const errorQuantity = translations.quantityError;
+        const errorDescription = translations.descriptionError;
+        const errorImage = translations.imageError;
+
+        if (!name) errors.push(errorName);
+        if (!author) errors.push(errorAuthor);
+        if (!price || isNaN(price) || parseFloat(price) <= 0) errors.push(errorPrice);
+        if (!stock || isNaN(stock) || parseInt(stock) <= 0) errors.push(errorQuantity);
+        if (!description) errors.push(errorDescription);
 
         // Vérifier si l'image rognée existe
         const croppedImage = document.getElementById('cropped-image').src;
         if (croppedImage === '') {
-            errors.push('Une image est requise.');
+            errors.push(errorImage);
         }
 
         if (errors.length > 0) {
-            alert(errors.join('\n')); // Afficher les erreurs
+            alert(errors.join('\n'));
             return;
         }
 
         // Ajouter l'image rognée au formulaire sous forme de champ caché
         const imageInput = document.createElement('input');
         imageInput.type = 'hidden';
-        imageInput.name = 'croppedImage'; // Nom du champ à envoyer
-        imageInput.value = croppedImage; // Ajouter l'image rognée (en base64)
-        form.appendChild(imageInput); // Ajouter au formulaire
+        imageInput.name = 'croppedImage';
+        imageInput.value = croppedImage;
+        form.appendChild(imageInput);
 
         // Préparer les données du formulaire pour l'envoi via AJAX
         const formData = new FormData(form);
 
         const mangaId = document.getElementById('manga_form_id').value.trim();
         if (mangaId) {
-            formData.append('id', mangaId); // Ajouter l'ID du manga pour modification
+            formData.append('id', mangaId);
         }
 
         // Envoi AJAX pour enregistrer le manga
@@ -169,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const mangaId = data.mangaId;
 
                     // Après l'enregistrement du manga, envoyer l'image
-                    const croppedImageData = croppedImage.split(',')[1]; // Extraire la partie Base64 de l'URL
+                    const croppedImageData = croppedImage.split(',')[1];
                     sendImageToServer(croppedImageData, mangaId);
                 } else {
                     alert(data.message);
@@ -183,8 +185,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function sendImageToServer(croppedImageData, mangaId) {
         const imageData = new FormData();
-        imageData.append('image', croppedImageData); // Envoi de l'image base64
-        imageData.append('mangaId', mangaId); // ID du manga pour associer l'image
+        imageData.append('image', croppedImageData);
+        imageData.append('mangaId', mangaId);
 
         fetch('/admin/manga/uploadImage', {
             method: 'POST',

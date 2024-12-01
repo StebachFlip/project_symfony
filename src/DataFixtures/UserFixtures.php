@@ -20,7 +20,7 @@ class UserFixtures extends Fixture
     {
         // Création de l'administrateur
         $admin = new User();
-        $admin->setEmail('loic.stebach@gmail.com');
+        $admin->setEmail('loic.@gmail.com');
         $admin->setName('StebachFlip');
         $admin->setFirstname('Loic');
         $admin->setLastname(lastname: 'Stebach');

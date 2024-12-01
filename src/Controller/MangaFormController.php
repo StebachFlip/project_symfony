@@ -8,34 +8,18 @@ use App\Entity\Image;
 use App\Form\MangaFormType;
 use App\Enum\mangaStatus;
 use App\Repository\OrderItemRepository;
-use App\Repository\ImageRepository;
 use App\Repository\MangaRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class MangaFormController extends AbstractController
 {
-    private $entityManager;
-    private $mangaRepository;
-    private $imageRepository;
-
-    public function __construct(EntityManagerInterface $entityManager, MangaRepository $mangaRepository, ImageRepository $imageRepository)
-    {
-        $this->entityManager = $entityManager;
-        $this->mangaRepository = $mangaRepository;
-        $this->imageRepository = $imageRepository;
-    }
-
     #[Route('/manga-form/{id?}', name: 'manga_form', methods: ['GET', 'POST'])]
     public function index(Request $request, Security $security, EntityManagerInterface $em, ?int $id = null): Response
     {        
@@ -52,7 +36,7 @@ class MangaFormController extends AbstractController
         // Si le manga n'existe pas (en cas d'ID invalide)
         if ($id && !$manga) {
             $this->addFlash('error', 'Le manga demandé n\'existe pas.');
-            return $this->redirectToRoute('manga_list'); // Rediriger vers la liste des mangas ou une autre page appropriée
+            return $this->redirectToRoute('home');
         }
 
         // Créer le formulaire en liant les données du manga (nouveau ou existant)
@@ -63,7 +47,7 @@ class MangaFormController extends AbstractController
 
         return $this->render('manga-form.html.twig', [
             'form' => $form->createView(),
-            'manga' => $manga, // Passer le manga pour le formulaire ou d'autres besoins
+            'manga' => $manga,
         ]);
     }
 
@@ -133,7 +117,7 @@ class MangaFormController extends AbstractController
         $imageData = base64_decode($imageData);
 
         // Générer un nom de fichier unique pour l'image
-        $imageName = 'manga_' . $mangaId . '_' . uniqid() . '.jpg';  // On peut adapter cette partie pour PNG ou autre extension
+        $imageName = 'manga_' . $mangaId . '_' . uniqid() . '.jpg';
 
         // Définir le chemin d'enregistrement
         $uploadDir = $this->getParameter('kernel.project_dir') . '/public/images/Manga/';
@@ -145,10 +129,9 @@ class MangaFormController extends AbstractController
 
         // Enregistrer l'image sur le serveur
         if (file_put_contents($imagePath, $imageData)) {
-            // Créer une nouvelle entité Image
             $image = new Image();
-            $image->setUrl($imageName); // URL relative pour la base de données
-            $image->setFormat('jpg');  // Assumer que c'est du JPG, tu peux ajuster selon ton besoin
+            $image->setUrl($imageName);
+            $image->setFormat('jpg');
 
             // Récupérer l'entité Manga depuis la base de données
             $manga = $em->getRepository(Manga::class)->find($mangaId);
@@ -176,11 +159,9 @@ class MangaFormController extends AbstractController
             // Associer la nouvelle image au manga
             $image->setManga($manga);
 
-            // Sauvegarder l'image dans la base de données
             $em->persist($image);
-            $em->flush(); // Sauvegarder dans la base de données
+            $em->flush(); 
 
-            // Retourner une réponse JSON indiquant le succès
             return new JsonResponse([
                 'status' => 'success',
                 'message' => 'Image sauvegardée avec succès',
@@ -188,14 +169,13 @@ class MangaFormController extends AbstractController
             ]);
         }
 
-        // Si l'enregistrement échoue
         return new JsonResponse(['status' => 'error', 'message' => 'Erreur lors de l\'enregistrement de l\'image']);
     }
 
 
 
     #[Route('/delete-manga/{id}', name: 'delete_manga', methods: ['POST', 'DELETE'])]
-    public function deleteManga(int $id, MangaRepository $mangaRepository, OrderItemRepository $orderItemRepository, Request $request, EntityManagerInterface $entityManager, SessionInterface $session)
+    public function deleteManga(int $id, MangaRepository $mangaRepository, OrderItemRepository $orderItemRepository, EntityManagerInterface $entityManager, SessionInterface $session)
     {
         // Vérifier si le manga existe
         $manga = $mangaRepository->find($id);
@@ -203,11 +183,11 @@ class MangaFormController extends AbstractController
         if (!$manga) {
             $this->addFlash('error', 'Le manga n\'existe pas.');
             $session->set('error', "Le manga n'existe pas");
-            return $this->redirectToRoute('admin_pannel'); // Redirige vers la liste des mangas
+            return $this->redirectToRoute('admin_pannel');
         }
 
         // Vérifier si le manga est associé à une commande dans OrderItem
-        $orderItems = $orderItemRepository->findBy(['manga' => $manga]); // On suppose qu'il y a une relation entre OrderItem et Manga
+        $orderItems = $orderItemRepository->findBy(['manga' => $manga]); 
 
         if (count($orderItems) > 0) {
             // Le manga est lié à une commande, donc on ne le supprime pas

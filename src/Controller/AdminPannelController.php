@@ -5,9 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\CartItemRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\User;
@@ -15,49 +13,10 @@ use App\Entity\Order;
 use App\Repository\MangaRepository;
 use App\Repository\UserRepository;
 use App\Repository\OrderRepository;
-use App\Entity\CartItem;
-use App\Entity\Manga;
-use App\Entity\Card;
-use App\Form\CardFormType;
-use IntlDateFormatter;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AdminPannelController extends AbstractController
 {
-    private function getDistinctMangaSales(array $items)
-    {
-        $mangaSales = [];
-
-        foreach ($items as $item) {
-            $manga = $item->getManga();
-        
-            if ($manga === null) {
-                // Affichage pour déboguer
-                dump($item); // Afficher l'item qui ne possède pas de manga
-                continue; // Passer à l'élément suivant
-            }
-        
-            $mangaId = $manga->getId();
-        
-            if (!isset($mangaSales[$mangaId])) {
-                $mangaSales[$mangaId] = [
-                    'name' => $manga->getName(),
-                    'quantity' => 0,
-                    'productPrice' => $item->getProductPrice(),
-                ];
-            }
-        
-            // Ajouter la quantité au manga existant
-            $mangaSales[$mangaId]['quantity'] += $item->getQuantity();
-        }
-
-        // Retourner les mangas avec leurs quantités et prix
-        return array_values($mangaSales);
-    }
-
-    
-    
-    
     #[Route('/admin-pannel', name: 'admin_pannel')]
     public function index(MangaRepository $mangaRepository, UserRepository $userRepository, OrderRepository $orderRepository ,Security $security, Request $request, EntityManagerInterface $entityManager, SessionInterface $session): Response {
         // Récupération de l'user connecté
@@ -144,7 +103,7 @@ class AdminPannelController extends AbstractController
                 'month' => $monthYear,
                 'total' => $data['total'],
                 'distinctMangasSold' => count($data['items']),
-                'items' => $data['items'], // Inclure ici les items
+                'items' => $data['items'], 
             ];
         }
 
@@ -152,10 +111,10 @@ class AdminPannelController extends AbstractController
         $chartLabels = [];
         $chartData = [];
         foreach ($salesData as $monthData) {
-            $date = \DateTime::createFromFormat('Y-m', $monthData['month']); // Créer un objet DateTime
-            $formattedDate = $date->format('F Y'); // Exemple : January 2024
-            $chartLabels[] = $formattedDate; // Ajouter la date formatée
-            $chartData[] = $monthData['total']; // Montant total des ventes
+            $date = \DateTime::createFromFormat('Y-m', $monthData['month']);
+            $formattedDate = $date->format('F Y');
+            $chartLabels[] = $formattedDate;
+            $chartData[] = $monthData['total'];
         }
     
         return $this->render('admin-pannel.html.twig', [

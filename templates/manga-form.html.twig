@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulaire Manga</title>
+    <title>{{'manga-form-title' | trans}} - Manga</title>
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('styles/manga-form.css') }}">
@@ -22,12 +22,12 @@
 <div class="form-container">
     <aside class="sidebar">
         <div class="sidebar-header">
-            <h2>Formulaire - {{ manga.id ? 'Modifier manga' : 'Ajouter manga' }}</h2>
+            <h2>{{'manga-form-title' | trans}} - {{ manga.id ? 'manga-modify' | trans : 'manga-form' | trans }}</h2>
         </div>
         <ul class="sidebar-links">
             <li>
                 <a href="#general">
-                    <i class='bx bxs-info-square'></i>Généralitées
+                    <i class='bx bxs-info-square'></i>{{'general' | trans}}
                 </a>
             </li>
             <li>
@@ -37,15 +37,15 @@
             </li>
             <li>
                 <a href="#image">
-                    <i class='bx bxs-image-add'></i>Image de couverture
+                    <i class='bx bxs-image-add'></i>{{'cover-image' | trans}}
                 </a>
             </li>
             <li>
                 <a href="#" class="sidebar-home-link" id="validate-button">
-                    <i class='bx bx-check-square'></i>Valider
+                    <i class='bx bx-check-square'></i>{{'confirm' | trans}}
                 </a>
                 <a href="/admin-pannel" class="sidebar-home-link" id="return">
-                    <i class='bx bxs-arrow-from-right'></i>Retour
+                    <i class='bx bxs-arrow-from-right'></i>{{'back' | trans}}
                 </a>
             </li>
         </ul>
@@ -56,29 +56,29 @@
         <form id="form" method="post" enctype="multipart/form-data">
             <div class="user-info active" data-section="general">
                 <div class="form-title">
-                    <span>Généralitées</span>
+                    <span>{{'general' | trans}}</span>
                 </div>
                 <div class="form-inputs">
                     <div class="input-box">
-                        <span class="input-label">Nom du manga : </span>
-                        <input type="text" class="input-field" name="name" id="manga_form_name" value="{{ manga.name ?? '' }}">                        <i class='bx bx-rename icon'></i>
+                        <span class="input-label">{{'form-manga-name' | trans}} : </span>
+                        <input type="text" placeholder="{{'form-manga-name' | trans}}" class="input-field" name="name" id="manga_form_name" value="{{ manga.name ?? '' }}">                        <i class='bx bx-rename icon'></i>
                     </div>
 
                     <div class="input-box">
-                        <span class="input-label">Nom de l'auteur : </span>
-                        <input type="text" class="input-field" name="author" id="manga_form_author" value="{{ manga.author ?? '' }}">                        <i class='bx bx-user icon'></i>
+                        <span class="input-label">{{'form-manga-author' | trans}} : </span>
+                        <input type="text" placeholder="{{'form-manga-author' | trans}}" class="input-field" name="author" id="manga_form_author" value="{{ manga.author ?? '' }}">                        <i class='bx bx-user icon'></i>
                     </div>
 
                     <div class="input-box">
-                        <span class="input-label">Prix du manga (€) : </span>
+                        <span class="input-label">{{'form-manga-price' | trans}} (€) : </span>
                         <input type="number" id="price" name="price" class="input-field" min="0" step="0.1" 
-                               value="{{ manga.price ?? '' }}" placeholder="Entrez le prix du manga">
+                               value="{{ manga.price ?? '' }}" placeholder="{{'form-manga-price' | trans}}">
                     </div>
 
                     <div class="input-box">
-                        <span class="input-label">Quantité en stock : </span>
+                        <span class="input-label">{{'form-manga-quantity' | trans}} : </span>
                         <input type="number" id="stock" name="quantity" class="input-field" min="0" step="1"
-                               value="{{ manga.stock ?? '' }}" placeholder="Entrez la quantité de stock de manga">
+                               value="{{ manga.stock ?? '' }}" placeholder="{{'form-manga-quantity' | trans}}">
                     </div>
                 </div>
             </div>
@@ -94,7 +94,7 @@
 
             <div class="user-info" data-section="image">
                 <div class="form-title">
-                    <span>Image de couverture du manga</span>
+                    <span>{{'cover-image' | trans}}</span>
                 </div>
 
                 <div class="profile-picture-section">
@@ -127,6 +127,16 @@
 
     </div>
 </div>
+<script>
+    const translations = {
+        nameError: "{{ 'name-error' | trans|e('js') }}",
+        authorError: "{{ 'author-error' | trans|e('js') }}",
+        priceError: "{{ 'price-error' | trans|e('js') }}",
+        quantityError: "{{ 'quantity-error' | trans|e('js') }}",
+        descriptionError: "{{ 'description-error' | trans|e('js') }}",
+        imageError: "{{ 'image-error' | trans|e('js') }}",
+    };
+</script>
 
 <script src="{{ asset('script/manga-form.js') }}"></script>
 
